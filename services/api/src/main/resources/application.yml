@@ -1,0 +1,52 @@
+server:
+  address: 127.0.0.1
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: SESSION
+      timeout: 30m
+
+spring:
+  application:
+    name: fluentdoc-service
+  devtools:
+    restart:
+      # DevTools prints a large "CONDITION EVALUATION DELTA" on every restart; not an error.
+      log-condition-evaluation-delta: false
+  main:
+    banner-mode: "off"
+  datasource:
+    url: jdbc:sqlite:${user.home}/.fluentdoc/fluentdoc.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+        format_sql: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+FLUENTDOC_AVATARS_URL: https://avatars.fluentdoc.com
+
+ORIGIN_URL: http://localhost:4200
+
+logging:
+  file:
+    name: ${user.home}/.fluentdoc/fluentdoc-backend.log
+  level:
+    root: INFO
