@@ -1,0 +1,54 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.onboarding-questionaire {
+  @include displayFlex(column, flex-start, flex-start);
+
+  .questionaire {
+    &-card {
+      @include card(1158px, 530px);
+
+      margin-bottom: $spacing-lg;
+
+      //   Button footer container
+      & + div {
+        @include displayFlex(row, center, flex-end);
+
+        background-color: $background-bold;
+
+        .btn {
+          @include buttonSize(lg, toRem(343px));
+        }
+      }
+    }
+
+    &-container {
+      @include displayFlex(column, flex-start, flex-start);
+
+      gap: $spacing-2xl;
+    }
+
+    &-question {
+      @include body3SemiBold;
+
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  &-footer {
+    @include displayFlex(row, center, flex-end);
+    width: 100%;
+  }
+
+  .tooltip-big {
+    @include footnoteRegular;
+
+    text-align: center;
+    max-width: 200px;
+    padding: $spacing-md;
+  }
+}

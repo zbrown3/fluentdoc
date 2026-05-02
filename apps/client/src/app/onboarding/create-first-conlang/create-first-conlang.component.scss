@@ -1,0 +1,31 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.onboarding-conlang {
+  @include displayFlex(column, flex-start, flex-start);
+
+  gap: $spacing-lg;
+
+  app-create-language-form {
+    max-width: toRem(1160px);
+  }
+
+  &-footer {
+    @include displayFlex(row, center, space-between);
+    width: 100%;
+
+    .btn {
+      &-primary {
+        @include buttonSize(lg, toRem(343px));
+      }
+
+      &-outline-primary {
+        @include buttonSize(lg, toRem(200px));
+      }
+    }
+  }
+}

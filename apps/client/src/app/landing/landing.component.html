@@ -1,0 +1,30 @@
+<div class="landing">
+  <app-loading-spinner></app-loading-spinner>
+  <!-- Sign in/up and reset password forms -->
+  <div class="landing-form">
+    @if(!!errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      <span>
+        {{ errorMessage }}
+      </span>
+    </div>
+    }
+    <app-login-form
+      *ngIf="currentView === 'login'"
+      (newViewEvent)="updateView($event)"
+      (formSubmissionEvent)="showSpinner($event)"
+    ></app-login-form>
+    <app-signup-form
+      *ngIf="currentView === 'signup'"
+      (newViewEvent)="updateView($event)"
+      (formSubmissionEvent)="showSpinner($event)"
+    ></app-signup-form>
+    <app-forgot-password-form
+      *ngIf="currentView === 'forgotPassword'"
+      (newViewEvent)="updateView($event)"
+    ></app-forgot-password-form>
+    <app-reset-password-form
+      *ngIf="currentView === 'resetPassword'"
+    ></app-reset-password-form>
+  </div>
+</div>

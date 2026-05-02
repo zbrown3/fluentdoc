@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">Change Password</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="updatePassword()">
+    <!-- Current Password -->
+    <div class="form-group">
+      <label for="currentPassword">
+        Current password
+      </label>
+      <input  [(ngModel)]="password.currentPassword" name="currentPassword"
+              id="currentPassword"  type="password"
+              class="form-control" autocomplete="off">
+    </div>
+    <!-- New  Password -->
+    <div class="form-group">
+      <label for="newPassword">
+        New password
+      </label>
+      <input [(ngModel)]="password.newPassword" name="newPassword"
+             id="newPassword" type="password"
+             class="form-control" autocomplete="off">
+    </div>
+    <!-- Confirm New Password -->
+    <div class="form-group">
+      <label for="confirmNewPassword">
+        Confirm new password
+      </label>
+      <input  [(ngModel)]="password.confirmPassword" name="confirmPassword"
+              id="confirmNewPassword"  type="password"
+              class="form-control" autocomplete="off">
+    </div>
+    <div class="button-wrapper">
+      <button type="submit" class="btn btn-sm btn-primary mt-2">Update Password</button>
+    </div>
+  </form>
+</div>

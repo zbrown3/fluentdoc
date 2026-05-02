@@ -1,0 +1,38 @@
+<div class="profile-stats-container d-flex align-items-center" id="stats-container">
+  @if (showFollowers) {
+    <div class="stats">
+      <span>{{ userStats.numberOfFollowers || userStats.numberOfLanguages || 0 }}</span>
+      <span>Follower{{ (userStats.numberOfFollowers || userStats.numberOfLanguages || 0) === 1 ? "" : "s" }}</span>
+    </div>
+    @if (showLanguages || showWords || showPhrases) {
+      <div class="divider"></div>
+    }
+  }
+  
+  @if (showLanguages) {
+    <div class="stats">
+      <span>{{ userStats.numberOfLanguages || 0 }}</span>
+      <span>Language{{ (userStats.numberOfLanguages || 0) === 1 ? "" : "s" }}</span>
+    </div>
+    @if (showWords || showPhrases) {
+      <div class="divider"></div>
+    }
+  }
+  
+  @if (showWords) {
+    <div class="stats">
+      <span>{{ userStats.numberOfWords || 0 }}</span>
+      <span>Word{{ (userStats.numberOfWords || 0) === 1 ? "" : "s" }}</span>
+    </div>
+    @if (showPhrases) {
+      <div class="divider"></div>
+    }
+  }
+  
+  @if (showPhrases) {
+    <div class="stats">
+      <span>{{ userStats.numberOfPhrases || 0 }}</span>
+      <span>Phrase{{ (userStats.numberOfPhrases || 0) === 1 ? "" : "s" }}</span>
+    </div>
+  }
+</div> 

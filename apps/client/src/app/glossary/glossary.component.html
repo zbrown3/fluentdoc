@@ -1,0 +1,49 @@
+<main class="px-5 dashboard-wrapper">
+  <app-loading-spinner/>
+  @if (!loading && glossaryWords.length > 0) {
+    <div>
+      <div class="alt-header-wrapper">
+        <div class="alt-header">
+          <h2 class="alt-header-title">Glossary</h2>
+        </div>
+        <div class="alt-header-description">
+          <p>Here you can find a list of linguistic terms and their definitions</p>
+        </div>
+        <div class="search-wrapper">
+          <input type="text" class="form-control" placeholder="Search"
+                 [(ngModel)]="searchText">
+        </div>
+      </div>
+
+      <div class="alpha-row-wrapper container">
+    <span class="alpha-row" *ngFor="let alpha of extractFirstLetters()"
+          [ngClass]="{'selected': selectedAlpha === alpha}"
+          (click)="setSelectedAlpha(alpha)">{{alpha}}</span>
+      </div>
+
+      <div class="glossary-wrapper">
+        @if (getFilteredWords().length > 0) {
+          <div>
+            <div class="section-row"  *ngFor="let alpha of extractFirstLettersOfFilteredWords()">
+              <div class="glossary-display"><span>{{alpha}}</span></div>
+              <div class="section-cards">
+                <div class="card glossary-card" *ngFor="let alpha of getWordsWithFirstLetter(alpha)">
+                  <div class="glossary-name">{{alpha.name}}</div>
+                  <div class="glossary-definition">{{alpha.description}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      @if (getFilteredWords().length === 0) {
+        <div class="no-search-wrapper">
+          <img src="assets/images/illustrations/void.svg" alt="No search results" class="no-search-image">
+          <p class="no-search-header">No results found!</p>
+          <p class="no-search-description">Try searching for something or clear search field.</p>
+          <button class="btn btn-primary btn-sm" (click)="clearSearch()">Clear Search</button>
+        </div>
+      }
+    </div>
+  }
+</main>

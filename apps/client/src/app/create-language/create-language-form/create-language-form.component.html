@@ -1,0 +1,133 @@
+<div class="create-language-form">
+  <div class="conlang-question-group">
+    <label for="language-name" class="form-label"
+      >1. Decide on your language name<sup class="required-asterisk"
+        >*</sup
+      ></label
+    >
+    <div class="input-wrapper">
+      <input
+        id="language-name"
+        type="text"
+        class="form-control"
+        placeholder="Enter language name"
+        [(ngModel)]="newLanguage.name"
+        maxlength="50"
+      />
+      <i
+        class="ph-bold ph-shuffle input-icon"
+        (click)="getRandomLanguage()"
+      ></i>
+    </div>
+    <div class="text-muted small mt-1">
+      {{ newLanguage.name?.length || 0 }}/50 characters
+    </div>
+  </div>
+  <div class="conlang-question-group">
+    <label for="language-purpose" class="form-label">
+      2. What&apos;s the purpose of creating this language?
+      <small>(can select multiple)</small>
+      <sup class="required-asterisk">*</sup>
+    </label>
+    <div class="chips-container">
+      <span
+        id="language-purpose"
+        class="chip"
+        *ngFor="let purpose of languagePurposes"
+        [ngClass]="{
+          selected: newLanguage.reasons?.includes(purpose.key)
+        }"
+        (click)="updateLanguagePurposeSelection(purpose)"
+      >
+        {{ purpose.description }}
+      </span>
+    </div>
+  </div>
+  <div class="conlang-question-group">
+    <div class="conlang-type-wrapper">
+      <div>
+        <label for="language-types" class="form-label"
+          >3. What are your language type(s)?
+          <sup class="required-asterisk">*</sup></label
+        >
+        <div class="chips-container">
+          <span
+            id="languag-types"
+            class="chip"
+            *ngFor="let type of languageTypes"
+            [ngClass]="{
+              selected: newLanguage.types?.includes(type.key)
+            }"
+            (click)="updateLanguageTypeSelection(type)"
+          >
+            {{ type.type }}
+          </span>
+        </div>
+      </div>
+      <div
+        class="definitions-container"
+        [ngClass]="{ empty: types.length === 0 }"
+      >
+        @if(types.length === 0) {
+        <div class="definition-empty-container">
+          <div class="definition-empty">
+            <i class="ph ph-lightbulb icon-sm"></i>
+            <div class="definition-empty-content">
+              <p>
+                Not sure what they are? Click language types to learn about its
+                meaning!
+              </p>
+              <span>
+                *You can choose
+                <span>Personal</span> if you are not sure how to label your
+                language. It&apos;s the most general & popular category.
+              </span>
+            </div>
+          </div>
+        </div>
+        } @else {
+        <div class="definition" *ngFor="let type of types">
+          <div class="definition-header">
+            <i class="ph ph-lightbulb icon-sm"></i>
+            {{ type.type }}
+            @if (type.key === 'PERSONAL') {
+            <div class="badge rounded-pill bg-success">Most popular</div>
+            }
+          </div>
+          <div class="definition-content">
+            <p>
+              {{ type.description }}
+            </p>
+            @if (type.examples.length > 0) {
+            <p>
+              Examples:
+              <span *ngFor="let example of type.examples; index as i">
+                {{ example }}{{ i < type.examples.length - 1 ? ", " : "" }}
+              </span>
+            </p>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="conlang-question-group">
+    <label for="language-description" class="form-label">
+      4. Create an introductory description for your language<sup
+        class="required-asterisk"
+        >*</sup
+      >
+    </label>
+    <textarea
+      class="form-control"
+      placeholder="Enter a short description for the language, such as your goals or aspirations for the language."
+      rows="5"
+      [(ngModel)]="newLanguage.description"
+      maxlength="1000"
+    ></textarea>
+    <div class="text-muted small mt-1">
+      {{ newLanguage.description?.length || 0 }}/1000 characters
+    </div>
+  </div>
+</div>

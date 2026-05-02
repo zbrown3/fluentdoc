@@ -1,0 +1,49 @@
+<!--<div class="progress-fab" (click)="togglePopup()" title="Getting Started Checklist">-->
+<!--  <div class="progress-container">-->
+<!--    &lt;!&ndash; Progress Ring &ndash;&gt;-->
+<!--    <div class="progress-ring">-->
+<!--      <svg viewBox="0 0 36 36">-->
+<!--        <path class="bg" d="M18 2.0845a15.9155 15.9155 0 1 1 0 31.831a15.9155 15.9155 0 1 1 0 -31.831" />-->
+<!--        <path-->
+<!--          class="progress"-->
+<!--          [attr.stroke-dasharray]="progressPercentage + ', 100'"-->
+<!--          d="M18 2.0845a15.9155 15.9155 0 1 1 0 31.831a15.9155 15.9155 0 1 1 0 -31.831"-->
+<!--        />-->
+<!--      </svg>-->
+<!--      <span class="progress-text">{{ progressPercentage }}%</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Info Text &ndash;&gt;-->
+<!--    <div class="progress-info">-->
+<!--      <div class="label"><i class="ph-bold ph-lightning"></i> Getting started</div>-->
+<!--      @if (currentStep) {-->
+<!--        <div class="current">-->
+<!--          ➤ {{ currentStep.title }}-->
+<!--        </div>-->
+<!--      }-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Expanded popup &ndash;&gt;-->
+<!--  @if(showPopup) {-->
+<!--    <div class="progress-popup">-->
+<!--      <h5>Checklist progress</h5>-->
+
+<!--      <ul class="completed-steps">-->
+<!--        <li *ngFor="let step of completedSteps">-->
+<!--          <i class="ph-bold ph-check"></i> {{ step.title }}-->
+<!--        </li>-->
+<!--      </ul>-->
+
+<!--      @if (currentStep) {-->
+<!--        <div class="current-step">-->
+<!--          <span class="label">Now</span>-->
+<!--          <div>-->
+<!--            <i class="ph-bold ph-lightning"></i> {{ currentStep.title }}-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      }-->
+
+<!--    </div>-->
+<!--  }-->
+<!--</div>-->

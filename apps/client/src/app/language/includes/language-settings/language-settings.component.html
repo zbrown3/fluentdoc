@@ -1,0 +1,120 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Settings</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeSettings()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body settings-card">
+  <div class="settings-card-content">
+    <div class="settings-card-content-group">
+      <div class="settings-card-content-group-title">
+        <div>Language access</div>
+        @if (isLanguageSharingEnabled) { <div class="badge badge-primary">Coming Soon</div> }
+      </div>
+      <div class="settings-card-content-group-description">
+        Public languages can be shared with other users, and will be shown on
+        your profile as view-only mode.
+      </div>
+      @if (isLanguageSharingEnabled) {
+        <div>
+          <select
+            [(ngModel)]="editLanguage.privacyLevel"
+            (ngModelChange)="onPrivacyLevelChange($event)"
+            class="form-select"
+            name="access"
+            id="access"
+          >
+            <option value="PRIVATE">Private</option>
+            <option value="PUBLIC">Public</option>
+          </select>
+        </div>
+
+      } @else {
+        <div>
+          <select
+            [value]="'Private'"
+            class="form-select"
+            name="access"
+            id="no-access"
+            disabled
+            tooltip="We're diligently working on the sharing feature. For now, languages can only be kept private."
+            placement="bottom"
+          >
+          </select>
+        </div>
+      }
+
+    </div>
+
+    <div class="settings-card-content-group">
+  <div class="settings-card-content-group-title">Delete language</div>
+  <div class="settings-card-content-group-description">
+    This option will delete language forever
+  </div>
+  <button
+    type="button"
+    class="btn btn-sm btn-danger"
+    data-bs-toggle="collapse"
+    data-bs-target="#collapseDelete"
+  >
+    <i class="ph ph-trash"></i>
+    Delete language
+  </button>
+  <div class="collapse mt-3" id="collapseDelete">
+    <div class="card card-body p-3">
+      <p>
+        Once you delete {{ language.name }}, any associated data, including
+        stories, will also be deleted. Before you proceed, we recommend
+        exporting your language data to a PDF to ensure you have a copy of
+        your work.
+      </p>
+      <br />
+      <p>This action cannot be undone.</p>
+      <br />
+      <p>To confirm deletion, type “delete” below:</p>
+      <input
+        type="text"
+        [(ngModel)]="deleteConfirmation"
+        class="form-control"
+      />
+      <div class="dis-flex justify-content-end gap-2 mt-2">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseDelete"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="deleteLanguage()"
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          [disabled]="deleteConfirmation !== 'delete'"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    (click)="closeSettings()"
+  >
+    Cancel
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    [disabled]="language.privacyLevel === editLanguage.privacyLevel"
+    (click)="saveSettings()"
+  >
+    Save
+  </button>
+</div>

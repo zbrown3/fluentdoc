@@ -1,0 +1,238 @@
+<!--Main layout-->
+<main class="px-5 dashboard-wrapper">
+  <app-loading-spinner />
+
+  <div *ngIf="!loading">
+    <h4>Language Hub</h4>
+
+    <div class="dashboard-content-wrapper">
+      <section id="language-section">
+        <div class="dashboard-header-row">
+          <span class="section-header">Your Languages</span>
+          <button
+            type="button"
+            class="btn btn-primary create-language-button"
+            routerLink="/new-language"
+            [disabled]="user.languages.length === 3"
+          >
+            <i class="ph ph-feather"></i> Create language
+          </button>
+        </div>
+
+        <div
+          class="text-center no-language-wrapper"
+          *ngIf="user.languages.length === 0"
+        >
+          <img
+            ngSrc="assets/images/illustrations/empty.svg"
+            class="img-fluid"
+            width="200"
+            alt="empty box"
+            height="208"
+          />
+          <span class="text-muted">
+            It looks like you haven't started any language projects yet. If
+            you're new to language creation, explore our
+            <a routerLink="/resources">Resources</a> for helpful guides and
+            inspiration to kickstart your journey.</span
+          >
+          <button
+            type="button"
+            class="btn btn-outline-primary create-language-button"
+            routerLink="/new-language"
+          >
+            Create language
+          </button>
+        </div>
+
+        <div *ngIf="user.languages.length === 3">
+          <div
+            class="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Heads up!</strong> You have reached the maximum number of
+            languages you can create. If you want to create a new language, you
+            will need to delete one of your existing languages.
+          </div>
+        </div>
+
+        <div class="language-row">
+          <div
+            class="card language-card"
+            *ngFor="let language of user.languages; let i = index"
+          >
+            <div class="language-card-header">
+              <div class="name-combo">
+                <div *ngIf="language.flagUrl">
+                  <img
+                    ngSrc="{{ language.flagUrl }}"
+                    height="25"
+                    width="50"
+                    class="img-fluid"
+                    alt=""
+                    priority="true"
+                  />
+                </div>
+                <span class="language-name-text">
+                  {{ language.name }}
+                </span>
+                <span
+                  class="private"
+                  *ngIf="language.privacyLevel === 'PRIVATE'"
+                  ><i class="ph ph-lock-simple"></i
+                ></span>
+                <span class="public" *ngIf="language.privacyLevel === 'PUBLIC'"
+                  ><i class="ph ph-globe"></i
+                ></span>
+              </div>
+              <div>
+                <i
+                  class="ph ph-dots-three-outline me-2 cursor-pointer"
+                  [attr.id]="'delete-' + i"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                ></i>
+                <ul
+                  class="dropdown-menu dropdown-menu-lg-end"
+                  [attr.aria-labelledby]="'delete-' + i"
+                >
+                  <li>
+                    <span
+                      class="px-3 text-danger cursor-pointer"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confirmDeleteModal"
+                      (click)="populateLanguage(language)"
+                    >
+                      Delete
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div>
+                <span class="type-badge" *ngFor="let type of language.types">{{
+                  displayType(type)
+                }}</span>
+              </div>
+              <span *ngIf="language.story">
+                <i
+                  class="ph-fill ph-book-bookmark me-2"
+                  tooltip="{{ language.name }} includes a story"
+                  placement="bottom"
+                ></i>
+              </span>
+            </div>
+
+            <div class="reason-row">
+              <span
+                class="reason-badge"
+                *ngFor="let reason of language.reasons"
+                >{{ formatReason(reason) }}</span
+              >
+            </div>
+
+            <div class="card-body">
+              <div>
+                <p class="language-description-text">
+                  {{ language.description }}
+                </p>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="progress-row">
+              <!--          <div>-->
+              <!--            <p>Progress</p>-->
+              <!--            <p>20% complete</p>-->
+              <!--          </div>-->
+              <div>
+                <p>Last Edit</p>
+                <p>{{ language.lastUpdated | date }}</p>
+              </div>
+              <div class="text-right">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  routerLink="/language/{{ language.id }}"
+                >
+                  Open and edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- DELETE LANGUAGE -->
+    <!-- Delete Language Confirmation modal-->
+    <div
+      class="modal fade"
+      id="confirmDeleteModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="confirmDeleteModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content app-modal">
+          <div class="modal-header">
+            <p id="confirmDeleteModalLabel">Are you sure?</p>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Once you delete {{ languageToDelete.name }}, any associated data,
+              including stories, will also be deleted. Before you proceed, we
+              recommend exporting your language data to a PDF to ensure you have
+              a copy of your work.
+            </p>
+            <br />
+            <p>This action cannot be undone.</p>
+            <br />
+            <p>To confirm deletion, type “delete” below:</p>
+            <input
+              type="text"
+              [(ngModel)]="deleteConfirmation"
+              class="form-control"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              (click)="deleteLanguage(languageToDelete.id)"
+              type="button"
+              class="btn btn-danger"
+              [disabled]="deleteConfirmation !== 'delete'"
+              data-bs-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--         /.Delete Language Confirmation modal-->
+    <!-- /.DELETE LANGUAGE -->
+
+    <!--</div>-->
+    <!-- ./Language Info -->
+  </div>
+</main>
+<!-- /.Main Layout -->

@@ -1,0 +1,108 @@
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.data-table {
+  border-radius: toRem(10px) toRem(10px) 0 0;
+  min-height: 80%;
+
+  &-container {
+    display: grid;
+    overflow: auto;
+    gap: $spacing-sm;
+
+    .search-container {
+      width: 100%;
+    }
+
+    .mat-mdc-table {
+      .mat-mdc-header-row {
+        @include body3SemiBold();
+
+        background-color: $colors-blue-200;
+
+        &.mat-mdc-table-sticky-border-elem-top {
+          border-bottom: 2px solid $border-subtle;
+        }
+      }
+
+      .mdc-data-table__row {
+        @include body3Regular();
+      }
+
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        height: 62px;
+        max-width: 200px;
+        padding: $spacing-sm $spacing-md;
+
+        &:not(.mat-column-actions) > div {
+          @include textTruncate(200px);
+        }
+
+        // Specic style overrides for each column
+        // NOTE: Needs to be done here because of Angular Material's encapsulation
+        // This is a workaround to apply styles to specific columns
+        &.mat-column-name,
+        &.mat-column-types {
+          min-width: toRem(100px);
+        }
+
+        &.mat-column-privacyLevel {
+          min-width: toRem(100px);
+          max-width: toRem(90px);
+        }
+
+        &.mat-column-reasons {
+          min-width: toRem(162px);
+        }
+
+        &.mat-column-lastUpdated {
+          min-width: toRem(124px);
+        }
+      }
+
+      .action-buttons {
+        @include displayFlex(row, center, space-between);
+
+        width: 100%;
+      }
+    }
+
+    .mat-mdc-paginator {
+      @include subtitleRegular;
+
+      margin-top: $spacing-xl;
+      .mat-mdc-form-field,
+      .mat-mdc-select {
+        @include subtitleRegular;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoints-md) {
+  ::ng-deep .mat-mdc-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      max-width: 100% !important;
+    }
+
+    .mat-column-types {
+      display: none;
+    }
+
+    .mat-column-privacyLevel {
+      display: none;
+    }
+
+    .mat-column-reasons {
+      display: none;
+    }
+
+    .mat-column-lastUpdated {
+      display: none;
+    }
+  }
+}

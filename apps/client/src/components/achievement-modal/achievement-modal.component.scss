@@ -1,0 +1,64 @@
+@import '../../scss/functions/common.scss';
+@import '../../scss/mixins/common.scss';
+@import '../../scss/mixins/typography.scss';
+@import '../../scss/variables/typography.scss';
+@import '../../scss/variables/breakpoints.scss';
+@import '../../scss/variables/colors.scss';
+@import '../../scss/variables/spacing.scss';
+
+.achievement-modal {
+  @include displayFlex(column, center, center);
+  border-radius: toRem(18px);
+  text-align: center;
+  padding: 32px;
+  margin: auto;
+  position: relative;
+  background: radial-gradient(
+      circle at top,
+      rgba(4, 225, 110, 0.05),
+      rgba(255, 255, 255, 0.95)
+  );
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/images/background/confetti-pattern.svg');
+    background-repeat: repeat;
+    background-size: contain;
+    opacity: 0.15; // adjust background opacity
+    z-index: 0;
+  }
+
+  .modal-body {
+    position: relative;
+    z-index: 1; // ensure it's above the background
+  }
+
+  .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 24px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    .btn {
+      min-width: 120px;
+    }
+  }
+}

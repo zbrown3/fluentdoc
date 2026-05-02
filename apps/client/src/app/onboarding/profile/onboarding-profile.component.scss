@@ -1,0 +1,100 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/spacing.scss";
+@import "../../../scss/variables/colors.scss";
+
+.onboarding-profile {
+  &-container {
+    @include displayFlex(row, center, flex-start);
+
+    gap: $spacing-lg;
+  }
+
+  &-card {
+    @include card(571px, 500px);
+
+    margin-bottom: $spacing-lg;
+
+    p {
+      @include body3SemiBold;
+    }
+
+    input {
+      &.error {
+        border: 2px solid $border-negative;
+      }
+    }
+
+    .content-display {
+      margin-top: $spacing-lg;
+    }
+
+    .avatars-container {
+      @include displayFlex(row, center, flex-start, wrap);
+
+      gap: $spacing-lg $spacing-2xl;
+
+      .avatar {
+        @include displayFlex(row, center, center);
+        width: toRem(90px);
+        height: toRem(90px);
+        border-radius: 90px;
+        background-color: $background-bold;
+        cursor: pointer;
+
+        img {
+          max-width: toRem(75px);
+          max-height: toRem(75px);
+
+          &.icon {
+            max-width: toRem(50px);
+            max-height: toRem(50px);
+          }
+        }
+
+        &.selected {
+          border: 5px solid $border-bold;
+        }
+      }
+    }
+
+    .profile-container {
+      p {
+        margin-bottom: $spacing-sm;
+        margin-top: $spacing-lg;
+
+        &:nth-of-type(1) {
+          margin-top: 0;
+        }
+      }
+
+      textarea {
+        background-color: $background-bold;
+        min-height: toRem(145px);
+        resize: none;
+      }
+    }
+
+    &.avatar {
+      width: toRem(800px);
+      min-width: auto;
+    }
+  }
+
+  //   Button footer container
+  &-footer {
+    @include displayFlex(row, center, space-between);
+
+    background-color: $background-bold;
+
+    .btn-outline-primary {
+      @include buttonSize(lg, toRem(200px));
+    }
+
+    .btn-primary {
+      @include buttonSize(lg, toRem(343px));
+    }
+  }
+}

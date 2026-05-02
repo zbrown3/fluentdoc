@@ -1,0 +1,26 @@
+<div class="onboarding-conlang">
+  <app-create-language-form
+    (updateNewLanguageEvent)="updateLanguage($event)"
+  ></app-create-language-form>
+
+  <div class="onboarding-conlang-footer">
+    <button class="btn btn-outline-primary" (click)="goToPreviousView()">
+      <i class="ph ph-arrow-left icon-sm"></i>
+      <span>Back</span>
+    </button>
+    <div
+      placement="top"
+      tooltip="Please finish the first language setup to complete onboarding"
+      trigger="hover manual"
+      [tooltipEnable]="!getIsLanguageComplete()"
+    >
+      <button
+        class="btn btn-primary"
+        [disabled]="!getIsLanguageComplete()"
+        (click)="submit()"
+      >
+        <span>Save and finish</span>
+      </button>
+    </div>
+  </div>
+</div>

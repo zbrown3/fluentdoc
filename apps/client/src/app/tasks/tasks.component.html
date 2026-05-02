@@ -1,0 +1,181 @@
+<!--Main layout-->
+<main class="px-5 dashboard-wrapper">
+  <app-loading-spinner />
+
+  <div *ngIf="!loading">
+    <h2 class="page-header">Tasks</h2>
+
+    <!-- Task List -->
+    <!--        <div class="task-container">-->
+    <div class="card-hover-shadow-2x mt-3 mb-3 p-4 card">
+      <div class="card-body">
+        <!-- Header -->
+        <div class="card-header-row">
+          <div class="widget-content p-0">
+            <div class="widget-content-wrapper">
+              <div class="widget-content-left mr-2">
+                <i class="ph ph-check"></i>&nbsp; Task List
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Add Task Form -->
+        <form
+          [formGroup]="taskForm"
+          (ngSubmit)="addTask()"
+          class="m-t-20 m-b-10"
+        >
+          <div class="m-t-20 m-b-10">
+            <!-- Task -->
+            <div class="input-group">
+              <input
+                formControlName="task"
+                name="task"
+                type="text"
+                class="form-control mb-2 mr-sm-2"
+                id="inputTask"
+                autocomplete="off"
+                placeholder="{{
+                  taskFormSubmitted && f.task.errors ? 'Enter Task' : 'Task'
+                }}"
+                [ngClass]="{ 'is-invalid': taskFormSubmitted && f.task.errors }"
+              />
+            </div>
+            <button
+              type="submit"
+              class="app-button app-button-success btn-md mt-0"
+            >
+              <i class="ph ph-plus"></i>
+              Add Task
+            </button>
+          </div>
+
+          <hr />
+
+          <!-- Tasks -->
+          <div class="scroll-area-lg">
+            <div style="position: static" class="ps ps--active-y">
+              <div class="ps-content">
+                <div *ngIf="hasCompletedTask">
+                  <small
+                    class="cursor-pointer"
+                    *ngIf="!showCompletedTasks"
+                    (click)="toggleCompletedTasks()"
+                    >Show Completed Tasks</small
+                  >
+                  <small
+                    class="cursor-pointer"
+                    *ngIf="showCompletedTasks"
+                    (click)="toggleCompletedTasks()"
+                    >Hide Completed Tasks</small
+                  >
+                </div>
+                <p *ngIf="tasks.length === 0">You have no pending tasks.</p>
+                <ul
+                  *ngIf="tasks.length > 0"
+                  class="list-group list-group-flush"
+                >
+                  <li
+                    class="list-group-item"
+                    *ngFor="let task of tasks; let i = index"
+                  >
+                    <div class="widget-content p-0">
+                      <div class="widget-content-wrapper">
+                        <div class="widget-content-left me-2">
+                          <div class="custom-checkbox custom-control d-flex">
+                            <input
+                              [checked]="task.completed"
+                              (change)="completeTask($event, task.id)"
+                              class="custom-control-input"
+                              id="{{ task + '_' + i }}"
+                              type="checkbox"
+                            /><label
+                              class="custom-control-label"
+                              for="{{ task + '_' + i }}"
+                              >&nbsp;</label
+                            >
+                          </div>
+                        </div>
+                        <div class="widget-content-left">
+                          <div
+                            class="widget-heading"
+                            [ngClass]="{ 'completed-task': task.completed }"
+                          >
+                            {{ task.task }}
+                          </div>
+                          <!--                              TODO timeFromNow-->
+                          <!--                              <div class="widget-subheading"><i>Created: {{formatTimeFromNow(task.dateCreated)}}</i></div>-->
+                          <div class="widget-subheading">
+                            <i>Created: {{ task.dateCreated | date }}</i>
+                          </div>
+                        </div>
+                        <div class="widget-content-right">
+                          <div class="m-r-45">
+                            <i class="ph ph-x cursor-pointer" (click)="removeTask(task.id)"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!--            </div>-->
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Add Label Modal -->
+<!--<ng-template #addLabelModal>-->
+<!--    <div class="app-modal-header">-->
+<!--        <h4 class="modal-title pull-left">Add Label</h4>-->
+<!--        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="app-modal-body">-->
+<!--        <form [formGroup]="labelForm" (ngSubmit)="addNewLabel()">-->
+<!--            <div class="app-modal-body">-->
+
+<!--                <div class="m-b-10">-->
+<!--                    <p>Enter Label Details:</p>-->
+<!--                </div>-->
+
+<!--                <input formControlName="name" name="name" type="text" class="form-control mb-2 mr-sm-2" id="labelName"-->
+<!--                       placeholder="Label Name" autocomplete="off"-->
+<!--                       [ngClass]="{ 'is-invalid': labelFormSubmitted && l.name.errors }">-->
+
+<!--                <small class="text-muted">Select Label Color:</small>-->
+
+<!--                &lt;!&ndash; Label Colors &ndash;&gt;-->
+<!--                <div class="m-t-10">-->
+<!--                    &lt;!&ndash; ColorPicker &ndash;&gt;-->
+<!--                    <input-->
+<!--                            [colorPicker]="labelForm.get('color').value"-->
+<!--                            [style.background]="labelForm.get('color').value"-->
+<!--                            [style.color]="labelForm.get('color').value"-->
+<!--                            [value]="labelForm.get('color').value"-->
+<!--                            (colorPickerChange)="labelForm.get('color').setValue($event)"-->
+<!--                            class="color-picker"-->
+<!--                            [cpPresetColors]="['#8f03ff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)']"-->
+<!--                            formControlName="color" name="color" autocomplete="off"-->
+<!--                            [ngClass]="{ 'is-invalid': labelFormSubmitted && l.color.errors }">-->
+<!--                    <small *ngIf="labelFormSubmitted && l.color.errors" [style.color]="'red'" class="m-l-3">You must select a label color.</small>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--            <div class="app-modal-footer">-->
+<!--                <button type="button" class="app-button app-button-danger btn-md mr-3" data-dismiss="modal" (click)="modalRef.hide(); resetLabelForm()">Cancel</button>-->
+<!--                <button type="submit" class="app-button app-button-primary btn-md" data-dismiss="modal">Add Label</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</ng-template>-->
+<!-- /.Add Label Modal -->

@@ -1,0 +1,153 @@
+<!--Main layout-->
+<main role="main" class="px-5 dashboard-wrapper">
+  <app-loading-spinner/>
+
+  @if (!loading) {
+    <div>
+
+      <h2 class="page-header">Settings</h2>
+
+      <!-- Profile Tabs -->
+      <div class="tab-wrapper">
+        <div class="tab-section" (click)="changeTab('account')" [ngClass]="{'active': activeTab === 'account'}">
+          Account
+        </div>
+        <div class="tab-section" (click)="changeTab('notifications')"
+             [ngClass]="{'active': activeTab === 'notifications'}">
+          Notifications
+        </div>
+      </div>
+      <!-- /.Profile Tabs -->
+
+      <!-- Account settings -->
+      @if (activeTab === 'account') {
+        <form>
+          <div class="tab-content-wrapper-500w">
+            <div class="tab-content-header"><h5>Account settings</h5></div>
+            <p class="tab-content-description">Account details</p>
+
+            <div class="account-row">
+              <div>
+                <p class="account-row-header">Member since:</p>
+              </div>
+              <p class="account-row-description">{{formatDate(user.dateCreated)}}</p>
+            </div>
+
+            <div class="account-row">
+              <div>
+                <p class="account-row-header">Email address</p>
+                <p class="account-row-description">{{user.email}}</p>
+              </div>
+              <div tooltip="Coming soon" placement="top">
+                <button type="button" class="btn btn-sm btn-outline-primary disabled">Change</button>
+              </div>
+            </div>
+
+            <div class="account-row">
+              <div>
+                <p class="account-row-header">Password</p>
+                @if (user.password !== 'SSO_GOOGLE' || !user?.socialLogin) {
+                  <p class="account-row-description">
+                    **********</p>
+                }
+
+                @if (user?.socialLogin && user.password === 'SSO_GOOGLE') {
+                  <p class="account-row-description">Managed by
+                    Google</p>
+                }
+              </div>
+
+              @if (user?.socialLogin && user.password === 'SSO_GOOGLE') {
+                <div tooltip="Your password is managed by google" placement="top">
+                  <button type="button" class="btn btn-sm  btn-outline-primary disabled">Change</button>
+                </div>
+              }
+
+              @if (!user?.socialLogin || user.password !== 'SSO_GOOGLE') {
+                <button
+                  type="button"
+                  class="btn btn-sm  btn-outline-primary"
+                  (click)="openPasswordResetModal()"
+                >
+                  Change
+                </button>
+              }
+            </div>
+
+            <p class="tab-content-description">Connected accounts</p>
+            <div class="account-row">
+              <div>
+                <img src="assets/images/social/google-logo.svg"
+                     height="25" width="25" alt="google logo">
+              </div>
+              @if (user.socialLogin) {
+                <input [checked]="true" [disabled]="true"
+                       name="google_connected" class="form-check-input" type="checkbox" id="google_connected"/>
+              }
+
+              @if (!user.socialLogin) {
+                <div>
+                  <span class="text-muted"> Not connected</span>
+                </div>
+              }
+            </div>
+
+
+            <p class="tab-content-description">Delete account</p>
+            <div class="account-row">
+              <div>
+                <p class="account-row-header">Delete account</p>
+              </div>
+              <button type="button" class="btn btn-sm  btn-outline-danger"
+                      data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                      (click)="deleteConfirmation = ''">
+                Delete
+              </button>
+            </div>
+
+          </div>
+        </form>
+      }
+      <!-- /.Account settings -->
+
+      <!-- Notification settings -->
+      @if (activeTab === 'notifications') {
+        <app-notification-settings [notifications]="user.emailNotifications"/>
+      }
+      <!-- /.Notification Settings -->
+
+      <!-- Delete Language Confirmation modal-->
+      <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+           aria-labelledby="confirmDeleteModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Are you sure?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>We're sorry to see you go.</strong></p>
+              <p>Once your account is deleted, all your content, including your language
+                projects, stories, profiles, and any associated data, will be permanently removed.
+                Before you proceed, we recommend exporting your language data
+                to a PDF to ensure you have a copy of your work.</p>
+              <p>Once you delete your account, you will lose all of the data associated with
+                it. This cannot be undone.</p>
+              <p>To confirm deletion, type <strong>"delete"</strong> below:</p>
+              <input type="text" [(ngModel)]="deleteConfirmation" class="form-control">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button (click)="deleteAccount()" [disabled]="deleteConfirmation !== 'delete'" type="button"
+                      class="btn btn-danger" data-bs-dismiss="modal">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.Delete Language Confirmation modal -->
+
+    </div>
+  }
+</main>

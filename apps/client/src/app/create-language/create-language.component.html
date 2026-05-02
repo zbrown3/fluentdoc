@@ -1,0 +1,20 @@
+<div class="create-language-page">
+  <div class="create-language-page-content">
+    <button type="button" class="btn btn-link-gray" routerLink="/dashboard">
+      <i class="ph ph-caret-left"></i>
+      Dashboard
+    </button>
+    <h3>Create language</h3>
+    <app-create-language-form
+      (updateNewLanguageEvent)="updateLanguage($event)"
+    ></app-create-language-form>
+    <button
+      type="button"
+      class="btn btn-primary btn-lg"
+      (click)="createLanguage()"
+      [disabled]="!getIsLanguageComplete()"
+    >
+      Create language
+    </button>
+  </div>
+</div>

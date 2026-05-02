@@ -1,0 +1,62 @@
+<div class="view-language-header" [ngClass]="{ 'public-view': isPublicMode }">
+  <div class="view-language-header-container">
+    <ul class="nav">
+      @if (isPublicMode || isPreviewMode) {
+      <li class="nav-item language-logo-container">
+        <app-made-with-fd></app-made-with-fd>
+        @if(showLanguageFlag) {
+        <div
+          class="flag-container"
+          [ngClass]="{
+          'default-flag-background': !flagImageUrl,
+        }"
+        >
+          @if (flagImageUrl) {<img
+            [src]="flagImageUrl"
+            alt="{{ languageName }} flag"
+            class="flag-img"
+          />} @else {
+          <img
+            src="assets/images/brand/fluentdoc_icon.svg"
+            alt=""
+            width="18px"
+            height="14px"
+          />
+          }
+        </div>
+        }
+
+        <p>{{ languageName }}</p>
+      </li>
+      }
+      <li class="nav-item" *ngFor="let section of overviewSections">
+        <a
+          class="nav-link"
+          [ngClass]="{ active: section.id === activeSectionId }"
+          aria-current="page"
+          (click)="setActiveSection(section.id)"
+          >{{ section.title }}</a
+        >
+      </li>
+    </ul>
+    @if (isEditMode) {
+    <button
+      class="btn btn-tertiary btn-md"
+      data-bs-target="#customize-styles-drawer"
+      aria-controls="customize-styles-drawer"
+      (click)="toggleCustomizeStylesDrawer()"
+    >
+      <i class="ph ph-gear"></i><span>Customize style</span>
+    </button>
+    } @if (isPublicMode && activeSectionId === overviewSections[0].id) {
+    <button
+      class="btn btn-tertiary btn-sm mobile-menu"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#table-of-contents-drawer"
+      aria-controls="table-of-contents-drawer"
+    >
+      <i class="ph ph-list"></i>
+    </button>
+    }
+  </div>
+</div>

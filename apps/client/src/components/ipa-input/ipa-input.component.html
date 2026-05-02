@@ -1,0 +1,23 @@
+<div class="relative">
+  <div class="input-container">
+  <input type="text"
+         class="form-control"
+         #textInput
+         placeholder="Type or select IPA Characters.."
+         [ngClass]="ngClass"
+         [formControl]="textControl"
+         (focus)="showSelector = true"
+         (blur)="onTouched()"
+  >
+    <i class="ph ph-keyboard"></i>
+  </div>
+
+  @if (showSelector) {
+    <div class="absolute top-2 left-0 right-0 z-50">
+      <app-ipa-selector
+        (handleSelect)="handleCharacterSelect($event)"
+        (handleClose)="closeSelector()"
+      ></app-ipa-selector>
+    </div>
+  }
+</div>

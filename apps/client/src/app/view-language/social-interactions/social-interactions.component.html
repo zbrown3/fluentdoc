@@ -1,0 +1,32 @@
+<div class="social-interactions-container">
+  <button
+    class="btn btn-sm"
+    [ngClass]="{
+      'btn-tertiary': buttonVariant === 'tertiary',
+      'btn-secondary-gray': buttonVariant === 'secondaryGray'
+    }"
+  >
+    <i class="ph ph-star"></i>
+    <span>{{ languageStats.stars }}</span>
+  </button>
+  <button
+    class="btn btn-sm"
+    [ngClass]="{
+      'btn-tertiary': buttonVariant === 'tertiary',
+      'btn-secondary-gray': buttonVariant === 'secondaryGray'
+    }"
+  >
+    <i class="ph ph-thumbs-up"></i>
+    <span>{{ languageStats.likes }}</span>
+  </button>
+  <button
+    class="btn btn-sm"
+    [ngClass]="{
+      'btn-tertiary': buttonVariant === 'tertiary',
+      'btn-secondary-gray': buttonVariant === 'secondaryGray'
+    }"
+  >
+    <i class="ph ph-chat-circle"></i>
+    <span>{{ languageStats.comments }}</span>
+  </button>
+</div>

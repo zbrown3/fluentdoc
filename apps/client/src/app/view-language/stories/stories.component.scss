@@ -1,0 +1,116 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+/* Rich text spacing / hierarchy */
+.view-language-stories .story-body .rich-text {
+  line-height: 1.7;
+  font-size: 1rem;
+  color: $content-primary;
+  width: 100%;
+}
+
+.view-language-stories .story-body .rich-text p {
+  margin: 1rem 0 !important; /* beats aggressive resets */
+}
+
+.view-language-stories .story-body .rich-text p:empty {
+  display: none;
+}
+
+.view-language-stories .story-body .rich-text h1,
+.view-language-stories .story-body .rich-text h2,
+.view-language-stories .story-body .rich-text h3 {
+  margin: 1.5rem 0 0.75rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.view-language-stories .story-body .rich-text h1 { font-size: toRem(28px); }
+.view-language-stories .story-body .rich-text h2 { font-size: toRem(22px); }
+.view-language-stories .story-body .rich-text h3 { font-size: toRem(18px); }
+
+.view-language-stories .story-body .rich-text em,
+.view-language-stories .story-body .rich-text i { font-style: italic; }
+
+.view-language-stories .story-body .rich-text strong,
+.view-language-stories .story-body .rich-text b { font-weight: 600; }
+
+.view-language-stories .story-body .rich-text ul,
+.view-language-stories .story-body .rich-text ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.view-language-stories .story-body .rich-text li { margin: 0.5rem 0; }
+
+.view-language-stories .story-body .rich-text blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid $content-secondary;
+  font-style: italic;
+  color: $content-secondary;
+}
+
+.view-language-stories .story-body .rich-text hr {
+  border: none;
+  border-top: 1px solid $border-subtle;
+  margin: 2rem 0;
+}
+
+.view-language-stories {
+  @include displayFlex(column, center, flex-start);
+
+  .story {
+    @include displayFlex(column, flex-start, flex-start);
+    gap: $spacing-xl;
+    width: 100%;
+    max-width: toRem(1158px);
+
+    &-header {
+      @include displayFlex(column, center, center);
+      padding: $spacing-xl $spacing-xl 0;
+      width: 100%;
+
+      h1 {
+        font-size: toRem(32px);
+        font-weight: 600;
+        text-align: center;
+      }
+    }
+
+    &-body {
+      @include displayFlex(row, flex-start, flex-start);
+      width: 100%;
+
+      .no-stories-message {
+        @include displayFlex(column, center, center);
+        margin-top: $spacing-lg;
+        width: 100%;
+        padding: $spacing-xl;
+        text-align: center;
+
+        p {
+          color: $content-secondary;
+          margin: 0;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    .story {
+      max-width: toRem(923px);
+
+      &-body {
+        overflow: auto;
+        padding: 0 toRem(20px) $spacing-xl toRem(20px);
+      }
+    }
+  }
+}

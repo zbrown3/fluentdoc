@@ -1,0 +1,18 @@
+<div class="app-modal-header">
+  <h4 class="modal-title pull-left">Linked Account</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="app-modal-body">
+  <div class="text-center mb-3">
+    <img ngSrc="assets/images/illustrations/connected_buffer.svg" width="150" height="692" class="img-fluid"
+         alt="graphic of connected system">
+  </div>
+  <p>You have successfully linked your google account to your existing FluentDoc account. You can use both to login,
+  but it is recommended to use your google account for the best experience. Happy Conlanging!</p>
+
+  <div class="text-center mt-2">
+    <Button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Continue</Button>
+  </div>
+</div>

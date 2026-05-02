@@ -1,0 +1,16 @@
+@import "../../language.component";
+@import "../../../../scss/variables/colors.scss";
+
+.mat-mdc-header-row {
+  background-color: $background-bold;
+}
+
+.add-numeral-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.numeral-table-main {
+  max-height: calc(70vh - 200px);
+  overflow: auto;
+}

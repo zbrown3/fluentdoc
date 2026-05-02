@@ -1,0 +1,61 @@
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/typography.scss";
+
+.page-header {
+  margin-top: 1rem;
+}
+
+.form-check-input {
+  width: 1.5em;
+  height: 1.5em;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0 1.25rem 0;
+
+  .account-row-header {
+    font-size: 1rem;
+    font-weight: $font-weight-semi-bold;
+    color: $content-primary;
+  }
+
+  .account-row-description {
+    font-size: 1rem;
+    color: $content-secondary;
+    max-width: 350px;
+  }
+
+  button {
+    border-radius: 25px;
+    max-height: 35px;
+    min-width: 85px;
+  }
+}
+
+.settings-card {
+  margin-bottom: 1rem;
+
+  .card-title {
+    font-size: 1rem;
+    color: $content-primary;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .settings-text {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+label {
+  color: $content-secondary;
+  font-size: 0.75rem;
+  display: inline;
+}

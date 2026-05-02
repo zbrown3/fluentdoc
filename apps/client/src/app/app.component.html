@@ -1,0 +1,8 @@
+<div class="app-wrapper">
+  @if (showNavBar()) {
+  <app-nav [routerLinkActive]="'dashboard'"></app-nav>
+  }
+  <div class="content-wrapper">
+    <router-outlet />
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="onboarding-card" id="getting-started-checklist">
+  <!-- Clickable Header -->
+  <div class="onboarding-header" (click)="toggleSteps()">
+    <div class="header-left">
+      <h4><i class="ph-bold ph-lightning"></i> Getting started</h4>
+    </div>
+    <div>
+      <span class="progress-text">{{ progress }}% completed</span>
+      <i class="ph"
+         [ngClass]="{ 'ph-caret-up': isExpanded, 'ph-caret-down': !isExpanded }"
+         aria-hidden="true">
+      </i>
+    </div>
+
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <!-- Collapsible Step List -->
+  @if (isExpanded) {
+    <ul class="onboarding-steps">
+      <li *ngFor="let step of steps; let i = index"
+          [class.completed]="step.status === 'done'"
+          [class.active]="step.status === 'current'"
+          [class.locked]="step.status === 'upcoming'">
+        <div class="step-icon">
+          <ng-container [ngSwitch]="step.status">
+            <i *ngSwitchCase="'done'" class="ph-bold ph-check-circle icon done"></i>
+            <i *ngSwitchCase="'current'" class="ph-bold ph-circle icon current"></i>
+            <i *ngSwitchDefault class="ph ph-circle icon upcoming"></i>
+          </ng-container>
+        </div>
+        <div class="step-content">
+          <h5>Step {{ i + 1 }}: {{ step.title }}</h5>
+          <p>{{ step.description }}</p>
+        </div>
+      </li>
+    </ul>
+  }
+</div>

@@ -1,0 +1,54 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.dropdown {
+  .input-wrapper {
+    input[type="text"] {
+      cursor: pointer;
+      height: toRem(48px);
+
+      &:disabled {
+        cursor: default;
+      }
+
+      & + i {
+        position: absolute;
+        right: toRem(10px);
+        font-size: toRem(20px);
+      }
+    }
+  }
+
+  &-menu {
+    display: block;
+    position: absolute;
+    // This needs to be in px for absolute positioning or else it's in the correct spot
+    top: 48px;
+    width: 100%;
+    z-index: 3;
+  }
+
+  &-item {
+    @include displayFlex(row, center, flex-start);
+
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-xl;
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: $background-subtle;
+    }
+
+    &.disabled {
+      color: $content-disabled;
+    }
+  }
+}

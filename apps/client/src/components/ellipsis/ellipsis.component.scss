@@ -1,0 +1,18 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.ellipsis {
+  @include displayFlex(row, center, center);
+
+  font-size: 1.5rem;
+  color: $content-brand;
+  gap: $spacing-sm;
+
+  &-container {
+    @include displayFlex(row, center, center);
+
+    width: 100%;
+  }
+}

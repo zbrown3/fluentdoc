@@ -1,0 +1,174 @@
+<div class="welcome-wrapper">
+
+  <div class="card px-5 welcome-card">
+    <div class="card-body">
+      <div class="steps">
+          <ul class="tablist">
+              <li [ngClass]="{ 'current': step === 1}"></li>
+              <li [ngClass]="{ 'current': step === 2}"></li>
+              <li [ngClass]="{ 'current': step === 3}"></li>
+              <li [ngClass]="{ 'current': step === 4}"></li>
+              <li [ngClass]="{ 'current': step === 5}"></li>
+          </ul>
+      </div>
+
+
+      <div *ngIf="step === 1" class="mobile-stretch">
+          <!-- SECTION 1 -->
+          <h4>Your language creation journey awaits. We would like to ask you a few short questions so we can
+          provide the best experience possible.</h4>
+          <section class="intro-deck">
+              <div class="text-center m-t-50 m-b-50">
+                  <img ngSrc="assets/images/illustrations/options.svg" height="100" alt="" width="123">
+              </div>
+          </section>
+          <div class="container-app-form-btn p-t-40">
+              <button class="app-form-btn" (click)="step = 2">
+                  Get Started
+              </button>
+          </div>
+      </div>
+
+      <div *ngIf="step === 2" class="mobile-stretch">
+          <!-- SECTION 2 -->
+          <h4>What's your current experience with creating languages (conlanging)?</h4>
+          <section>
+            <div class="row experience-row pt-5 pb-3">
+              <div class="col-4">
+                <div class="card text-center cursor-pointer" (click)="selectExperience('BEGINNER')"
+                     [ngClass]="{ 'selected': experience === 'BEGINNER'}">
+                  <div class="card-body">
+                    <img ngSrc="assets/images/illustrations/beginner.svg" alt="" height="80" width="100">
+                    <h5 class="card-title">Beginner</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card text-center cursor-pointer" (click)="selectExperience('HOBBYIST')"
+                     [ngClass]="{ 'selected': experience === 'HOBBYIST'}">
+                  <div class="card-body">
+                    <img ngSrc="assets/images/illustrations/hobbyist.svg" alt="" height="80" width="100">
+                    <h5 class="card-title">Hobbyist</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card text-center cursor-pointer" (click)="selectExperience('ADVANCED')"
+                     [ngClass]="{ 'selected': experience === 'ADVANCED'}">
+                  <div class="card-body">
+                    <img ngSrc="assets/images/illustrations/advanced.svg" alt="" height="80" width="100">
+                    <h5 class="card-title">Advanced</h5>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+          <div class="container-app-form-btn p-t-40" *ngIf="experience"
+               (click)="step = 3">
+              <button class="app-form-btn" id="selected-exp">
+                  Next
+              </button>
+          </div>
+      </div>
+
+      <div *ngIf="step === 3" class="mobile-stretch">
+          <!-- SECTION 2 -->
+          <h4>Do you plan on sharing your language(s)?</h4>
+          <p>Sharing your language(s) can help others learn and grow. It can also help you get feedback and improve.
+            You can always decide later as well!</p>
+        <section>
+          <div class="row experience-row pt-5 pb-3">
+            <div class="col-6">
+              <div class="card text-center cursor-pointer" (click)="shareLanguage = true"
+                   [ngClass]="{ 'selected': shareLanguage === true}">
+                <div class="card-body">
+                  <fa-icon [icon]="['fas', 'thumbs-up']" class="text-primary"></fa-icon>
+                  <p class="card-title">Yes</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card text-center cursor-pointer" (click)="shareLanguage = false"
+                   [ngClass]="{ 'selected': shareLanguage === false}">
+                <div class="card-body">
+                  <fa-icon [icon]="['fas', 'thumbs-down']" class="text-primary"></fa-icon>
+                  <p class="card-title">No</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+          <div class="container-app-form-btn p-t-20" *ngIf="experience && shareLanguage !== undefined">
+              <button class="app-form-btn" id="selected-share" (click)="step = 4">
+                  Next
+              </button>
+              <span class="step-back" (click)="stepBack()">Go back</span>
+          </div>
+      </div>
+
+      <div *ngIf="step === 4" class="mobile-stretch">
+        <!-- SECTION 4 -->
+        <h4>Do you plan on collaborating on your language(s)?</h4>
+        <p>Collaborating on your language(s) can help you get feedback and improve. It can also help you learn from others.</p>
+        <section>
+          <div class="row experience-row pt-5 pb-3">
+            <div class="col-6">
+              <div class="card text-center cursor-pointer" (click)="collaborative = true"
+                   [ngClass]="{ 'selected': collaborative === true}">
+                <div class="card-body">
+                  <fa-icon [icon]="['fas', 'thumbs-up']" class="text-primary"></fa-icon>
+                  <p class="card-title">Yes</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card text-center cursor-pointer" (click)="collaborative = false"
+                   [ngClass]="{ 'selected': collaborative === false}">
+                <div class="card-body">
+                  <fa-icon [icon]="['fas', 'thumbs-down']" class="text-primary"></fa-icon>
+                  <p class="card-title">No</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="container-app-form-btn p-t-20" *ngIf="experience && shareLanguage !== undefined && collaborative !== undefined">
+          <button class="app-form-btn" id="selected-collab" (click)="submit(); step = 5">
+            Next
+          </button>
+          <span class="step-back" (click)="stepBack()">Go back</span>
+        </div>
+      </div>
+
+
+      <div *ngIf="step === 5" class="text-center mobile-stretch">
+        <div *ngIf="!error">
+          <!-- SECTION 4 -->
+          <h4>You're all set! <fa-icon [icon]="['fas', 'check-circle']" class="text-success-dark"></fa-icon></h4>
+          <section class="p-t-100">
+            <p>We'll use this information to give you guidance and resources for a better experience.</p>
+          </section>
+          <button class="app-form-btn app-button-success m-t-100" type="button" routerLink="/dashboard">
+            Finish
+          </button>
+        </div>
+
+        <div *ngIf="error">
+          <!-- SECTION 4 -->
+          <h4>Error! <fa-icon [icon]="['fas', 'times-circle']" class="text-danger"></fa-icon></h4>
+          <section class="p-t-100">
+            <p>There was an error saving your information. We'll try to get this information from you later.</p>
+          </section>
+          <button class="app-form-btn app-button-danger m-t-100" type="button" routerLink="/dashboard">
+            Continue
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,54 @@
+<!--Main layout-->
+<div class="dashboard">
+  <app-loading-spinner />
+
+  @if (!loading) {
+  <div class="dashboard-content-container">
+    <div class="dashboard-content position-relative">
+      <div class="profile-header w-100 h-100 position-relative">
+        Dashboard
+      </div>
+
+      <div class="w-100 dis-flex justify-content-start">
+        <app-profile-stats
+          [userStats]="user"
+          [showFollowers]="false"
+          [showLanguages]="true"
+          [showWords]="true"
+          [showPhrases]="true"
+        ></app-profile-stats>
+      </div>
+      <hr class="separation-line" />
+      <div class="profile-details-container w-100">
+        <div class="title-container">
+          <h4>
+            Your constructed languages
+          </h4>
+
+          <div class="ms-auto">
+             <button
+               type="button"
+               class="btn btn-primary btn-md"
+               routerLink="/new-language"
+             >
+            <i class="ph ph-feather"></i> Create language
+          </button>
+          </div>
+        </div>
+      </div>
+      <!-- /.Main Layout -->
+      <div class="w-100">
+        <app-language-card-section
+          [fullLanguagesList]="fullLanguagesList"
+          (setDeleteLanguageEvent)="populateLanguage($event)"
+        ></app-language-card-section>
+      </div>
+    </div>
+  </div>
+  }
+  <!-- Delete Language Confirmation modal-->
+  <app-delete-language-confirmation-modal
+    [languageToDelete]="languageToDelete"
+    (deleteConfirmedEvent)="deleteLanguage($event)"
+  ></app-delete-language-confirmation-modal>
+</div>

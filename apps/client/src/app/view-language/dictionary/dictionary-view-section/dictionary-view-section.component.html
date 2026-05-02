@@ -1,0 +1,21 @@
+@if(dictionary && listByKey && listByKey.length > 0) {
+<section class="dictionary-view-section" [id]="listKey | slugify">
+  <p>{{ listKey }}</p>
+  <div class="dictionary-view-section-container">
+    <div class="dictionary-view-section-content">
+      <div
+        class="dictionary-word-content"
+        *ngFor="let wordObj of listByKey; let i = index"
+      >
+        <div class="word-details">
+          <p>{{ wordObj.word }}</p>
+          <p>/{{ wordObj.pronunciation }}/</p>
+          <p>{{ wordObj.pos }}</p>
+          <p>{{ wordObj.meaning }}</p>
+        </div>
+        <p>{{ wordObj.notes }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+}

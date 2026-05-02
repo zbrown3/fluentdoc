@@ -1,0 +1,230 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.language-cards-container {
+  .language-card {
+    max-height: 350px;
+  }
+
+  .languages {
+    &-container {
+      @include displayFlex(row, stretch, flex-start, wrap);
+
+      gap: 2%;
+      width: 100%;
+      row-gap: $spacing-lg;
+
+      .language {
+        &-card {
+          @include displayFlex(column, flex-start, flex-start);
+
+          gap: $spacing-md;
+          width: 32%;
+          padding: $spacing-md $spacing-md $spacing-lg $spacing-md;
+          border: 1px solid $border-subtle;
+          border-radius: 6px;
+          background-color: $colors-white;
+          cursor: pointer;
+
+          &:hover {
+            border: 1px solid $border-bold;
+            cursor: pointer;
+
+            .language-actions-container {
+              display: block;
+            }
+          }
+        }
+
+        &-flag {
+          &-container {
+            @include displayFlex(column, center, center);
+
+            position: relative;
+            width: 100%;
+            max-height: 11.5rem;
+            border-radius: toRem(6px);
+            margin-bottom: -$spacing-sm;
+            aspect-ratio: 260/145.04;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            & img.flag-img {
+              border-radius: toRem(6px);
+            }
+
+            & + span {
+              @include subtitleRegular;
+
+              color: $content-secondary;
+            }
+
+            .language-actions-container {
+              position: absolute;
+              display: none;
+              z-index: 2;
+              top: 0;
+              right: 0;
+
+              .action-btn {
+                justify-self: flex-end;
+                margin: 0.5rem;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        &-details {
+          margin-top: $spacing-sm;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &-container {
+            @include displayFlex(column, flex-start, space-between, nowrap);
+            height: 100%;
+            width: 100%;
+
+            i {
+              font-size: 1.25rem;
+
+              &.ph-globe {
+                color: $content-positive;
+              }
+            }
+          }
+
+          & > span {
+            &:first-child {
+              @include h5SemiBold;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+            }
+
+            &:nth-child(2) {
+              @include subtitleRegular;
+              @include multiLineTruncate(3, 54px);
+
+              color: $content-secondary;
+              line-height: 1.2rem;
+              margin-top: 5px;
+            }
+          }
+        }
+
+        &-info {
+          @include displayFlex(row, flex-end, flex-start, wrap);
+          gap: $spacing-sm;
+          margin-top: $spacing-md;
+          width: 100%;
+
+          .language-types {
+            @include subtitleRegular;
+            width: 100%;
+          }
+
+          .language-footer-wrapper {
+            @include displayFlex(row, center, space-between, wrap);
+            width: 100%;
+          }
+
+          .language-privacy {
+            @include displayFlex(row, center, center);
+            gap: $spacing-xs;
+
+            > span {
+              @include subtitleSemiBold;
+            }
+
+            &.private {
+              background-color: $content-negative;
+            }
+
+            &.public {
+              background-color: $content-positive;
+            }
+          }
+
+          .percentage-display {
+            @include displayFlex(column, center, center);
+            gap: $spacing-xs;
+            min-width: 30px;
+
+            span {
+              font-size: 0.75rem;
+              color: $colors-greyscale-600;
+            }
+
+            progressbar {
+              height: 6px;
+              border: 1px solid $colors-greyscale-300;
+            }
+          }
+
+          .hide-badge {
+            display: none;
+          }
+
+          .more-badges-btn {
+            float: right;
+          }
+        }
+
+        &-description {
+          @include body3Regular;
+          @include multiLineTruncate(4, 96px);
+
+          color: $content-secondary;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .mat-mdc-paginator {
+    @include subtitleRegular;
+    margin-top: $spacing-xl;
+
+    .mat-mdc-form-field,
+    .mat-mdc-select {
+      @include subtitleRegular;
+    }
+
+    .mat-mdc-paginator-outer-container {
+      .mat-mdc-paginator-container {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Responsive Styles
+@media (max-width: $breakpoints-md) {
+  .language-cards-container {
+    .languages-container {
+      .language-card {
+        width: 49%;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoints-sm) {
+  .language-cards-container {
+    .languages-container {
+      .language-card {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,179 @@
+<div class="signup">
+  <img src="assets/images/brand/fluentdoc_logo.svg" alt="logo" />
+  <div class="signup-container">
+    <asl-google-signin-button
+      text="signup_with"
+      type="standard"
+      size="large"
+      [width]="400"
+      shape="rectangular"
+      theme="outline"
+    />
+    <div class="signup-container-divider">
+      <div class="signup-container-divider-line"></div>
+      <span> Or sign up with email </span>
+      <div class="signup-container-divider-line"></div>
+    </div>
+    @if (!!errorDisplay) {
+    <div class="alert alert-danger" role="alert">
+      <span>
+        {{ errorDisplay }}
+      </span>
+    </div>
+    }
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+      class="signup-form needs-validation vstack"
+      novalidate
+    >
+      <div>
+        <label for="email" class="form-label"
+          >Email<sup class="required-asterisk">*</sup></label
+        >
+        <input
+          required
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              registerFormSubmitted && registerControls['email'].errors
+          }"
+          id="email"
+          placeholder="Enter email address"
+        />
+        @if (registerFormSubmitted && registerControls['email'].errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (registerControls['email'].errors['email']) {
+          <span>Please enter a valid email address.</span>
+          } @if (registerControls['email'].errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div>
+        <label for="password" class="form-label"
+          >Password<sup class="required-asterisk">*</sup></label
+        >
+        <div class="input-wrapper">
+          <input
+            required
+            type="{{ showPassword ? 'text' : 'password' }}"
+            name="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerFormSubmitted && registerControls['password'].errors
+            }"
+            id="password"
+            placeholder="Enter password"
+            minlength="8"
+            maxlength="40"
+          />
+          <i
+            class="ph input-icon"
+            [ngClass]="getPasswordIcon()"
+            (click)="togglePasswordVisibility()"
+          ></i>
+        </div>
+        @if (registerFormSubmitted && registerControls['password'].errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (registerControls['password'].errors['required']) {
+          <span>This field is required.</span>} @if
+          (registerControls['password'].errors['minlength'] ||
+          registerControls['password'].errors['maxlength']) {
+          <span>
+            Please enter a valid password. It must contain at least 8 characters
+            (no more than 40), with one uppercase, and one number.
+          </span>
+          }
+        </div>
+        } @else {
+        <div class="form-text">
+          Password must contain at least 8 characters, with one uppercase and
+          one number
+        </div>
+        }
+      </div>
+      <div>
+        <label for="passwordConfirm" class="form-label"
+          >Confirm password<sup class="required-asterisk">*</sup></label
+        >
+        <div class="input-wrapper">
+          <input
+            required
+            formControlName="passwordConfirm"
+            type="{{ showPasswordConfirm ? 'text' : 'password' }}"
+            name="passwordConfirm"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerFormSubmitted &&
+                registerControls['passwordConfirm'].errors
+            }"
+            id="passwordConfirm"
+            placeholder="Enter password"
+            minlength="8"
+            maxlength="40"
+          />
+          <i
+            class="ph input-icon"
+            [ngClass]="getPasswordConfirmIcon()"
+            (click)="togglePasswordConfirmVisibility()"
+          ></i>
+        </div>
+        @if (registerFormSubmitted &&
+        registerControls['passwordConfirm'].errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (registerControls['passwordConfirm'].errors['required']) {
+          <span>This field is required.</span>
+          } @if (registerControls['passwordConfirm'].errors['minlength'] ||
+          registerControls['passwordConfirm'].errors['maxlength']) {
+          <span>
+            Please enter a valid password. It must contain at least 8 characters
+            (no more than 40), with one uppercase and one number.
+          </span>
+          } @else if (
+          registerControls['passwordConfirm'].errors['passwordsNotMatched']) {
+          <span>Passwords do not match.</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="text-center">
+        <span>
+          By clicking “Create free account”, you are agreeing to our
+          <a
+            href="https://www.fluentdoc.com/terms-of-service"
+            target="_blank"
+            class="btn btn-link"
+          >
+            Terms & Conditions
+          </a>
+          and
+          <a
+            href="https://www.fluentdoc.com/privacy-policy"
+            target="_blank"
+            class="btn btn-link"
+          >
+            Privacy Policy </a
+          >.
+        </span>
+      </div>
+      <div class="hstack mx-auto">
+        <button class="btn btn-primary" type="submit">Create free account</button>
+      </div>
+    </form>
+    <div class="hstack mx-auto">
+      Already have an account?
+      <button class="btn btn-link" (click)="switchForm('login')">Log in</button>
+    </div>
+  </div>
+</div>

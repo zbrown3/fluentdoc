@@ -1,0 +1,39 @@
+@import "../../language.component.scss";
+@import "../../../../scss/variables/colors.scss";
+@import "../../../../scss/variables/typography.scss";
+
+.settings-card {
+  .settings-card-content {
+    .settings-card-content-group {
+      margin-bottom: 1rem;
+
+      select {
+        max-width: 240px;
+      }
+
+      .settings-card-content-group-title {
+        display: flex;
+        justify-content: flex-start;
+        max-width: fit-content;
+        white-space: nowrap;
+        align-items: center;
+        gap: 1rem;
+        font-weight: $font-weight-semi-bold;
+      }
+
+      .settings-card-content-group-description {
+        margin-bottom: 0.75rem;
+      }
+    }
+  }
+
+  //hr {
+  //  margin: 2rem 0;
+  //}
+  //.settings-card-footer {
+  //  display: flex;
+  //  gap: 0.5rem;
+  //  justify-content: flex-end;
+  //  margin: 1rem 0;
+  //}
+}

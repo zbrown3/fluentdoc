@@ -1,0 +1,440 @@
+<div class="language-section-header">
+  <div>
+    <div class="dis-flex align-items-center gap-3">
+      <h4 class="language-view-title">
+        {{ LANGUAGE_SUBSECTIONS.phrases.title }}
+        @if (isStarterPlan()) {
+          ({{dataSource.length > limits.phrases ? limits.phrases : dataSource.length}} / {{limits.phrases}})
+        }
+      </h4>
+    </div>
+    <p>
+      {{ formatDynamicString(LANGUAGE_SUBSECTIONS.phrases.description,
+      language.name) }}
+    </p>
+  </div>
+  <div>
+    <div class="btn-row">
+      <button
+        type="button"
+        class="btn btn-outline-primary me-2"
+        data-bs-toggle="modal"
+        data-bs-target="#exportOrShareModal"
+        [disabled]="dataSource.length < 1 || reachedPhrasesLimit()"
+      >
+        <i
+          class="ph ph-export"
+          [ngClass]="dataSource.length < 1 ? '' : 'text-primary'"
+        ></i>
+        Export phrase book
+      </button>
+        <div
+            class="btn-group"
+            [tooltip]="reachedPhrasesLimit() ? 'Phrase limit reached.\nUpgrade to add unlimited phrases.' : ''"
+            placement="bottom"
+          >
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#phrasePanel"
+                  aria-controls="phrasePanel"
+                  [disabled]="reachedPhrasesLimit()"
+                >
+                  Add phrase
+                </button>
+               <button
+                 type="button"
+                 class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                 id="saveSplit"
+                 data-bs-toggle="dropdown"
+                 aria-haspopup="true"
+                 aria-expanded="false"
+                 [disabled]="reachedPhrasesLimit()"
+               >
+              <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            @if (importWordsEnabled) {
+            <div class="dropdown-menu" aria-labelledby="saveSplit">
+              <li class="dropdown-item" (click)="openImportFileModal()">
+                <i class="ph ph-download-simple"></i> Import phrases
+              </li>
+            </div>
+            } @else {
+            <div class="dropdown-menu" aria-labelledby="saveSplit">
+              <div class="badge badge-primary">Coming soon</div>
+              <div class="dropdown-item" aria-disabled="true" disabled="true">
+                <i class="ph ph-download-simple"></i> Import phrases
+              </div>
+            </div>
+            }
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phrase Panel -->
+<div
+  class="offcanvas offcanvas-end"
+  data-bs-scroll="true"
+  data-bs-backdrop="false"
+  tabindex="-1"
+  id="phrasePanel"
+  aria-labelledby="phrasePanelLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="phrasePanelLabel">
+      {{ editMode ? 'Edit ' : 'Add ' }} phrase
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- add phrase form -->
+    <form [formGroup]="addPhraseForm" (ngSubmit)="addPhrase()" class="mb-2">
+      <div class="add-phrase-wrapper">
+        <!-- Phrase -->
+        <div class="new-word-input">
+          <label for="phrase">
+            Phrase in {{ language.name }} <span class="text-danger">*</span>
+          </label>
+          <input
+            class="form-control"
+            formControlName="phrase"
+            name="phrase"
+            id="phrase"
+            type="text"
+            placeholder="How do you say the phrase in {{language.name}}?"
+            autocomplete="off"
+            [ngClass]="{ 'is-invalid': submitted && f.phrase.errors }"
+          />
+          @if (submitted && f.phrase.errors) {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            @if (f.phrase.errors['required']) {
+            <span>This field is required.</span>
+            }
+          </div>
+          }
+        </div>
+        <!-- Phonetic transcription -->
+        <div class="new-word-input">
+          <label for="pronunciation">
+            Phonetic transcription <span class="text-danger">*</span>
+            <i
+              class="ph ph-info ms-1"
+              tooltip="Do your best to describe the pronunciation. You can use IPA symbols or plain english
+              to best show how to pronounce these phrases in your language."
+              placement="right"
+            ></i>
+          </label>
+          <app-ipa-input
+            name="pronunciation"
+            id="pronunciation"
+            formControlName="pronunciation"
+            [ngClass]="{ 'is-invalid': submitted && f.pronunciation.errors }"
+          />
+          @if (submitted && f.pronunciation.errors) {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            @if (f.pronunciation.errors['required']) {
+            <span>This field is required.</span>
+            }
+          </div>
+          }
+        </div>
+        <!-- meaning (if possible) -->
+        <div class="new-word-input">
+          <label for="meaning">
+            Meaning in English <span class="text-danger">*</span>
+          </label>
+          <input
+            class="form-control"
+            formControlName="meaning"
+            name="meaning"
+            id="meaning"
+            type="text"
+            placeholder="English translation"
+            autocomplete="off"
+            [ngClass]="{ 'is-invalid': submitted && f.meaning.errors }"
+          />
+          @if (submitted && f.meaning.errors) {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            @if (f.meaning.errors['required']) {
+            <span>This field is required.</span>
+            }
+          </div>
+          }
+        </div>
+        <div>
+          <label for="notes" class="form-label"
+            >Notes
+            <i
+              class="ph ph-info"
+              tooltip="Add anything unique about this phrase in your language that you'd like to remember, readers to know or for someone to make note of."
+              placement="right"
+            ></i>
+          </label>
+          <textarea
+            class="form-control"
+            id="notes"
+            rows="5"
+            formControlName="notes"
+            placeholder="(What context is this used, etc)"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="offcanvas-form-footer">
+        <div class="button-wrapper">
+          <span data-bs-dismiss="offcanvas">Cancel</span>
+          <button type="submit" class="btn btn-primary">
+            {{ editMode ? 'Save ' : 'Add ' }} phrase
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- /.add phrase form -->
+  </div>
+</div>
+
+<!-- Phrase Table -->
+<div class="phrase-table-main">
+  @if (commonPhrases.length !== 0) {
+  <div class="dis-flex justify-content-between me-2">
+    <div class="selected-row-wrapper">
+      @if (selection.selected.length) {
+      <div class="selected-count">{{ selection.selected.length }} selected</div>
+      <i
+        class="ph ph-trash cursor-pointer"
+        (click)="openModal(deletePhrasesModal)"
+      ></i>
+      } @else {
+      <div class="selected-count no-selection">
+        {{ selection.selected.length }} selected
+      </div>
+      }
+
+      <input
+        [(ngModel)]="searchQuery"
+        class="form-control me-2 w-25"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        (input)="filterDataOnQuery()"
+      />
+    </div>
+    <div>
+      <span
+        (click)="openModal(commonPhraseList)"
+        class="cursor-pointer text-primary"
+        ><i class="ph ph-lightbulb"></i> Get inspiration</span
+      >
+    </div>
+  </div>
+  }
+  <!-- No phrase wrapper -->
+  @if (dataSource.length === 0 && commonPhrases.length === 0) {
+  <div class="no-vocab-wrapper">
+    <img
+      ngSrc="assets/images/illustrations/empty_state.svg"
+      class="img-fluid"
+      width="300"
+      alt="empty box"
+      height="309"
+    />
+    <p>
+      No phrases created yet.<br />Add your first phrase, or import phrases from
+      an existing file.
+    </p>
+    <div class="button-wrapper">
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#phrasePanel"
+        aria-controls="phrasePanel"
+      >
+        Add phrase
+      </button>
+    </div>
+  </div>
+  } @if (dataSource.length === 0 && (searchQuery !== '' &&
+  this.commonPhrases.length > 0)) {
+  <div class="no-vocab-wrapper">
+    <img
+      ngSrc="assets/images/illustrations/void.svg"
+      class="img-fluid"
+      width="300"
+      alt="empty box"
+      height="309"
+    />
+    <p>No phrases match your search criteria</p>
+    <div class="button-wrapper">
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="clearSearchFilter()"
+      >
+        Clear filter
+      </button>
+    </div>
+  </div>
+  } @if (dataSource.length > 0) {
+  <table mat-table [dataSource]="displayedPhrases" class="mat-elevation-z8">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          color="primary"
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox
+          color="primary"
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(element) : null"
+          [checked]="selection.isSelected(element)"
+          [aria-label]="checkboxLabel(element)"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Phrase Column -->
+    <ng-container matColumnDef="phrase">
+      <th mat-header-cell *matHeaderCellDef>Phrase ({{ language.name }})</th>
+      <td mat-cell *matCellDef="let element">{{ element.phrase }}</td>
+    </ng-container>
+
+    <!-- Phonetic transcription Column -->
+    <ng-container matColumnDef="pronunciation">
+      <th mat-header-cell *matHeaderCellDef>Phonetic transcription</th>
+      <td mat-cell *matCellDef="let element">
+        {{ filterPronunciation(element.pronunciation) }}
+      </td>
+    </ng-container>
+
+    <!-- Meaning Column -->
+    <ng-container matColumnDef="meaning">
+      <th mat-header-cell *matHeaderCellDef>Translation (English)</th>
+      <td mat-cell *matCellDef="let element">{{ element.meaning }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <div class="action-wrapper">
+          @if (element.notes) {
+          <i
+            class="ph ph-info"
+            tooltip="{{element.notes}}"
+            placement="start"
+          ></i>
+          }
+          <i
+            class="ph ph-pencil-simple text-primary"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#phrasePanel"
+            (click)="populatePhraseForm(element, i)"
+          ></i>
+          <i class="ph ph-trash" (click)="deletePhrase(element)"></i>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="dataSource.length"
+    [pageSize]="pageSize"
+    (page)="handlePageEvent($event)"
+    [pageSizeOptions]="pageSizeOptions"
+    showFirstLastButtons
+    aria-label="Select page"
+  >
+  </mat-paginator>
+  }
+</div>
+<!-- /.Phrase Table -->
+
+<ng-template #deletePhrasesModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Bulk Deletion</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="bsModalRef.hide()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <b
+        >Are you sure you want to delete {{ selection.selected.length }}
+        phrases?</b
+      >
+    </p>
+
+    <p>
+      This action cannot be undone, and the words will be permanently removed
+      from your dictionary.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="bsModalRef.hide()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deleteSelectedPhrases()"
+    >
+      Delete phrases
+    </button>
+  </div>
+</ng-template>
+<!-- /.Common Phrase List -->
+
+<!-- Common Phrase List -->
+<ng-template #commonPhraseList>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Common Phrases</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li *ngFor="let phrase of commonPhraseExamples">{{ phrase }}</li>
+    </ul>
+  </div>
+</ng-template>
+<!-- /.Common Phrase List -->
+<app-export-or-share-modal
+  [language]="language"
+  [isStarterPlan]="isStarterPlan()"
+  [source]="exportPdfTypeKey">
+</app-export-or-share-modal>

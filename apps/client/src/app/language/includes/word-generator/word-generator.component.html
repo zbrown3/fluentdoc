@@ -1,0 +1,63 @@
+<p class="language-view-header">Random Word Generator <span class="badge badge-primary">Beta</span></p>
+<p class="language-view-description">This random generator will return a list of generated words. The words will
+  be generated based on a target language of your choice.
+</p>
+
+<small>Note: this feature is still in beta and we will be working to improve it. For example, only allowing
+characters you have selected for your alphabet to be in the generated words.</small>
+
+<hr>
+
+<div class="card">
+  <h6 class="card-header">Options</h6>
+  <div class="card-body">
+    <form (ngSubmit)="generateWords()">
+      <div class="form-group row">
+        <label for="target" class="col-sm-2 col-form-label">Target Language</label>
+        <div class="col-sm-10">
+          <select [(ngModel)]="wordSettings.target" class="form-select" name="target" id="target">
+            <option value="albanian">Albanian</option>
+            <option value="egyptian">Ancient Egyptian</option>
+            <option value="basque">Basque</option>
+            <option value="bulgarian">Bulgarian</option>
+            <option value="english">English</option>
+            <option value="estonian">Estonian</option>
+            <option value="indonesian">Indonesian</option>
+            <option value="italian">Italian</option>
+            <option value="latin">Latin</option>
+            <option value="malay">Malay</option>
+            <option value="sumerian">Sumerian</option>
+            <option value="swahili">Swahili</option>
+            <option value="turkish">Turkish</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="count" class="col-sm-2 col-form-label">Number of words</label>
+        <div class="col-sm-10">
+          <select [(ngModel)]="wordSettings.count" class="form-select" name="count" id="count">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Generate</button>
+    </form>
+
+  </div>
+</div>
+
+
+
+
+<!-- Generated words -->
+<div class="mt-3 mb-3" *ngIf="wordList.length > 0">
+  <h6><b>Generated Words:</b></h6>
+<!--  <p>Click on a word below to edit and add to your dictionary.</p>-->
+    <ul class="list-group generated-words">
+      <li *ngFor="let word of wordList" class="list-group-item">{{word}}</li>
+    </ul>
+</div>
+<!-- /.Generated words -->

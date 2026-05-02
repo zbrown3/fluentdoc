@@ -1,0 +1,116 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.dashboard {
+  background-color: $background-subtle;
+  height: 100%;
+  overflow: auto;
+
+  &-content {
+    // Center the content that holds the dashboard header and details
+    @include displayFlex(row, center, center, wrap);
+    width: 65%;
+    max-width: 885px;
+    min-width: 720px;
+    margin: auto;
+
+    .profile-header {
+      @include h4SemiBold;
+      margin: toRem(30px) 0;
+    }
+
+    .separation-line {
+      width: 100%;
+      border: 1px solid $colors-greyscale-400;
+    }
+
+    .profile-details-container {
+      .profile-stats-container {
+        .divider {
+          margin: 0 $spacing-2xl;
+          background-color: $content-primary;
+          height: toRem(16px);
+        }
+
+        .stats {
+          @include displayFlex(row, center, center);
+          gap: $spacing-xs;
+
+          &:not(:first-child) {
+            padding-right: $spacing-2xl;
+          }
+
+          span {
+            @include body3Regular;
+
+            &:first-child {
+              @include body3Bold;
+            }
+          }
+        }
+
+        .profile-description {
+          color: $content-secondary;
+          width: 80%;
+        }
+      }
+      .title-container {
+        @include displayFlex(row, center, flex-start, nowrap);
+        gap: $spacing-sm;
+        margin: $spacing-lg 0;
+      }
+    }
+
+    .founding-creator {
+      &-card {
+        @include displayFlex(row, center, space-between);
+        gap: $spacing-md;
+
+        margin-top: $spacing-xl;
+        padding: $spacing-md;
+        width: 100%;
+        border-radius: 0.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        border: rgba($colors-blue-500, 0.45) solid toRem(10px);
+        background: linear-gradient(
+            135deg,
+            rgba($colors-blue-100, 0.85),
+            rgba($colors-blue-200, 0.85)
+          ),
+          url("../../assets/images/background/background_constructed_font.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      &-title {
+        @include displayFlex(row, center, flex-start);
+        @include body3SemiBold;
+
+        gap: $spacing-md;
+
+        i {
+          font-size: 2rem;
+        }
+
+        div {
+          width: toRem(180px);
+        }
+
+        span {
+          @include body3Bold;
+          color: $colors-blue-500;
+        }
+      }
+    }
+
+    .dashboard-checklist-progress {
+      margin: 20px 0;
+    }
+  }
+}

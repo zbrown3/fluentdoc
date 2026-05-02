@@ -1,0 +1,55 @@
+<div class="edit-language-primary-header">
+  <button type="button" class="btn btn-icon" (click)="goBack()">
+    <i class="ph ph-caret-left"></i>
+  </button>
+  <div class="edit-language-primary-header-content">
+    <div>
+      <h3>{{ language.name }}</h3>
+
+      <div
+        class="badge rounded-pill badge-secondary"
+        [ngClass]="{
+          'badge-secondary': !isUnlocked,
+          'badge-success': isUnlocked
+        }"
+      >
+        <i
+          class="ph"
+          [ngClass]="{ 'ph-lock': !isUnlocked, 'ph-globe': isUnlocked }"
+        ></i>
+        <span>{{ isUnlocked ? "Public" : "Private" }}</span>
+      </div>
+    </div>
+    @if (!!language.description) {
+    <p
+      [tooltip]="language.description"
+      [containerClass]="'language-description-tooltip'"
+      placement="top"
+    >
+      {{ language.description }}
+    </p>
+    }
+  </div>
+  <div class="edit-language-primary-header-actions">
+    <button
+      class="btn btn-outline-primary btn-md"
+      id="export-or-share-button"
+      data-bs-toggle="modal"
+      data-bs-target="#exportOrShareModal"
+    >
+      <i class="ph ph-share-network"></i>
+      <span>Export</span>
+    </button>
+  </div>
+</div>
+
+<app-export-or-share-modal
+  [isSharedLanguageFeatureEnabled]="isSharedLanguageFeatureEnabled"
+  [isPublicLanguage]="isUnlocked"
+  [language]="language"
+  [isStarterPlan]="isStarterPlan()"
+  [source]="exportLanguageSource"
+  (updateLanguagePrivacySettingsEvent)="updateShareLanguagePrivacyLevel($event)"
+  (languageExportedEvent)="updateLanguageExported()"
+>
+</app-export-or-share-modal>

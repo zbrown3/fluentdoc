@@ -1,0 +1,123 @@
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+
+.filter-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .filter-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+}
+
+.search-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  input {
+    border-radius: 25px;
+    width: 100%;
+  }
+
+  .search-button {
+    background-color: $background-pressed-inverse;
+    color: $content-inverse-primary;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+      background-color: $background-hover-inverse;
+    }
+  }
+}
+
+.list-group {
+  :first-child {
+    margin-top: 0;
+  }
+}
+
+.resource-card {
+  margin-top: 1rem;
+  border: 1px solid $border-subtle;
+  background-color: $background-bold;
+}
+
+.select-options-wrapper {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  height: 42vh; //or whatever percentage is needed
+  overflow: auto;
+
+  .option {
+    border-radius: 25px;
+    color: $content-primary;
+    background-color: $background-bold;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    border: 1px solid $border-subtle;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    span {
+      top: 5px;
+      right: -11px;
+    }
+
+    &.selected {
+      border: 1px solid $border-bold;
+      background-color: $background-selected-inverse;
+      color: $content-inverse-primary;
+    }
+
+    &:hover {
+      border: 1px solid $border-bold;
+    }
+  }
+}
+
+.no-search-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10vh;
+
+  img {
+    width: 15%;
+  }
+
+  .no-search-header {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+
+  button {
+    background-color: $background-pressed-inverse;
+    color: $content-inverse-primary;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: $background-hover-inverse;
+    }
+  }
+}

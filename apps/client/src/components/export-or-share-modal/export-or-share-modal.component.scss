@@ -1,0 +1,83 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.export-content-view {
+  @include displayFlex(column, flex-start, flex-start);
+
+  gap: $spacing-lg;
+  margin-top: $spacing-lg;
+
+  > div {
+    @include displayFlex(column, flex-start, flex-start);
+
+    gap: $spacing-lg;
+
+    p:first-child {
+      @include body3SemiBold;
+    }
+
+    .sub-option {
+      margin-left: $spacing-xl;
+    }
+
+    &.export-separate-section {
+      @include displayFlex(column, flex-start, flex-start);
+
+      > div {
+        @include displayFlex(row, center, flex-start);
+
+        .form-check {
+          @include displayFlex(row, center, flex-start);
+
+          width: 40%;
+
+          label {
+            @include displayFlex(row, center, flex-start);
+            @include body3Regular;
+
+            margin-right: $spacing-xs;
+            gap: $spacing-xs;
+
+            i {
+              font-size: toRem(20px);
+            }
+          }
+
+          &.export-type {
+            @include displayFlex(row, center, flex-start);
+
+            gap: $spacing-xs;
+            padding-left: 0;
+            width: 100%;
+
+            label {
+              width: 18%;
+            }
+
+            app-fdds-dropdown {
+              width: toRem(88px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.share-content-view {
+  .form-select {
+    &-container {
+      @include displayFlex(row, center, flex-start);
+
+      gap: $spacing-md;
+
+      app-fdds-dropdown {
+        width: toRem(380px);
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<div class="chart-wrap">
+  <div class="labels">
+    <span>Front</span><span>Central</span><span>Back</span>
+  </div>
+
+  <div class="hint helper">
+    Where symbols appear in pairs, the one to the right represents a rounded
+    vowel.
+  </div>
+
+  <svg class="chart" viewBox="0 0 120 92" aria-label="IPA vowel chart">
+    <!-- trapezoid -->
+    <path class="trap" d="M 10 6 L 60 6 L 90 6 L 90 92 L 26 92 Z" />
+
+    <!-- optional row labels -->
+    <g class="rows" text-anchor="end">
+      <text x="6" y="11">Close</text>
+      <text x="6" y="24">Near-close</text>
+      <text x="6" y="37">Close-mid</text>
+      <text x="6" y="50">Mid</text>
+      <text x="6" y="63">Open-mid</text>
+      <text x="6" y="76">Near-open</text>
+      <text x="6" y="89">Open</text>
+    </g>
+
+    <!-- vowels -->
+    <g *ngFor="let p of points">
+      <!-- Checkbox (only toggle target) -->
+      <rect
+        class="cb-box"
+        [class.checked]="isSelected(p.id)"
+        [attr.x]="p.x - 6.2"
+        [attr.y]="p.y - 1"
+        [attr.width]="3"
+        [attr.height]="3"
+        rx="0.6"
+        ry="0.6"
+        role="checkbox"
+        [attr.aria-checked]="isSelected(p.id)"
+        tabindex="0"
+        (click)="toggle(p.id)"
+        (keydown.enter)="toggle(p.id)"
+        (keydown.space)="toggle(p.id)"
+      >
+        <title>{{ p.label || p.symbol }}</title>
+      </rect>
+
+      <!-- Check mark -->
+      @if (isSelected(p.id)) {
+      <path
+        class="cb-check"
+        [attr.d]="'M ' + (p.x - 6) + ' ' + p.y + ' l 0.9 1.3 l 1.9 -2.3'"
+      ></path>
+      }
+
+      <!-- While playing: show Phosphor icon; else show IPA glyph -->
+      @if (nowPlaying === p.id) {
+      <foreignObject
+        [attr.x]="p.x - 3"
+        [attr.y]="p.y - 2"
+        width="14"
+        height="14"
+      >
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          class="icon-wrap"
+          (dblclick)="listen.emit(p.id)"
+        >
+          <i class="ph ph-speaker-high"></i>
+        </div>
+      </foreignObject>
+      } @else {
+      <text
+        [attr.x]="p.x"
+        [attr.y]="p.y"
+        [class.rounded]="p.rounded"
+        [class.selected]="isSelected(p.id)"
+        class="ipa"
+        role="button"
+        tabindex="0"
+        (dblclick)="listen.emit(p.id)"
+      >
+        {{ p.symbol }}
+      </text>
+      }
+    </g>
+  </svg>
+
+  <div class="hint">Tip: click to select, double-click to listen.</div>
+</div>

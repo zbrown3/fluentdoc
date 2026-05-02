@@ -1,0 +1,80 @@
+@import "../../../../scss/functions/common.scss";
+@import "../../../../scss/mixins/common.scss";
+@import "../../../../scss/mixins/typography.scss";
+@import "../../../../scss/variables/colors.scss";
+@import "../../../../scss/variables/spacing.scss";
+
+.signup {
+  @include displayFlex(column, center, center);
+
+  & > img {
+    @include logo;
+    margin-bottom: $spacing-xl;
+  }
+
+  &-container {
+    @include displayFlex(column, center, center);
+    width: 100%;
+
+    asl-google-signin-button {
+      margin-bottom: $spacing-lg;
+    }
+
+    &-divider {
+      @include displayFlex(row, center, space-evenly);
+
+      span {
+        @include body3SemiBold;
+
+        color: $content-secondary;
+        margin: 0 $spacing-sm;
+      }
+
+      &-line {
+        @include divider;
+      }
+
+      & + .alert {
+        margin-top: $spacing-lg;
+      }
+    }
+  }
+
+  &-form {
+    margin-top: $spacing-lg;
+
+    &.vstack > div:not(:nth-last-child(3)) {
+      margin-bottom: $spacing-lg;
+
+      span .btn-link {
+        margin-top: -2px;
+      }
+    }
+
+    .btn-tertiary {
+      float: right;
+    }
+
+    .text-center {
+      margin-top: $spacing-xl;
+      font-size: toRem(14px);
+      a {
+        font-size: toRem(14px);
+      }
+    }
+  }
+
+  .hstack {
+    p {
+      margin-bottom: 0;
+    }
+
+    .btn-primary {
+      @include buttonSize("xl", toRem(343px));
+    }
+
+    .btn-link {
+      margin-left: $spacing-sm;
+    }
+  }
+}

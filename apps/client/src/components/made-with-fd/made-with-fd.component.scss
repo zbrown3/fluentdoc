@@ -1,0 +1,48 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/spacing.scss";
+
+.made-with-fd {
+  &-container {
+    @include displayFlex(row, center, center);
+
+    position: fixed;
+    bottom: 0;
+    padding: $spacing-sm;
+
+    .mobile-logo {
+      display: none;
+    }
+  }
+  &-text {
+    @include subtitleRegular;
+
+    position: absolute;
+    top: 0;
+    right: 29px;
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    &-container {
+      position: relative;
+      bottom: unset;
+      padding: 0;
+
+      .desktop-logo {
+        display: none;
+      }
+
+      .mobile-logo {
+        display: block;
+        width: toRem(24px);
+        height: toRem(24px);
+      }
+    }
+
+    &-text {
+      display: none;
+    }
+  }
+}

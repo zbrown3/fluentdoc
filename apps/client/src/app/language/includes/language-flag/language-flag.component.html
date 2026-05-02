@@ -1,0 +1,131 @@
+<app-loading-spinner />
+
+@if (!loading) {
+<div class="language-section-header">
+  <div>
+    <h4 class="language-view-title">
+      {{ SUB_SECTIONS.languageFlag.title }}
+    </h4>
+    <p>
+      {{
+        formatDynamicString(
+          SUB_SECTIONS.languageFlag.description,
+          language.name
+        )
+      }}
+    </p>
+  </div>
+</div>
+<div class="general-info-wrapper">
+  <div>
+    <div class="flag-container">
+      <label for="languageFlag" class="form-label">Language flag</label>
+      @if (!editLanguage.flagUrl) {
+      <div class="flag-empty-state">No language flag</div>
+      }
+    </div>
+
+    <div class="mb-4">
+      @if (editLanguage.flagUrl) {
+      <div>
+        <img
+          id="languageFlag"
+          [attr.src]="editLanguage.flagUrl"
+          class="img-fluid flag-img"
+          alt="language flag"
+        />
+      </div>
+      }
+      <div class="flag-btn-grp">
+        <div>
+          <button class="btn btn-tertiary btn-md" (click)="triggerFileInput()">
+            Choose file
+          </button>
+          <input
+            hidden
+            type="file"
+            ng2FileSelect
+            [uploader]="flagUploader"
+            id="languageFlagUpload"
+            #fileInput
+          />
+        </div>
+        @if (flagUploader.getNotUploadedItems().length) {
+        <button
+          class="btn btn-sm btn-light"
+          (click)="resetFileInput(fileInput)"
+        >
+          Cancel
+        </button>
+        } @if (flagUploader.getNotUploadedItems().length) {
+        <button
+          type="button"
+          class="btn btn-sm btn-success"
+          (click)="uploadingFlag = true; flagUploader.uploadAll()"
+        >
+          Upload flag
+        </button>
+        } @if (editLanguage.flagUrl &&
+        !flagUploader.getNotUploadedItems().length) {
+        <button
+          class="btn btn-sm btn-danger"
+          (click)="openModal(deleteFlagConfirmationModal)"
+        >
+          Delete flag
+        </button>
+        }
+      </div>
+    </div>
+
+    @if (!uploadingFlag) {
+    <div class="dis-flex justify-content-end">
+      <p *ngFor="let item of flagUploader.queue">
+        {{ item?.file?.name }} |
+        {{ item?.file?.size / 1024 / 1024 | number : ".2" }} MB
+      </p>
+    </div>
+    } @else {
+    <div class="dis-flex justify-content-end">
+      <p>Uploading...</p>
+    </div>
+    }
+  </div>
+</div>
+}
+
+<!-- Delete Flag Confirmation Modal -->
+<ng-template #deleteFlagConfirmationModal>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Delete Flag</h5>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the {{ language.name }} flag?</p>
+    <div class="text-right mt-2 flex-row gap-1 justify-content-end">
+      <button
+        type="button"
+        class="btn btn-light me-2"
+        data-dismiss="modal"
+        (click)="bsModalRef.hide()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        data-dismiss="modal"
+        (click)="deleteFlag(language.id)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- /.Delete Flag Confirmation Modal -->

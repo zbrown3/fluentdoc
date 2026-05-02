@@ -1,0 +1,3686 @@
+<div class="language-section-header">
+  <div>
+    <h4>{{ LANGUAGE_SUBSECTIONS.consonants.title }}</h4>
+    <p>
+      {{ formatDynamicString(LANGUAGE_SUBSECTIONS.consonants.description,
+      language.name) }}
+    </p>
+  </div>
+  <div>
+    <button
+      type="button"
+      class="btn btn-primary save-btn"
+      (click)="update()"
+      [disabled]="isSaving"
+    >
+      @if (!isSaving) {
+      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+      <span class="spinner-border spinner-border-sm me-2"></span> Saving... }
+    </button>
+  </div>
+</div>
+
+<div class="mb-5">
+  <p>
+    Include Consonant Description (Optional)
+    <i
+      class="ph ph-info"
+      tooltip="You can include a description of why you chose the consonants
+        and elaborate on their usage."
+      placement="right"
+    ></i>
+
+    <small
+      class="hide-description"
+      (click)="showDescription = !showDescription"
+    >
+      {{ showDescription ? "hide" : "show" }} description</small
+    >
+  </p>
+
+  @if (showDescription) {
+  <div class="form-group">
+    <app-ipa-quill-editor
+      [(ngModel)]="language.consonantsDescription"
+      [name]="'consonantsDescription'"
+      [editorMinHeight]="100"
+      [editorHeight]="100"
+    ></app-ipa-quill-editor>
+    <hr />
+  </div>
+  }
+</div>
+
+<!--///////////////////////////////
+////    IPA TABLE SECTION       ///
+/////////////////////////////////-->
+
+<!-- Table Tabs -->
+<div class="tab-wrapper">
+  <div
+    class="tab-section"
+    (click)="changeTab('pulmonic')"
+    [ngClass]="{'active': activeTab === 'pulmonic'}"
+  >
+    Pulmonic Consonants
+  </div>
+  <div
+    class="tab-section"
+    (click)="changeTab('non-pulmonic')"
+    [ngClass]="{'active': activeTab === 'non-pulmonic'}"
+  >
+    Non-Pulmonic Consonants
+  </div>
+  <div
+    class="tab-section"
+    (click)="changeTab('affricates')"
+    [ngClass]="{'active': activeTab === 'affricates'}"
+  >
+    Affricates
+  </div>
+  <div
+    class="tab-section"
+    (click)="changeTab('other')"
+    [ngClass]="{'active': activeTab === 'other'}"
+  >
+    Other
+  </div>
+
+  <div
+    class="tab-section"
+    (click)="changeTab('review')"
+    [ngClass]="{'active': activeTab === 'review'}"
+  >
+    Review
+  </div>
+</div>
+<!-- /.Table Tabs -->
+
+<!-- Table content -->
+<div>
+  <!--///////////////////////////////
+  ////  PULMONIC CONSONANTS  ///
+  /////////////////////////////////-->
+  @if (activeTab === 'pulmonic') {
+  <div class="tab-content-wrapper">
+    <div class="tab-content-header">
+      <h5>Pulmonic Consonants</h5>
+      <i
+        class="ph ph-question"
+        tooltip="Symbols that are in pairs (i.e. 'p d'), the left symbol represents a voiceless consonant and the right symbol represents voiced."
+        placement="right"
+      ></i>
+    </div>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-bordered table-hover">
+        <thead class="primary-color-dark text-white">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Bi-labial</th>
+            <th scope="col">Labio­dental</th>
+            <th scope="col">Dental</th>
+            <th scope="col">Alveolar</th>
+            <th scope="col">Post-Alveolar</th>
+            <th scope="col">Retroflex</th>
+            <th scope="col">Palatal</th>
+            <th scope="col">Velar</th>
+            <th scope="col">Uvular</th>
+            <th scope="col">Pharyngeal</th>
+            <th scope="col">Glottal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- PLOSIVE -->
+          <tr>
+            <th scope="row">Plosive</th>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  p<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.p"
+                    [(ngModel)]="consonants.p"
+                    name="p"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  b<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.b"
+                    [(ngModel)]="consonants.b"
+                    name="b"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  t<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.t"
+                    [(ngModel)]="consonants.t"
+                    name="t"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  d<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.d"
+                    [(ngModel)]="consonants.d"
+                    name="d"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ʈ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.tretro"
+                    [(ngModel)]="consonants.tretro"
+                    name="tretro"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɖ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.dretro"
+                    [(ngModel)]="consonants.dretro"
+                    name="dretro"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  c<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.c"
+                    [(ngModel)]="consonants.c"
+                    name="c"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɟ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.fpal"
+                    [(ngModel)]="consonants.fpal"
+                    name="fpal"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  k<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.k"
+                    [(ngModel)]="consonants.k"
+                    name="k"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  g<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.g"
+                    [(ngModel)]="consonants.g"
+                    name="g"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  q<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.q"
+                    [(ngModel)]="consonants.q"
+                    name="q"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɢ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.gg"
+                    [(ngModel)]="consonants.gg"
+                    name="gg"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ʔ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.glottal"
+                    [(ngModel)]="consonants.glottal"
+                    name="glottal"
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- NASAL -->
+          <tr>
+            <th scope="row">Nasal</th>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  m<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.m"
+                    [(ngModel)]="consonants.m"
+                    name="m"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɱ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.mtail"
+                    [(ngModel)]="consonants.mtail"
+                    name="mtail"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  n<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.n"
+                    [(ngModel)]="consonants.n"
+                    name="n"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɳ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.nretro"
+                    [(ngModel)]="consonants.nretro"
+                    name="nretro"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɲ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.npal"
+                    [(ngModel)]="consonants.npal"
+                    name="npal"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ŋ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.nn"
+                    [(ngModel)]="consonants.nn"
+                    name="nn"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɴ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.Nuv"
+                    [(ngModel)]="consonants.Nuv"
+                    name="Nuv"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- TRILL -->
+          <tr>
+            <th scope="row">Trill</th>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ʙ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.bb"
+                    [(ngModel)]="consonants.bb"
+                    name="bb"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  r<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.r"
+                    [(ngModel)]="consonants.r"
+                    name="r"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ʀ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.R"
+                    [(ngModel)]="consonants.R"
+                    name="R"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- TAP / FLAP -->
+          <tr>
+            <th scope="row">Tap / Flap</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɾ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.rrvl"
+                    [(ngModel)]="consonants.rrvl"
+                    name="rrvl"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɽ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.rrvd"
+                    [(ngModel)]="consonants.rrvd"
+                    name="rrvd"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- FRICATIVE -->
+          <tr>
+            <th scope="row">Fricative</th>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ɸ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.BlVl"
+                    [(ngModel)]="consonants.BlVl"
+                    name="BlVl"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  β<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.BlVd"
+                    [(ngModel)]="consonants.BlVd"
+                    name="BlVd"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  f<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.f"
+                    [(ngModel)]="consonants.f"
+                    name="f"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  v<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.v"
+                    [(ngModel)]="consonants.v"
+                    name="v"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  θ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.th"
+                    [(ngModel)]="consonants.th"
+                    name="th"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ð<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.thvcd"
+                    [(ngModel)]="consonants.thvcd"
+                    name="thvcd"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  s<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.s"
+                    [(ngModel)]="consonants.s"
+                    name="s"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  z<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.z"
+                    [(ngModel)]="consonants.z"
+                    name="z"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ʃ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.ss"
+                    [(ngModel)]="consonants.ss"
+                    name="ss"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ʒ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.zz"
+                    [(ngModel)]="consonants.zz"
+                    name="zz"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ʂ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.sretro"
+                    [(ngModel)]="consonants.sretro"
+                    name="sretro"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ʐ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.zretro"
+                    [(ngModel)]="consonants.zretro"
+                    name="zretro"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ç<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.cpal"
+                    [(ngModel)]="consonants.cpal"
+                    name="cpal"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ʝ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.jpal"
+                    [(ngModel)]="consonants.jpal"
+                    name="jpal"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  x<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.x"
+                    [(ngModel)]="consonants.x"
+                    name="x"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɣ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.yvel"
+                    [(ngModel)]="consonants.yvel"
+                    name="yvel"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  χ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.xuv"
+                    [(ngModel)]="consonants.xuv"
+                    name="xuv"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ʁ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.downrvd"
+                    [(ngModel)]="consonants.downrvd"
+                    name="downR"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ħ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.hpha"
+                    [(ngModel)]="consonants.hpha"
+                    name="hpha"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ʕ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.gpha"
+                    [(ngModel)]="consonants.gpha"
+                    name="gpha"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  h<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.h"
+                    [(ngModel)]="consonants.h"
+                    name="h"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɦ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.hcurve"
+                    [(ngModel)]="consonants.hcurve"
+                    name="hcurve"
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- AFFRICATES -->
+          <tr>
+            <th scope="row">Affricate</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  tʃ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.tS"
+                    [(ngModel)]="consonants.tS"
+                    name="tS"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  dʒ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.dZ"
+                    [(ngModel)]="consonants.dZ"
+                    name="dZ"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- LATERAL FRICATIVE -->
+          <tr>
+            <th scope="row">Lateral Fricative</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6 phoneme-symbol">
+                  ɬ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.latfone"
+                    [(ngModel)]="consonants.latfone"
+                    name="latfone"
+                  />
+                </div>
+                <div class="col-6 phoneme-symbol">
+                  ɮ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.latftwo"
+                    [(ngModel)]="consonants.latftwo"
+                    name="latftwo"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- APPROXIMANT -->
+          <tr>
+            <th scope="row">Approximant</th>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ʋ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.vapprox"
+                    [(ngModel)]="consonants.vapprox"
+                    name="vapprox"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɹ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.downr"
+                    [(ngModel)]="consonants.downr"
+                    name="downr"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɻ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.downrretro"
+                    [(ngModel)]="consonants.downrretro"
+                    name="downrretro"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  j<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.j"
+                    [(ngModel)]="consonants.j"
+                    name="j"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɰ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.wvel"
+                    [(ngModel)]="consonants.wvel"
+                    name="wvel"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- LATERAL APPRIXOMANT -->
+          <!-- l		ɭ		ʎ		ʟ -->
+          <tr>
+            <th scope="row">Lateral Approximant</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  l<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.l"
+                    [(ngModel)]="consonants.l"
+                    name="l"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ɭ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.lretro"
+                    [(ngModel)]="consonants.lretro"
+                    name="lretro"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ʎ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.ypal"
+                    [(ngModel)]="consonants.ypal"
+                    name="ypal"
+                  />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 phoneme-symbol">
+                  ʟ<br />
+                  <input
+                    type="checkbox"
+                    class="symbol-check"
+                    [checked]="language.consonants?.lvd"
+                    [(ngModel)]="consonants.lvd"
+                    name="lvd"
+                  />
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+
+  <!--///////////////////////////////
+  ////  NON-PULMONIC CONSONANTS  ///
+  /////////////////////////////////-->
+  @if (activeTab === 'non-pulmonic') {
+  <div class="tab-content-wrapper">
+    <div class="tab-content-header"><h5>Non-Pulmonic Consonants</h5></div>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-bordered table-hover">
+        <thead class="primary-color-dark text-white">
+          <tr>
+            <th scope="col">Clicks</th>
+            <th scope="col">Voiced Implosives</th>
+            <th scope="col">Ejectives</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npcbl"
+                [(ngModel)]="consonants.npcbl"
+                name="npcbl"
+              />ʘ Bilabial
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npvib"
+                [(ngModel)]="consonants.npvib"
+                name="npvib"
+              />ɓ Bilabial
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npeb"
+                [(ngModel)]="consonants.npeb"
+                name="npeb"
+              />pʼ Bilabial
+            </td>
+          </tr>
+          <tr>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npcd"
+                [(ngModel)]="consonants.npcd"
+                name="npcd"
+              />ǀ Dental
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npvida"
+                [(ngModel)]="consonants.npvida"
+                name="npvida"
+              />ɗ Dental/alveolar
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npeda"
+                [(ngModel)]="consonants.npeda"
+                name="npeda"
+              />tʼ Dental/alveolar
+            </td>
+          </tr>
+          <tr>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npcpa"
+                [(ngModel)]="consonants.npcpa"
+                name="npcpa"
+              />ǃ (Post)alveoalar
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npvip"
+                [(ngModel)]="consonants.npvip"
+                name="npvip"
+              />ʄ Palatal
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npev"
+                [(ngModel)]="consonants.npev"
+                name="npev"
+              />kʼ Velar
+            </td>
+          </tr>
+          <tr>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npcpl"
+                [(ngModel)]="consonants.npcpl"
+                name="npcpl"
+              />ǂ Palatoalveolar
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npviv"
+                [(ngModel)]="consonants.npviv"
+                name="npviv"
+              />ɠ Velar
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npeaf"
+                [(ngModel)]="consonants.npeaf"
+                name="npeaf"
+              />sʼ Alveolar fricative
+            </td>
+          </tr>
+          <tr>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npcal"
+                [(ngModel)]="consonants.npcal"
+                name="npcal"
+              />ǁ Alveolar lateral
+            </td>
+            <td class="phoneme-symbol">
+              <input
+                class="other-symbol-checkbox"
+                type="checkbox"
+                [checked]="language.consonants?.npviu"
+                [(ngModel)]="consonants.npviu"
+                name="npviu"
+              />ʛ Uvular
+            </td>
+            <td style="background: #c0c8d4"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+
+  <!--///////////////////////////////
+  ////  AFFRICATES CONSONANTS    ///
+  /////////////////////////////////-->
+  @if (activeTab === 'affricates') {
+  <div class="tab-content-wrapper">
+    <div class="tab-content-header"><h5>Affricates</h5></div>
+    <div class="row">
+      <div class="table-responsive text-nowrap col-6">
+        <table class="table table-bordered table-hover">
+          <thead class="primary-color-dark text-white">
+            <tr>
+              <th scope="col">Affricates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.ats"
+                  [(ngModel)]="consonants.ats"
+                  name="ats"
+                />t͡s Voiceless alveolar affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.atsh"
+                  [(ngModel)]="consonants.atsh"
+                  name="atsh"
+                />t͡ʃ Voiceless palato-alveolar affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.atc"
+                  [(ngModel)]="consonants.atc"
+                  name="atc"
+                />t͡ɕ Voiceless alveolo-palatal affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.atS"
+                  [(ngModel)]="consonants.atS"
+                  name="atS"
+                />ʈ͡ʂ Voiceless retroflex affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.adz"
+                  [(ngModel)]="consonants.adz"
+                  name="adz"
+                />d͡z Voiced alveolar affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.adg"
+                  [(ngModel)]="consonants.adg"
+                  name="adg"
+                />d͡ʒ Voiced post-alveolar affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.adzt"
+                  [(ngModel)]="consonants.adzt"
+                  name="adzt"
+                />d͡ʑ Voiced alveolo-palatal affricate
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.adZ"
+                  [(ngModel)]="consonants.adZ"
+                  name="adZ"
+                />ɖ͡ʐ Voiceless retroflex affricate
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!--///////////////////////////////
+  ////       OTHER SYMBOLS       ///
+  /////////////////////////////////-->
+  @if (activeTab === 'other') {
+  <div class="tab-content-wrapper">
+    <div class="tab-content-header"><h5>Other</h5></div>
+    <div class="row">
+      <div class="table-responsive text-nowrap col-6">
+        <table class="table table-bordered table-hover">
+          <thead class="primary-color-dark text-white">
+            <tr>
+              <th scope="col">Other Symbols</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.mlva"
+                  [(ngModel)]="consonants.mlva"
+                  name="mlva"
+                />ʍ Voiceless labial-velar fricative
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.w"
+                  [(ngModel)]="consonants.w"
+                  name="w"
+                />w Voiced labial-velar approximant
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.uoc"
+                  [(ngModel)]="consonants.uoc"
+                  name="uoc"
+                />ɥ Voiced labial-palatal approximant
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.H"
+                  [(ngModel)]="consonants.H"
+                  name="H"
+                />ʜ Voiceless epiglottal fricative
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.vepi"
+                  [(ngModel)]="consonants.vepi"
+                  name="vepi"
+                />ʢ Voiced epiglottal fricative
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.epip"
+                  [(ngModel)]="consonants.epip"
+                  name="epip"
+                />ʡ Epiglottal plosive
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.vapf"
+                  [(ngModel)]="consonants.vapf"
+                  name="vapf"
+                />ɕ Voiceless alveolo-palatal fricative
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.Vapf"
+                  [(ngModel)]="consonants.Vapf"
+                  name="Vapf"
+                />ʑ Voiced alveolo-palatal fricative
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.ralf"
+                  [(ngModel)]="consonants.ralf"
+                  name="ralf"
+                />ɺ Alveolar lateral flap
+              </td>
+            </tr>
+            <tr>
+              <td class="phoneme-symbol">
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.simul"
+                  [(ngModel)]="consonants.simul"
+                  name="simul"
+                />ɧ Simultaneous ʃ and x
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!--///////////////////////////////
+  ////      REVIEW  CONSONANTS   ///
+  /////////////////////////////////-->
+  @if (activeTab === 'review') {
+  <div class="tab-content-wrapper">
+    <div class="tab-content-header"><h5>Review</h5></div>
+    <p class="mt-4 font-weight-bold">
+      Review your selected consonants below. You can hear audio clips of some of
+      the consonants and see examples of their usage.<br />
+      Note:* All examples are English unless stated otherwise.
+    </p>
+    <div class="row">
+      <!-- Sound Column One -->
+      <div class="col-12 col-xl-4">
+        <table class="table table-striped table-sm sound-table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Sound</th>
+              <th>Example</th>
+              <th>Listen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 1 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.p"
+                  [(ngModel)]="consonants.p"
+                  name="p"
+                />
+              </td>
+              <td>p</td>
+              <td>
+                <span class="example-pronunciation">p</span>oor, sto<span
+                  class="example-pronunciation"
+                  >p</span
+                >, war<span class="example-pronunciation">p</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'p'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('p')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'p'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.1 -->
+            <!-- 2 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.b"
+                  [(ngModel)]="consonants.b"
+                  name="b"
+                />
+              </td>
+              <td>b</td>
+              <td>
+                <span class="example-pronunciation">b</span>lue,
+                <span class="example-pronunciation">b</span>ox, ta<span
+                  class="example-pronunciation"
+                  >b</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'b'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('b')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'b'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.2 -->
+            <!-- 3 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.t"
+                  [(ngModel)]="consonants.t"
+                  name="t"
+                />
+              </td>
+              <td>t</td>
+              <td>
+                <span class="example-pronunciation">t</span>op, po<span
+                  class="example-pronunciation"
+                  >t</span
+                >, <span class="example-pronunciation">t</span>able
+              </td>
+              <td>
+                <i
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  *ngIf="currentAudioStream !== 't'"
+                  (click)="playConsonantSound('t')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 't'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.3 -->
+            <!-- 4 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.d"
+                  [(ngModel)]="consonants.d"
+                  name="d"
+                />
+              </td>
+              <td>d</td>
+              <td>
+                <span class="example-pronunciation">d</span>og,
+                <span class="example-pronunciation">d</span>oor,
+                <span class="example-pronunciation">d</span>ream
+              </td>
+              <td>
+                <i
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  *ngIf="currentAudioStream !== 'd'"
+                  (click)="playConsonantSound('d')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'd'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.4 -->
+            <!-- 5 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.tretro "
+                  [(ngModel)]="consonants.tretro"
+                  name="tretro"
+                />
+              </td>
+              <td>ʈ</td>
+              <td>Indic (Hindi, Urdu, Bengali, Sanskrit, etc.)</td>
+              <td>
+                <i
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  *ngIf="currentAudioStream !== 'tretro'"
+                  (click)="playConsonantSound('tretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'tretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.5 -->
+            <!-- 6 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.dretro"
+                  [(ngModel)]="consonants.dretro"
+                  name="dretro"
+                />
+              </td>
+              <td>ɖ</td>
+              <td>Indic (Hindi, Urdu, Bengali, Sanskrit, etc.)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'dretro'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('dretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'dretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.6 -->
+            <!-- 7 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.c"
+                  [(ngModel)]="consonants.c"
+                  name="c"
+                />
+              </td>
+              <td>c</td>
+              <td>
+                French: <span class="example-pronunciation">q</span>ui ('who?')
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'c'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('c')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'c'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.7 -->
+            <!-- 8 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.fpal"
+                  [(ngModel)]="consonants.fpal"
+                  name="fpal"
+                />
+              </td>
+              <td>ɟ</td>
+              <td>
+                French: <span class="example-pronunciation">g</span>ui
+                ('mistletoe')
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'fpal'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('fpal')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'fpal'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.8 -->
+            <!-- 9 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.k"
+                  [(ngModel)]="consonants.k"
+                  name="k"
+                />
+              </td>
+              <td>k</td>
+              <td>
+                <span class="example-pronunciation">k</span>ite, ta<span
+                  class="example-pronunciation"
+                  >ck</span
+                >
+                tr<span class="example-pronunciation">ck</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'k'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('k')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'k'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.9 -->
+            <!-- 10 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.g"
+                  [(ngModel)]="consonants.g"
+                  name="g"
+                />
+              </td>
+              <td>g</td>
+              <td>
+                <span class="example-pronunciation">G</span>row,
+                <span class="example-pronunciation">G</span>ift, plu<span
+                  class="example-pronunciation"
+                  >G</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'g'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('g')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'g'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.10 -->
+            <!-- 11 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.q"
+                  [(ngModel)]="consonants.q"
+                  name="q"
+                />
+              </td>
+              <td>q</td>
+              <td>
+                Arabic: <span class="example-pronunciation">Q</span>atar
+                ('Quatar' [n.])
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'q'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('q')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'q'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.11 -->
+            <!-- 12 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.gg"
+                  [(ngModel)]="consonants.gg"
+                  name="gg"
+                />
+              </td>
+              <td>ɢ</td>
+              <td>
+                American English:
+                <span class="example-pronunciation">g</span>audy
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'gg'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('gg')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'gg'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.12 -->
+            <!-- 13 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.glottal "
+                  [(ngModel)]="consonants.glottal"
+                  name="glottal"
+                />
+              </td>
+              <td>ʔ</td>
+              <td><span class="example-pronunciation">uh-</span>oh</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'glottal'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('glottal')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'glottal'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.13 -->
+            <!-- 14 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.m"
+                  [(ngModel)]="consonants.m"
+                  name="m"
+                />
+              </td>
+              <td>m</td>
+              <td>
+                <span class="example-pronunciation">m</span>ad,
+                <span class="example-pronunciation">m</span>agic, sla<span
+                  class="example-pronunciation"
+                  >m</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'm'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('m')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'm'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.14 -->
+            <!-- 15 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.mtail"
+                  [(ngModel)]="consonants.mtail"
+                  name="mtail"
+                />
+              </td>
+              <td>ɱ</td>
+              <td>sy<span class="example-pronunciation">m</span>phony</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'mtail'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('mtail')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'mtail'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.15 -->
+            <!-- 16 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.n"
+                  [(ngModel)]="consonants.n"
+                  name="n"
+                />
+              </td>
+              <td>n</td>
+              <td>
+                <span class="example-pronunciation">n</span>o, o<span
+                  class="example-pronunciation"
+                  >n</span
+                >, <span class="example-pronunciation">n</span>ext
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'n'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('n')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'n'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.16 -->
+            <!-- 17 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.nretro "
+                  [(ngModel)]="consonants.nretro"
+                  name="nretro"
+                />
+              </td>
+              <td>ɳ</td>
+              <td>Indic (Hindi, Urdu, Bengali, Sanskrit, etc.)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'nretro'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('nretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'nretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.17 -->
+            <!-- 18 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npal "
+                  [(ngModel)]="consonants.npal"
+                  name="npal"
+                />
+              </td>
+              <td>ɲ</td>
+              <td>
+                Spanish: <span class="example-pronunciation">ñ</span>, Italian:
+                <span class="example-pronunciation">gn</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'npal'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('npal')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'npal'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.18 -->
+            <!-- 19 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.nn"
+                  [(ngModel)]="consonants.nn"
+                  name="nn"
+                />
+              </td>
+              <td>ŋ</td>
+              <td>
+                ri<span class="example-pronunciation">ng</span>, li<span
+                  class="example-pronunciation"
+                  >ng</span
+                >er, ha<span class="example-pronunciation">ng</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'nn'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('nn')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'nn'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.19 -->
+            <!-- 20 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.Nuv"
+                  [(ngModel)]="consonants.Nuv"
+                  name="Nuv"
+                />
+              </td>
+              <td>ɴ</td>
+              <td>
+                Japanese word-final "<span class="example-pronunciation">n</span
+                >"
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'Nuv'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('Nuv')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'Nuv'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.20 -->
+            <!-- 21 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.tS"
+                  [(ngModel)]="consonants.tS"
+                  name="tS"
+                />
+              </td>
+              <td>tʃ</td>
+              <td>
+                <span class="example-pronunciation">ch</span>at, wat<span
+                  class="example-pronunciation"
+                  >ch</span
+                >, <span class="example-pronunciation">ch</span>eck
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'tS'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('tS')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'tS'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.21 -->
+            <!-- 22 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.uoc"
+                  [(ngModel)]="consonants.uoc"
+                  name="uoc"
+                />
+              </td>
+              <td>ɥ</td>
+              <td>
+                French: n<span class="example-pronunciation">u</span>ire ('to
+                harm')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.22 -->
+            <!-- 23 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.epip"
+                  [(ngModel)]="consonants.epip"
+                  name="epip"
+                />
+              </td>
+              <td>ʡ</td>
+              <td>Amis: [ʡuʡuɺ̠ᵊ] ('fog')</td>
+              <td></td>
+            </tr>
+            <!-- /.23 -->
+            <!-- 24 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.vapf"
+                  [(ngModel)]="consonants.vapf"
+                  name="vapf"
+                />
+              </td>
+              <td>ɕ</td>
+              <td>
+                Japanese: 塩 / <span class="example-pronunciation">sh</span>io
+                [ɕi.o] ('salt')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.24 -->
+            <!-- 25 -->
+            <!-- row 1 --  ats t͡s // atsh t͡ʃ // atc t͡ɕ -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.ats"
+                  [(ngModel)]="consonants.ats"
+                  name="ats"
+                />
+              </td>
+              <td>t͡s</td>
+              <td>
+                Italian: gra<span class="example-pronunciation">z</span>ia
+                [ˈɡrät̚t͡sjä] ('grace')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.25 -->
+            <!-- 26 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.atsh"
+                  [(ngModel)]="consonants.atsh"
+                  name="atsh"
+                />
+              </td>
+              <td>t͡ʃ</td>
+              <td>
+                Arabic (Iraqi): چتاب
+                <span class="example-pronunciation">k</span>itab [t͡ʃɪˈt̪ɑːb]
+                ('book')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.26 -->
+            <!-- 27 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.atc"
+                  [(ngModel)]="consonants.atc"
+                  name="atc"
+                />
+              </td>
+              <td>t͡ɕ</td>
+              <td>
+                Polish: <span class="example-pronunciation">ć</span>ma [t͡ɕmä]
+                ('moth')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.27 -->
+            <!-- 28 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npcbl"
+                  [(ngModel)]="consonants.npcbl"
+                  name="npcbl"
+                />
+              </td>
+              <td>ʘ Bilabial</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.28 -->
+            <!-- 29 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npvib"
+                  [(ngModel)]="consonants.npvib"
+                  name="npvib"
+                />
+              </td>
+              <td>ɓ Bilabial</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.29 -->
+            <!-- 30 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npeb"
+                  [(ngModel)]="consonants.npeb"
+                  name="npeb"
+                />
+              </td>
+              <td>pʼ Bilabial</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.30 -->
+            <!-- 31 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npcpl"
+                  [(ngModel)]="consonants.npcpl"
+                  name="npcpl"
+                />
+              </td>
+              <td>ǂ Palatoalveolar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.31 -->
+            <!-- 32 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npviv"
+                  [(ngModel)]="consonants.npviv"
+                  name="npviv"
+                />
+              </td>
+              <td>ɠ Velar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.32 -->
+            <!-- 33 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npeaf"
+                  [(ngModel)]="consonants.npeaf"
+                  name="npeaf"
+                />
+              </td>
+              <td>sʼ Alveolar fricative</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.33 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sound Column Two -->
+      <div class="col-12 col-xl-4">
+        <table class="table table-striped table-sm sound-table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Sound</th>
+              <th>Example</th>
+              <th>Listen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 1 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.bb"
+                  [(ngModel)]="consonants.bb"
+                  name="bb"
+                />
+              </td>
+              <td>ʙ</td>
+              <td>*Not common; Very rare*</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'bb'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('bb')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'bb'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.1 -->
+            <!-- 2 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.r"
+                  [(ngModel)]="consonants.r"
+                  name="r"
+                />
+              </td>
+              <td>r</td>
+              <td>
+                Spanish: pe<span class="example-pronunciation">rr</span>o
+                ('but')
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'r'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('r')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'r'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.2 -->
+            <!-- 3 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.R"
+                  [(ngModel)]="consonants.R"
+                  name="R"
+                />
+              </td>
+              <td>ʀ</td>
+              <td>Some French dialects, etc.</td>
+              <td></td>
+            </tr>
+            <!-- /.3 -->
+            <!-- 4 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.V"
+                  [(ngModel)]="consonants.V"
+                  name="V"
+                />
+              </td>
+              <td>ⱱ</td>
+              <td>
+                Primarily in languages of Central Africa, such as Kera and
+                Mangbetu.
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.4 -->
+            <!-- 5 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.rrvl"
+                  [(ngModel)]="consonants.rrvl"
+                  name="rrvl"
+                />
+              </td>
+              <td>ɾ</td>
+              <td>
+                American English: ci<span class="example-pronunciation">t</span
+                >y
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'rrvl'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('rrvl')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'rrvl'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.5 -->
+            <!-- 6 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.rrvd"
+                  [(ngModel)]="consonants.rrvd"
+                  name="rrvd"
+                />
+              </td>
+              <td>ɽ</td>
+              <td>Indic (Hindi, Urdu, Bengali, Sanskrit, etc.)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'Rr'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('Rr')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'Rr'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.6 -->
+            <!-- 7 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.BlVl"
+                  [(ngModel)]="consonants.BlVl"
+                  name="BlVl"
+                />
+              </td>
+              <td>ɸ</td>
+              <td>(like blowing out a match)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'BlVl'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('BlVl')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'BlVl'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.7 -->
+            <!-- 8 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.BlVd"
+                  [(ngModel)]="consonants.BlVd"
+                  name="BlVd"
+                />
+              </td>
+              <td>β</td>
+              <td>
+                Spanish: Ha<span class="example-pronunciation">b</span>er ('to
+                have')
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'BlVd'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('BlVd')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'BlVd'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.8 -->
+            <!-- 9 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.f"
+                  [(ngModel)]="consonants.f"
+                  name="f"
+                />
+              </td>
+              <td>f</td>
+              <td>
+                <span class="example-pronunciation">f</span>rog,
+                <span class="example-pronunciation">f</span>arm, lau<span
+                  class="example-pronunciation"
+                  >gh</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'f'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('f')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'f'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.9 -->
+            <!-- 10 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.v"
+                  [(ngModel)]="consonants.v"
+                  name="v"
+                />
+              </td>
+              <td>v</td>
+              <td>
+                <span class="example-pronunciation">v</span>oice, hi<span
+                  class="example-pronunciation"
+                  >ve</span
+                >, <span class="example-pronunciation">v</span>ery
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'v'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('v')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'v'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.10 -->
+            <!-- 11 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.th"
+                  [(ngModel)]="consonants.th"
+                  name="th"
+                />
+              </td>
+              <td>θ</td>
+              <td>
+                bo<span class="example-pronunciation">th</span>,
+                <span class="example-pronunciation">th</span>ink,
+                <span class="example-pronunciation">th</span>ought
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'th'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('th')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'th'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.11 -->
+            <!-- 12 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.thvcd"
+                  [(ngModel)]="consonants.thvcd"
+                  name="thvcd"
+                />
+              </td>
+              <td>ð</td>
+              <td>
+                <span class="example-pronunciation">th</span>is, fa<span
+                  class="example-pronunciation"
+                  >th</span
+                >er, <span class="example-pronunciation">th</span>ough
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'TH'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('TH')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'TH'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.12 -->
+            <!-- 13 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.s"
+                  [(ngModel)]="consonants.s"
+                  name="s"
+                />
+              </td>
+              <td>s</td>
+              <td>
+                <span class="example-pronunciation">s</span>top,
+                <span class="example-pronunciation">s</span>lap, mi<span
+                  class="example-pronunciation"
+                  >ss</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 's'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('s')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 's'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.13 -->
+            <!-- 14 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.z"
+                  [(ngModel)]="consonants.z"
+                  name="z"
+                />
+              </td>
+              <td>z</td>
+              <td>
+                <span class="example-pronunciation">z</span>ebra, la<span
+                  class="example-pronunciation"
+                  >z</span
+                >y, lou<span class="example-pronunciation">s</span>y
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'z'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('z')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'z'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.14 -->
+            <!-- 15 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.ss"
+                  [(ngModel)]="consonants.ss"
+                  name="ss"
+                />
+              </td>
+              <td>ʃ</td>
+              <td>
+                <span class="example-pronunciation">sh</span>ow, har<span
+                  class="example-pronunciation"
+                  >sh</span
+                >, <span class="example-pronunciation">sh</span>e
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'S'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('S')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'S'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.15 -->
+            <!-- 16 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.zz"
+                  [(ngModel)]="consonants.zz"
+                  name="zz"
+                />
+              </td>
+              <td>ʒ</td>
+              <td>
+                vi<span class="example-pronunciation">si</span>on, trea<span
+                  class="example-pronunciation"
+                  >s</span
+                >ure, fi<span class="example-pronunciation">ss</span>ion
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'zz'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('zz')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'zz'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.16 -->
+            <!-- 17 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.sretro "
+                  [(ngModel)]="consonants.sretro"
+                  name="sretro"
+                />
+              </td>
+              <td>ʂ</td>
+              <td>
+                Indic, Mandarin ("<span class="example-pronunciation">sh</span
+                >")
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'sretro'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('sretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'sretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.17 -->
+            <!-- 18 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.zretro"
+                  [(ngModel)]="consonants.zretro"
+                  name="zretro"
+                />
+              </td>
+              <td>ʐ</td>
+              <td>
+                Indic, Mandarin ("<span class="example-pronunciation">r</span>")
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'zretro'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('zretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'zretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.18 -->
+            <!-- 19 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.cpal "
+                  [(ngModel)]="consonants.cpal"
+                  name="cpal"
+                />
+              </td>
+              <td>ç</td>
+              <td>German i<span class="example-pronunciation">ch</span></td>
+              <td></td>
+            </tr>
+            <!-- /.19 -->
+            <!-- 20 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.jpal"
+                  [(ngModel)]="consonants.jpal"
+                  name="jpal"
+                />
+              </td>
+              <td>ʝ</td>
+              <td>
+                German <span class="example-pronunciation">j</span>acke
+                ('jacket')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.20 -->
+            <!-- 21 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.dZ"
+                  [(ngModel)]="consonants.dZ"
+                  name="dZ"
+                />
+              </td>
+              <td>dʒ</td>
+              <td>
+                <span class="example-pronunciation">j</span>ust, lar<span
+                  class="example-pronunciation"
+                  >ge</span
+                >, bri<span class="example-pronunciation">dge</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'dZ'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('dZ')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'dZ'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.21 -->
+            <!-- 22 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.H"
+                  [(ngModel)]="consonants.H"
+                  name="H"
+                />
+              </td>
+              <td>ʜ</td>
+              <td>
+                Arabic: حَي <span class="example-pronunciation">h</span>aj /ʜaj/
+                ('alive')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.22 -->
+            <!-- 23 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.Vapf"
+                  [(ngModel)]="consonants.Vapf"
+                  name="Vapf"
+                />
+              </td>
+              <td>ʑ</td>
+              <td>
+                Portuguese: ma<span class="example-pronunciation">g</span>ia
+                [maˈʑi.ɐ] ('magic')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.23 -->
+            <!-- 24 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.ralf"
+                  [(ngModel)]="consonants.ralf"
+                  name="ralf"
+                />
+              </td>
+              <td>ɺ</td>
+              <td>
+                Japanese: 六/ <span class="example-pronunciation">r</span>oku
+                [ɺo̞kɯ̟ᵝ] ('six')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.24 -->
+            <!-- 25 -->
+            <!-- row 2 --  atS ʈ͡ʂ // adz d͡z // adg d͡ʒ -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.atS"
+                  [(ngModel)]="consonants.atS"
+                  name="atS"
+                />
+              </td>
+              <td>ʈ͡ʂ</td>
+              <td>
+                Polish: <span class="example-pronunciation">c</span>zas [ˈʈ͡ʂäs̪]
+                ('time')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.25 -->
+            <!-- 26 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.adz"
+                  [(ngModel)]="consonants.adz"
+                  name="adz"
+                />
+              </td>
+              <td>d͡z</td>
+              <td>
+                Spanish: <span class="example-pronunciation">d</span>ía ['d͡zia̞]
+                ('day')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.26 -->
+            <!-- 27 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.adg"
+                  [(ngModel)]="consonants.adg"
+                  name="adg"
+                />
+              </td>
+              <td>d͡ʒ</td>
+              <td>
+                <span class="example-pronunciation">j</span>ump [ˈd͡ʒʌmp]
+                ('jump')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.27 -->
+            <!-- 28 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npcd"
+                  [(ngModel)]="consonants.npcd"
+                  name="npcd"
+                />
+              </td>
+              <td>ǀ Dental</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.28 -->
+            <!-- 29 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npvida"
+                  [(ngModel)]="consonants.npvida"
+                  name="npvida"
+                />
+              </td>
+              <td>ɗ Dental/alveolar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.29 -->
+            <!-- 30 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npeda"
+                  [(ngModel)]="consonants.npeda"
+                  name="npeda"
+                />
+              </td>
+              <td>tʼ Dental/alveolar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.30 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sound Column Three -->
+      <div class="col-12 col-xl-4">
+        <table class="table table-striped table-sm sound-table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Sound</th>
+              <th>Example</th>
+              <th>Listen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 1 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.x"
+                  [(ngModel)]="consonants.x"
+                  name="x"
+                />
+              </td>
+              <td>x</td>
+              <td>Ancient Hebrew</td>
+              <td></td>
+            </tr>
+            <!-- /.2 -->
+            <!-- 1 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.yvel"
+                  [(ngModel)]="consonants.yvel"
+                  name="yvel"
+                />
+              </td>
+              <td>ɣ</td>
+              <td>Ancient Hebrew</td>
+              <td></td>
+            </tr>
+            <!-- /.2 -->
+            <!-- 3 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.xuv"
+                  [(ngModel)]="consonants.xuv"
+                  name="xuv"
+                />
+              </td>
+              <td>χ</td>
+              <td>Semitic, Egyptian</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'xuv'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('xuv')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'xuv'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.3 -->
+            <!-- 4 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.downrvd"
+                  [(ngModel)]="consonants.downrvd"
+                  name="downrvd"
+                />
+              </td>
+              <td>ʁ</td>
+              <td>French, German, Modern Hebrew "r"</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'downrvd'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('downrvd')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'downrvd'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.4 -->
+            <!-- 5 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.hpha"
+                  [(ngModel)]="consonants.hpha"
+                  name="hpha"
+                />
+              </td>
+              <td>ħ</td>
+              <td>Arabic: <span class="example-pronunciation">h</span>ummus</td>
+              <td></td>
+            </tr>
+            <!-- /.5 -->
+            <!-- 6 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.gpha"
+                  [(ngModel)]="consonants.gpha"
+                  name="gpha"
+                />
+              </td>
+              <td>ʕ</td>
+              <td>Arabic: '<span class="example-pronunciation">ayn</span></td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'gpha'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('gpha')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'gpha'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.6 -->
+            <!-- 7 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.h"
+                  [(ngModel)]="consonants.h"
+                  name="h"
+                />
+              </td>
+              <td>h</td>
+              <td>
+                <span class="example-pronunciation">h</span>ot,
+                <span class="example-pronunciation">h</span>ouse,
+                <span class="example-pronunciation">h</span>arm
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'h'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('h')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'h'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.7 -->
+            <!-- 8 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.hcurve"
+                  [(ngModel)]="consonants.hcurve"
+                  name="hcurve"
+                />
+              </td>
+              <td>ɦ</td>
+              <td>
+                Australian English: be<span class="example-pronunciation"
+                  >h</span
+                >ind
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.8 -->
+            <!-- 9 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.latfone"
+                  [(ngModel)]="consonants.latfone"
+                  name="latfone"
+                />
+              </td>
+              <td>ɬ</td>
+              <td>
+                Semitic; Welsh "<span class="example-pronunciation">ll</span>"
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'latfone'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('latfone')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'latfone'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.9 -->
+            <!-- 10 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.latftwo"
+                  [(ngModel)]="consonants.latftwo"
+                  name="latftwo"
+                />
+              </td>
+              <td>ɮ</td>
+              <td>
+                Primarily in Mongolian, some langauges in Russia and an uncommon
+                language in Nigeria.
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'latftwo'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('latftwo')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'latftwo'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.10 -->
+            <!-- 11 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.vapprox"
+                  [(ngModel)]="consonants.vapprox"
+                  name="vapprox"
+                />
+              </td>
+              <td>ʋ</td>
+              <td>
+                Indian/South African English:
+                <span class="example-pronunciation">v</span>ine
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'vapprox'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('vapprox')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'vapprox'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.11 -->
+            <!-- 12 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.downr"
+                  [(ngModel)]="consonants.downr"
+                  name="downr"
+                />
+              </td>
+              <td>ɹ</td>
+              <td>
+                <span class="example-pronunciation">r</span>un, so<span
+                  class="example-pronunciation"
+                  >rr</span
+                >y
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'downr'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('downr')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'downr'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.12 -->
+            <!-- 13 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.downrretro"
+                  [(ngModel)]="consonants.downrretro"
+                  name="downrretro"
+                />
+              </td>
+              <td>ɻ</td>
+              <td>Mandarin <span class="example-pronunciation">r</span>òu</td>
+              <td></td>
+            </tr>
+            <!-- /.13 -->
+            <!-- 14 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.j"
+                  [(ngModel)]="consonants.j"
+                  name="j"
+                />
+              </td>
+              <td>j</td>
+              <td>
+                <span class="example-pronunciation">y</span>es,
+                <span class="example-pronunciation">y</span>ard,
+                <span class="example-pronunciation">y</span>ellow
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'j'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('j')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'j'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.14 -->
+            <!-- 15 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.mlva"
+                  [(ngModel)]="consonants.mlva"
+                  name="mlva"
+                />
+              </td>
+              <td>ʍ</td>
+              <td><span class="example-pronunciation">wh</span>ine</td>
+            </tr>
+            <!-- /.15 -->
+            <!-- 16 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.w"
+                  [(ngModel)]="consonants.w"
+                  name="w"
+                />
+              </td>
+              <td>w</td>
+              <td>
+                <span class="example-pronunciation">w</span>ater,
+                <span class="example-pronunciation">w</span>ait
+                <span class="example-pronunciation">w</span>indo<b>w</b>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'w'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('w')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'w'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.16 -->
+            <!-- 17 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.wvel"
+                  [(ngModel)]="consonants.wvel"
+                  name="wvel"
+                />
+              </td>
+              <td>ɰ</td>
+              <td>
+                Spanish: pa<span class="example-pronunciation">g</span>ar ('to
+                pay')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.17 -->
+            <!-- 18 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.l"
+                  [(ngModel)]="consonants.l"
+                  name="l"
+                />
+              </td>
+              <td>l</td>
+              <td>
+                <span class="example-pronunciation">l</span>ate,
+                <span class="example-pronunciation">l</span>arge, pu<span
+                  class="example-pronunciation"
+                  >ll</span
+                >
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'l'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('l')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'l'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.18 -->
+            <!-- 19 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.lretro"
+                  [(ngModel)]="consonants.lretro"
+                  name="lretro"
+                />
+              </td>
+              <td>ɭ</td>
+              <td>Indic (Hindi, Urdu, Bengali, Sanskrit, etc.)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'lretro'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('lretro')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'lretro'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.19 -->
+            <!-- 20 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.ypal"
+                  [(ngModel)]="consonants.ypal"
+                  name="ypal"
+                />
+              </td>
+              <td>ʎ</td>
+              <td>
+                Italian g<span class="example-pronunciation">li</span>,
+                Castilian
+                <span class="example-pronunciation">ll</span>
+              </td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'ypal'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('ypal')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'ypal'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.20 -->
+            <!-- 21 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.lvd"
+                  [(ngModel)]="consonants.lvd"
+                  name="lvd"
+                />
+              </td>
+              <td>ʟ</td>
+              <td>Primarily used in Oceanic languages (New Guinea, etc.)</td>
+              <td>
+                <i
+                  *ngIf="currentAudioStream !== 'lvd'"
+                  class="ph icon-sm icon-align-bottom ph-speaker-high phoneme-playback"
+                  (click)="playConsonantSound('lvd')"
+                ></i>
+                <div
+                  *ngIf="currentAudioStream === 'lvd'"
+                  class="spinner-border phoneme-spinner"
+                  role="status"
+                ></div>
+              </td>
+            </tr>
+            <!-- /.21 -->
+            <!-- 22 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.vepi"
+                  [(ngModel)]="consonants.vepi"
+                  name="vepi"
+                />
+              </td>
+              <td>ʢ</td>
+              <td>
+                Arabic: عَام <span class="example-pronunciation">h</span>am
+                [ʢaːm] ('year')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.22 -->
+            <!-- 23 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.simul"
+                  [(ngModel)]="consonants.simul"
+                  name="simul"
+                />
+              </td>
+              <td>ɧ</td>
+              <td>Swedish: sj-ljudet [²ɧeːˌjʉːdɛt]) lit: ('sj-sound')</td>
+              <td></td>
+            </tr>
+            <!-- /.23 -->
+            <!-- 24 -->
+            <!-- row 3 --  adzt d͡ʑ // adZ ɖ͡ʐ-->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.adzt"
+                  [(ngModel)]="consonants.adzt"
+                  name="adzt"
+                />
+              </td>
+              <td>d͡ʑ</td>
+              <td>
+                Polish: <span class="example-pronunciation">dź</span>więk
+                [d͡ʑvjɛŋk] ('sound')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.24 -->
+            <!-- 25 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.adZ"
+                  [(ngModel)]="consonants.adZ"
+                  name="adZ"
+                />
+              </td>
+              <td>ɖ͡ʐ</td>
+              <td>
+                Standard: <span class="example-pronunciation">dż</span>em [ɖ͡ʐɛm]
+                ('jam')
+              </td>
+              <td></td>
+            </tr>
+            <!-- /.25 -->
+            <!-- 26 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npcpa"
+                  [(ngModel)]="consonants.npcpa"
+                  name="npcpa"
+                />
+              </td>
+              <td>ǃ (Post)alveoalar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.26 -->
+            <!-- 27 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npvip"
+                  [(ngModel)]="consonants.npvip"
+                  name="npvip"
+                />
+              </td>
+              <td>ʄ Palatal</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.27 -->
+            <!-- 28 -->
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="language.consonants?.npev"
+                  [(ngModel)]="consonants.npev"
+                  name="npev"
+                />
+              </td>
+              <td>kʼ Velar</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.28 -->
+            <!-- 29 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npcal"
+                  [(ngModel)]="consonants.npcal"
+                  name="npcal"
+                />
+              </td>
+              <td>ǁ Alveolar lateral</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.29 -->
+            <!-- 30 -->
+            <tr>
+              <td>
+                <input
+                  class="other-symbol-checkbox"
+                  type="checkbox"
+                  [checked]="language.consonants?.npviu"
+                  [(ngModel)]="consonants.npviu"
+                  name="npviu"
+                />
+              </td>
+              <td>ʛ Uvular</td>
+              <td>Non-Pulmonic</td>
+              <td></td>
+            </tr>
+            <!-- /.30 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+</div>

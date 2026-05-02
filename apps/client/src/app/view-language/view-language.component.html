@@ -1,0 +1,190 @@
+<div class="view-language">
+  <app-loading-spinner />
+
+  @if (!loading && language) {
+  <div class="view-language-container">
+    @if (!isPublicMode) {
+    <div class="view-language-header">
+      <div class="view-language-header-content">
+        @if (isEditMode) {
+        <div>
+          <p>Customize language view</p>
+          <span class="">Last saved: {{ language.lastUpdated | date }}</span>
+        </div>
+        }
+      </div>
+      <div class="view-language-header-actions">
+        @if (isEditMode) {
+        <button
+          class="btn btn-secondary-gray btn-md"
+          (click)="updateViewMode('preview')"
+        >
+          <i class="ph ph-eye"></i>
+          <span>Preview mode</span>
+        </button>
+        } @if (isPreviewMode) {
+        <button
+          class="btn btn-secondary-gray btn-md"
+          (click)="updateViewMode('edit')"
+        >
+          <i class="ph ph-pencil-simple"></i>
+          <span>Edit shared view</span>
+        </button>
+        } @if (isEditMode) {
+        <button
+          class="btn btn-secondary-gray btn-md"
+          (click)="saveLanguageViewSettings(false)"
+        >
+          <i class="ph ph-cloud-arrow-up"></i>
+          <span>Save changes</span></button
+        >}
+        <!-- TODO: FLU-409 - Hiding this button until we work on restricted access -->
+        <!-- <button class="btn btn-primary btn-md">
+          <i class="ph ph-share-network"></i>
+          <span>Share language</span>
+        </button> -->
+      </div>
+    </div>
+    }
+    <app-view-language-header
+      [flagImageUrl]="language.flagUrl"
+      [languageName]="language.name"
+      [isEditMode]="isEditMode"
+      [isPublicMode]="isPublicMode"
+      [isPreviewMode]="isPreviewMode"
+      [showLanguageFlag]="showLanguageFlag"
+      (newViewEvent)="updateView($event)"
+      (customizeStylesDrawerToggle)="toggleCustomizeStylesDrawer($event)"
+    ></app-view-language-header>
+
+    <div class="view-language-body">
+      @if (currentView === 'overview') {
+      <app-view-language-overview
+        [isCustomizeStylesDrawerOpen]="isCustomizeStylesDrawerOpen"
+        [isEditMode]="isEditMode"
+        [isMobileView]="isMobileView"
+        [isPreviewMode]="isPreviewMode"
+        [isPublicMode]="isPublicMode"
+        [language]="language"
+        [showLanguageFlag]="showLanguageFlag"
+        (closeCustomizeStylesDrawerEvent)="toggleCustomizeStylesDrawer($event)"
+        (toggleHiddenLanguageSectionsEvent)="
+          toggleHiddenLanguageSections($event)
+        "
+      ></app-view-language-overview
+      >} @if (currentView === 'dictionary') {
+      <app-view-language-dictionary-view
+        [languageName]="language.name"
+        [vocabulary]="language.dictionary"
+        [isEditMode]="isEditMode"
+        [isMobileView]="isMobileView"
+        [isPreviewMode]="isPreviewMode"
+        [isPublicMode]="isPublicMode"
+      ></app-view-language-dictionary-view
+      >} @if (currentView === 'phrases') {
+      <app-view-language-phrases-view
+        [languageName]="language.name"
+        [phrases]="language.phrases"
+        [isEditMode]="isEditMode"
+        [isMobileView]="isMobileView"
+        [isPreviewMode]="isPreviewMode"
+        [isPublicMode]="isPublicMode"
+      ></app-view-language-phrases-view
+      >} @if (currentView === 'stories') {
+      <app-view-language-stories
+        [languageName]="language.name"
+        [story]="language.stories"
+      ></app-view-language-stories
+      >} @if (isEditMode) {
+      <div
+        class="offcanvas offcanvas-end"
+        [ngClass]="{
+          show: isCustomizeStylesDrawerOpen
+        }"
+        data-bs-scroll="true"
+        data-bs-backdrop="false"
+        tabindex="-1"
+        id="customize-styles-drawer"
+        aria-labelledby="offcanvasScrollingLabel"
+      >
+        <div class="offcanvas-header">
+          <p>Customize styles</p>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="toggleCustomizeStylesDrawer(false)"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="offcanvas-body-container">
+            <div class="offcanvas-body-content">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="includeLanguageFlag"
+                  [(ngModel)]="languageViewSettings.includeLanguageFlag"
+                  (ngModelChange)="toggleFlag($event)"
+                />
+                <div class="form-check-label-container">
+                  <label class="form-check-label" for="includeLanguageFlag"
+                    >Include language flag</label
+                  >
+                  <p class="form-check-label-secondary">
+                    The flag will appear at the top of your language page.
+                  </p>
+                </div>
+              </div>
+              <!-- Commenting out for now until we have a plan for customizing theme -->
+              <!-- <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="useFlagColors"
+                  [(ngModel)]="languageViewSettings.useFlagColors"
+                  (ngModelChange)="toggleCustomTheme($event)"
+                />
+                <div class="form-check-label-container">
+                  <label class="form-check-label" for="useFlagColors"
+                    >Customize page theme color using flag colors</label
+                  >
+                  <p class="form-check-label-secondary">
+                    Page theme colors will be used on some texts, buttons and
+                    navigation bars.
+                  </p>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="offcanvas-footer">
+          <button
+            type="button"
+            class="btn btn-md btn-danger btn-tertiary"
+            (click)="toggleCustomizeStylesDrawer(false)"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-md btn-primary"
+            (click)="saveLanguageViewSettings(true)"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- TODO: FLU-358: Enable footer when social interaction button functionality is implemented -->
+    <!-- <app-view-language-footer
+      [showMenu]="currentView === 'overview'"
+      [languageStats]="language.languageStats"
+    ></app-view-language-footer> -->
+  </div>
+  }
+</div>

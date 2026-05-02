@@ -1,0 +1,15 @@
+<div class="view-language-footer" [ngClass]="{ 'no-menu': !showMenu }">
+  @if (showMenu) {
+  <button
+    class="btn btn-tertiary btn-sm"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#table-of-contents-drawer"
+    aria-controls="table-of-contents-drawer"
+  >
+    <i class="ph ph-list"></i></button
+  >}
+
+  <app-social-interactions
+    [languageStats]="languageStats"
+  ></app-social-interactions>
+</div>

@@ -1,0 +1,54 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+.nav {
+  gap: toRem(5px);
+  padding-bottom: 15px;
+  row-gap: toRem(10px);
+}
+
+
+.nav-item {
+  font-size: toRem(10px);
+  cursor: pointer;
+  height: toRem(30px);
+
+
+  .nav-item-link {
+    @include displayFlex(row, center, flex-start);
+    gap: toRem(5px);
+    padding: toRem(5px) toRem(10px);
+    text-decoration: none;
+    border-radius: toRem(5px);
+    background-color: $colors-greyscale-200;
+    color: $colors-black;
+    font-size: toRem(12px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      background-color: $colors-greyscale-100;
+    }
+
+    &:hover {
+      background-color: $colors-greyscale-100;
+    }
+
+  }
+}
+
+.ipa-char {
+  @include displayFlex(row, center, center);
+
+  font-size: 1rem;
+  cursor: pointer;
+  padding: toRem(5px) toRem(10px);
+  width: 2rem; 
+  border-radius: 0.3125rem;
+  background-color: $background-bold;
+  color: $content-primary;
+  border: 1px solid $colors-greyscale-200;
+}

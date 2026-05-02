@@ -1,0 +1,18 @@
+<div class="relative">
+  <quill-editor
+    #quillEditor
+    [modules]="quillConfig"
+    [theme]="'snow'"
+    [style.height.px]="editorHeight"
+    [style.minHeight.px]="editorMinHeight">
+    (onEditorCreated)="setQuillInstance($event)">
+  </quill-editor>
+
+  <div class="absolute top-2 left-0 right-0 z-50" [hidden]="!showSelector">
+    <app-ipa-selector
+      (handleSelect)="handleCharacterSelect($event)"
+      (handleClose)="closeSelector()"
+    ></app-ipa-selector>
+  </div>
+</div>
+

@@ -1,0 +1,91 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.file-drop-zone {
+  @include displayFlex(column, center, center);
+  height: toRem(200px);
+  border: dotted toRem(3px) $colors-greyscale-400;
+  border-radius: toRem(10px);
+
+  p {
+    padding: 0 $spacing-md;
+  }
+
+  &.nv-file-over {
+    border-color: $colors-blue-500;
+    background-color: $colors-blue-100;
+  }
+
+  &.upload-complete {
+    border-color: $colors-green-500;
+    background-color: $colors-green-100;
+  }
+
+  &.upload-error {
+    border-color: $colors-red-500;
+    background-color: $colors-red-100;
+  }
+
+  &.successful-upload {
+    height: toRem(60px);
+  }
+
+  i {
+    font-size: toRem(50px);
+  }
+
+  .spinner-grow {
+    width: toRem(35px);
+  }
+}
+
+.successful-upload {
+  .uploaded-file {
+    border-color: $background-inverse;
+    background-color: $background-subtle;
+    padding: $spacing-lg $spacing-md;
+    border-radius: toRem(10px);
+  }
+
+  i {
+    font-size: toRem(24px);
+  }
+}
+
+.import-helper-row {
+  @include displayFlex(row, center, space-between);
+  width: 100%;
+}
+
+.import-helper-row > div:first-child {
+  white-space: nowrap;   // prevent wrapping
+  flex-shrink: 1;
+}
+
+.custom-file-u-wrapper {
+  @include displayFlex(row, center, flex-end);
+  position: relative;
+}
+
+.custom-file-u-button{
+  display: block;
+  width: 100%;
+  color: $background-inverse;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-file-u-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Hide the input while keeping it accessible */
+  cursor: pointer;
+}

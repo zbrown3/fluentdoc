@@ -1,0 +1,91 @@
+@import "../../../../scss/functions/common.scss";
+@import "../../../../scss/mixins/common.scss";
+@import "../../../../scss/mixins/typography.scss";
+@import "../../../../scss/variables/typography.scss";
+@import "../../../../scss/variables/breakpoints.scss";
+@import "../../../../scss/variables/colors.scss";
+@import "../../../../scss/variables/spacing.scss";
+
+.dictionary-view-section {
+  width: 100%;
+
+  & > p:first-child {
+    @include h1Bold;
+  }
+
+  &-container {
+    border-top: 1px solid $border-subtle;
+    margin: toRem(13px) 0 toRem(19px) 0;
+  }
+
+  &-content {
+    @include displayFlex(column, flex-start, flex-start);
+
+    gap: $spacing-xl;
+    padding: $spacing-md 0;
+  }
+
+  .dictionary-word-content {
+    @include displayFlex(column, flex-start, flex-start);
+
+    gap: $spacing-xs;
+
+    .word-details {
+      @include displayFlex(row, flex-start, flex-start);
+
+      gap: $spacing-md;
+
+      p {
+        &:first-child {
+          @include fontSemiBold;
+        }
+
+        &:nth-child(3) {
+          color: $content-secondary;
+        }
+      }
+
+      & + p {
+        color: $content-secondary;
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    & > p:first-child {
+      @include body2Bold;
+    }
+
+    &-section {
+      &-container {
+        margin: $spacing-lg 0 $spacing-md 0;
+      }
+
+      .dictionary-word-content {
+        @include displayFlex(column, flex-start, flex-start);
+
+        gap: $spacing-xs;
+
+        .word-details {
+          @include displayFlex(column, flex-start, flex-start);
+
+          gap: $spacing-xs;
+
+          p {
+            &:first-child {
+              @include body2Bold;
+            }
+
+            &:nth-child(3) {
+              color: $content-secondary;
+            }
+          }
+
+          & + p {
+            color: $content-secondary;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.onboarding {
+  background-color: $background-bold;
+  padding: toRem(30px) toRem(75px);
+  height: 100%;
+  overflow: auto;
+
+  .logo {
+    width: toRem(167px);
+    height: toRem(41px);
+  }
+
+  &-title-container {
+    @include displayFlex(row, flex-start, flex-start);
+
+    margin: toRem(34px) 0 $spacing-lg;
+    gap: $spacing-md;
+
+    img {
+      width: toRem(88.406px);
+      height: toRem(81px);
+      flex-shrink: 0;
+    }
+
+    & > div:nth-child(2) {
+      @include displayFlex(column, flex-start, flex-start);
+
+      gap: $spacing-xs;
+    }
+  }
+
+  &-content {
+    &-container {
+      @include displayFlex(column, flex-start, flex-start);
+
+      margin: toRem(42px) toRem(66px);
+      width: 100%;
+
+      .onboarding-stepper-container {
+        @include displayFlex(row, center, space-between);
+
+        width: 100%;
+        max-width: 1150px;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div>
+  <label [for]="name" class="form-label">{{ label }}</label>
+  <input
+    [required]="isRequired"
+    [type]="inputType"
+    [name]="name"
+    [class]="'form-control ' + classNames"
+    [id]="id"
+    [placeholder]="placeholder"
+  />
+  <div
+    [ngClass]="{
+      'invalid-feedback': validationType === 'error',
+      'valid-feedback': validationType === 'success'
+    }"
+  >
+    @if (getValidationIcon()) {
+    <img src="{{ getValidationIcon() }}" class="icon" alt="validation icon" />
+    }
+    <span>{{ validationMessage }}</span>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+@import "../../../../../scss/functions/common.scss";
+@import "../../../../../scss/mixins/common.scss";
+@import "../../../../../scss/mixins/typography.scss";
+@import "../../../../../scss/variables/colors.scss";
+
+.vowel-chart {
+  fill: $content-primary;
+
+  &-preview-container {
+    width: 598px;
+    height: auto;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-label {
+    @include body3SemiBold();
+  }
+
+  &-symbol {
+    @include body3Regular;
+
+    fill: $content-inverse-secondary;
+
+    &.selected {
+      fill: $content-primary;
+    }
+  }
+
+  &-lines {
+    stroke: $border-subtle;
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    &-preview-container {
+      width: 300px;
+      height: auto;
+    }
+  }
+}

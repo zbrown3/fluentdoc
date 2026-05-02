@@ -1,0 +1,28 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.create-language-page {
+  @include displayFlex(row, center, center);
+
+  padding: $spacing-2xl;
+
+  &-content {
+    @include displayFlex(column, flex-start, flex-start);
+
+    max-width: toRem(1160px);
+
+    h3 {
+      margin: $spacing-md 0 $spacing-lg 0;
+    }
+
+    .btn-primary {
+      align-self: flex-end;
+      width: toRem(343px);
+      margin-top: $spacing-lg;
+    }
+  }
+}

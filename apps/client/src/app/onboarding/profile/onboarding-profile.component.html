@@ -1,0 +1,75 @@
+<div class="onboarding-profile">
+  <div class="onboarding-profile-container align-items-start">
+    <div class="onboarding-profile-card card">
+      <div class="card-body">
+        <div class="profile-container">
+          <p [ngClass]="{ error: isUsernameInvalid() }">Username</p>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter username"
+            [(ngModel)]="profileInfo.username"
+            [ngClass]="{ error: isUsernameInvalid() }"
+            (input)="populateUsernameValidations()"
+          />
+          @if (isUsernameInvalid()) {
+          <div class="form-text text-danger">
+            Please enter valid username. Username should be 3-16
+            characters long, with no spaces, and may include these symbols:
+            comma (,), apostrophe ('), period (.), or underscore (_) only.
+          </div>
+          } @else {
+          <div class="form-text">
+            Username should be 3-16 characters long, with no spaces, and may
+            include these symbols: comma (,), apostrophe ('), period (.), or
+            underscore (_) only.
+          </div>
+          }
+          <p>Display name</p>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter display name"
+            [(ngModel)]="profileInfo.displayName"
+          />
+          @if (isDisplayNameInvalid()) {
+            <div class="form-text text-danger">
+              Please enter valid display name. Display name should be 1-16 characters long.
+            </div>
+          } @else {
+            <div class="form-text">
+              Display name should be 1-16 characters long.
+            </div>
+          }
+          <p>Bio</p>
+          <textarea
+            class="form-control"
+            placeholder="Enter a short bio (optional)"
+            [(ngModel)]="profileInfo.bio"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="onboarding-profile-footer">
+    <button class="btn btn-outline-primary" (click)="goToNextView(false)">
+      <i class="ph ph-arrow-left icon-sm"></i>
+      <span>Back</span>
+    </button>
+    <div
+      placement="top"
+      tooltip="Please finish the profile setup to go to the next step"
+      trigger="hover manual"
+      [isDisabled]="!getIsProfileComplete() || isUsernameInvalid()"
+    >
+      <button
+        class="btn btn-primary"
+        (click)="submit()"
+        [disabled]="!getIsProfileComplete() || isUsernameInvalid()"
+      >
+        <span>Save and next: create language</span>
+        <i class="ph ph-arrow-right icon-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>

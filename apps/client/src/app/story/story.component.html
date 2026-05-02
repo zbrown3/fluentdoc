@@ -1,0 +1,8 @@
+<div class="story-wrapper">
+  <div class="title-wrapper">
+    <input type="text" class="form-control story-title" [(ngModel)]="story.title" [placeholder]="getPlaceholderTitle()">
+  </div>
+  <quill-editor [(ngModel)]="story.content" [modules]="QUILL_CONFIG"
+                [theme]="'snow'"></quill-editor>
+  <button class="btn btn-primary save-btn" (click)="saveStory()"><i class="ph ph-floppy-disk"></i> Save changes</button>
+</div>

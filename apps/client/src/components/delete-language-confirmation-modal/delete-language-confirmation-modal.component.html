@@ -1,0 +1,55 @@
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="confirmDeleteModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure?</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Once you delete <strong>{{ languageToDelete.name }}</strong
+          >, any associated data, including stories, will also be deleted.
+          Before you proceed, we recommend exporting your language data to a PDF
+          to ensure you have a copy of your work.
+        </p>
+        <p>This action cannot be undone.</p>
+        <p>To confirm deletion, type “delete” below:</p>
+        <input
+          type="text"
+          [(ngModel)]="deleteConfirmation"
+          class="form-control"
+        />
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="confirmDelete()"
+          type="button"
+          class="btn btn-danger"
+          [disabled]="deleteConfirmation !== 'delete'"
+          data-bs-dismiss="modal"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

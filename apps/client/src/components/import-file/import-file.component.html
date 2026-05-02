@@ -1,0 +1,145 @@
+<div class="modal-header">
+  <h5 class="modal-title">Import {{type === TYPE_DICTIONARY ? 'Dictionary' : 'Phrases'}}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="closeModal()"
+    aria-label="Close"
+  ></button>
+</div>
+<div class="modal-body">
+  @if (isStarterPlan()) {
+    <div class="paywall-message">
+      <div class="dis-flex justify-content-start align-items-center gap-3">
+        <i class="ph ph-warning-circle text-warning"></i>
+        <div class="paywall-stack dis-flex flex-column justify-content-start gap-1">
+          <p>Only the first {{getRemainingLimit()}} {{type === TYPE_DICTIONARY ? 'words' : 'phrases'}} will be uploaded.</p>
+          <p>Upgrade to add more {{type === TYPE_DICTIONARY ? 'words' : 'phrases'}}.</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (updateStatus === status_success) {
+    <div class="file-drop-zone upload-complete">
+      <div class="dis-flex flex-column align-items-center gap-2 text-center">
+        <i class="ph ph-rocket-launch text-success"></i>
+        <p>You've successfully uploaded {{entryCount}} {{type === TYPE_DICTIONARY ? 'words' : 'phrases'}}!</p>
+      </div>
+    </div>
+  }
+
+  @if (updateStatus === status_error) {
+    <div class="file-drop-zone upload-error">
+      <div class="dis-flex flex-column align-items-center gap-2 text-center">
+        <i class="ph ph-file-x text-danger"></i>
+        <p>{{ error_message }}</p>
+      </div>
+    </div>
+  }
+
+  @if (updateStatus === status_uploading) {
+    <div class="file-drop-zone upload-in-progress">
+      <div class="dis-flex flex-column align-items-center gap-2">
+        <div class="spinner-grow" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>We're importing your {{type === TYPE_DICTIONARY ? 'dictionary' : 'phrases'}}... hold tight...</p>
+      </div>
+    </div>
+  }
+
+  @if (fileUploader.getNotUploadedItems().length && updateStatus === status_default) {
+    <div class="file-drop-zone successful-upload" [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }">
+      <div  *ngFor="let item of fileUploader.queue" class="uploaded-file dis-flex align-items-center gap-2 px-3">
+        <i class="ph ph-file text-success"></i>
+        <span>
+          {{ item?.file?.name }} |
+          {{ item?.file?.size / 1024 / 1024 | number : ".2" }} MB
+        </span>
+        <i class="ph ph-trash text-danger cursor-pointer ms-auto" (click)="fileUploader.clearQueue()"></i>
+      </div>
+    </div>
+
+  }
+
+  @if (!fileUploader.getNotUploadedItems().length && updateStatus === status_default) {
+    <div ng2FileDrop
+         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+         (fileOver)="fileOverBase($event)"
+         [uploader]="fileUploader"
+         class="well file-drop-zone">
+      <div class="dis-flex flex-column align-items-center gap-2">
+        <i class="ph ph-file-dashed"></i>
+        <p>Drag and drop {{type === TYPE_DICTIONARY ? 'dictionary' : 'phrases'}} file here</p>
+      </div>
+    </div>
+  }
+
+  <div class="import-helper-row">
+    <div
+      class="cursor-pointer text-primary"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#helpPanel"
+    >
+      How to prepare your {{type === TYPE_DICTIONARY ? 'dictionary' : 'phrases'}} file for format
+    </div>
+    <div class="custom-file-u-wrapper">
+      <button class="btn btn-outline-primary ms-2" [disabled]="fileUploader.getNotUploadedItems().length">
+        Browse files
+      </button>
+      <input
+        type="file"
+        ng2FileSelect
+        [uploader]="fileUploader"
+        class="custom-file-u-input"
+        id="languageFileUpload"
+        #fileInput
+        [disabled]="fileUploader.getNotUploadedItems().length"
+      />
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  @if (updateStatus === status_success) {
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="closeModal()"
+    >
+      Continue
+    </button>
+  }
+  @else {
+    <button
+      type="button"
+      class="btn btn-tertiary"
+      data-dismiss="modal"
+      (click)="closeModal()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!fileUploader.getNotUploadedItems().length"
+      (click)="fileUploader.uploadAll()"
+    >
+      Import
+    </button>
+  }
+
+
+</div>
+
+<!-- offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="helpPanel" aria-labelledby="helpPanelLabel">
+  <div class="overflow-scroll">
+    @if (type === TYPE_DICTIONARY) {
+      <app-dictionary-canvas/>
+    } @else {
+      <app-phrases-canvas/>
+    }
+  </div>
+</div>

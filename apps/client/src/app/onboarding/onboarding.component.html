@@ -1,0 +1,56 @@
+<div class="onboarding">
+  <div class="navbar">
+    <img
+      src="assets/images/brand/fluentdoc_logo.svg"
+      alt="logo"
+      class="logo"
+    />
+  </div>
+  <div class="onboarding-content-container">
+    <div class="onboarding-stepper-container">
+      <app-fdds-stepper
+        [showLabel]="true"
+        [label]="getStepperLabel()"
+        [steps]="steps"
+        [currentStep]="currentStep"
+        [dataByStep]="currentOnboardingState"
+      ></app-fdds-stepper>
+      @if (currentStep > 0) {
+      <button class="btn btn-tertiary" (click)="goToDashboard()">
+        Skip quick start and explore by myself</button
+      >}
+    </div>
+    <div class="onboarding-title-container">
+      <img [src]="getStepImage()" alt="" />
+      <div class="">
+        <h1>{{ steps[currentStep]["title"] }}</h1>
+        <p>
+          {{ steps[currentStep]["description"] }}
+        </p>
+      </div>
+    </div>
+    <div class="onboarding-content">
+      @if (currentView === 'questionaire') {
+        <app-onboarding-questionaire
+          [view]="currentView"
+          (newViewEvent)="updateView($event)"
+          [currentOnboardingQuestionaireState]="currentOnboardingState[0]"
+        ></app-onboarding-questionaire>
+      }
+      @if (currentView === 'profile') {
+        <app-onboarding-profile
+          [view]="currentView"
+          [user]="user"
+          (newViewEvent)="updateView($event)"
+          [currentOnboardingProfileState]="currentOnboardingState[1]"
+        ></app-onboarding-profile>
+      }
+      @if (currentView === 'conlang') {
+        <app-create-first-conlang
+          [view]="currentView"
+          (newViewEvent)="updateView($event)"
+        ></app-create-first-conlang>
+      }
+    </div>
+  </div>
+</div>

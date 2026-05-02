@@ -1,0 +1,108 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.view-language-header {
+  background-color: $background-bold;
+  position: sticky;
+  top: 60.5px;
+  width: 100%;
+  z-index: 2;
+
+  &.public-view {
+    top: 0;
+  }
+
+  &-container {
+    @include displayFlex(row, center, space-between);
+
+    padding: $spacing-md $spacing-xl;
+    border-bottom: 1px solid $border-subtle;
+
+    ul.nav {
+      gap: $spacing-4xl;
+
+      li {
+        @include body3Regular;
+        cursor: pointer;
+
+        &.language-logo-container {
+          @include displayFlex(row, center, flex-start);
+
+          cursor: default;
+          gap: $spacing-md;
+          border-right: 1px solid $border-subtle;
+          padding-right: $spacing-2xl;
+          margin-right: toRem(-12px);
+
+          .flag-container {
+            @include displayFlex(column, center, center);
+
+            position: relative;
+            width: toRem(58px);
+            height: toRem(34px);
+            border-radius: 0.25rem;
+            aspect-ratio: 29/17;
+
+            &.default-flag-background {
+              background-color: $colors-aqua-100;
+            }
+
+            & > .flag-img {
+              width: 100%;
+              height: auto;
+              border-radius: 0.25rem;
+            }
+          }
+
+          p {
+            @include body2Bold;
+          }
+        }
+
+        a {
+          color: $content-secondary;
+          padding: 0;
+
+          &.active,
+          &:hover,
+          &:active {
+            color: $content-brand;
+          }
+        }
+      }
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    &-container {
+      ul.nav {
+        gap: $spacing-2xl;
+
+        li {
+          &.language-logo-container {
+            padding-right: 0.75rem;
+            margin-right: -1.25rem;
+
+            .flag-container,
+            .flag-container + p {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .mobile-menu {
+        display: contents;
+      }
+    }
+  }
+}

@@ -1,0 +1,211 @@
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/typography.scss";
+
+/*//////////////////////////////////////////////////////////////////
+[ COMPONENT STYLES ]*/
+
+button {
+  border-radius: 25px;
+}
+
+i {
+  font-style: italic;
+}
+
+.task-container {
+  margin-top: 30px;
+}
+
+.card {
+  box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+    0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+    0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+    0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+  border-width: 0;
+  transition: all 0.2s;
+  border-radius: 10px;
+}
+
+.card-header-row {
+  margin-bottom: 20px;
+}
+
+.widget-heading .completed {
+  text-decoration: line-through;
+}
+
+.widget-subheading {
+  color: $content-secondary;
+  font-size: 10px;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: $background-bold;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.todo-indicator {
+  position: absolute;
+  width: 4px;
+  height: 60%;
+  border-radius: 0.3rem;
+  left: 0.625rem;
+  top: 20%;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.bg-warning {
+  background-color: $background-warning;
+}
+
+.widget-content {
+  padding: 1rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.widget-content .widget-content-wrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+  align-items: center;
+}
+
+.widget-content .widget-content-right.widget-content-actions {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.completed-task {
+  text-decoration: line-through;
+  color: $content-secondary;
+}
+
+.widget-content .widget-content-right {
+  margin-left: auto;
+}
+
+.btn-outline-success {
+  color: $content-positive;
+  border-color: $border-positive;
+}
+
+.btn-outline-success:hover {
+  color: $content-inverse-primary;
+  background-color: $background-positive;
+  border-color: $border-positive;
+}
+
+.btn-outline-success:hover {
+  color: $content-inverse-primary;
+  background-color: $background-positive;
+  border-color: $border-positive;
+}
+
+.btn-primary {
+  color: $content-inverse-primary;
+  background-color: $background-pressed-inverse;
+  border-color: $border-bold;
+}
+
+.category-content {
+  .content-row {
+    margin-bottom: 12px;
+
+    .add-label {
+      margin-left: 12px;
+      margin-left: 12px;
+      color: $content-secondary;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .content-label {
+      margin-left: 12px;
+      margin-right: 12px;
+      box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+        0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+        0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+        0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+      padding: 0.25rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .project-label {
+      margin-left: 12px;
+      margin-right: 12px;
+      box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+        0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+        0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+        0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+      padding: 0.25rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 14px;
+      background-color: $background-inverse;
+      color: $content-inverse-primary;
+    }
+  }
+}
+
+.content-selection-wrapper {
+  margin-bottom: 15px;
+  margin-top: 5px;
+
+  .title {
+    font-weight: $font-weight-semi-bold;
+    font-size: 12px;
+    color: $content-secondary;
+  }
+
+  .custom-control-label {
+    padding-top: 4px;
+    font-size: 14px;
+  }
+}
+
+.color-picker {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: transparent;
+  text-shadow: 0 0 0 $colors-aqua-500;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/*------------------------------------------------------------------
+[ Responsive ]*/
+
+@media (max-width: $breakpoints-xl) {
+}
+
+@media (max-width: $breakpoints-lg) {
+}
+
+@media (max-width: $breakpoints-md) {
+}
+
+@media (max-width: $breakpoints-sm) {
+}

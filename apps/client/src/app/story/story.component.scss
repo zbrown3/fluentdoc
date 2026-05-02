@@ -1,0 +1,28 @@
+.story-wrapper {
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+
+  .title-wrapper {
+    margin: 1rem 0 2rem 0;
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 2.25rem;
+      background-color: transparent;
+      border: none;
+      text-align: center;
+    }
+  }
+
+  quill-editor {
+    width: 100%;
+  }
+
+  button {
+    margin-top: .5rem;
+    border-radius: 25px;
+  }
+
+}
+

@@ -1,0 +1,16 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.social-interactions {
+  &-container {
+    @include displayFlex(row, center, center);
+
+    gap: $spacing-lg;
+
+    @media screen and (max-width: $breakpoints-md) {
+      gap: $spacing-xs;
+    }
+  }
+}

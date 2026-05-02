@@ -1,0 +1,227 @@
+<div class="language-section-header">
+  <div>
+    <h4>{{ LANGUAGE_SUBSECTIONS.numberSystem.title }}</h4>
+    <p>
+      {{
+        formatDynamicString(
+          LANGUAGE_SUBSECTIONS.numberSystem.description,
+          language.name
+        )
+      }}
+    </p>
+  </div>
+</div>
+
+<!-- Numeral System form Input-->
+<div class="form-group">
+  <p>
+    <b>Describe {{ language.name }}'s numeral system below:</b>
+    <small
+      class="hide-description"
+      *ngIf="showDescription"
+      (click)="showDescription = false"
+    >
+      hide description</small
+    >
+    <small
+      class="hide-description"
+      *ngIf="!showDescription"
+      (click)="showDescription = true"
+    >
+      show description</small
+    >
+  </p>
+  <div *ngIf="showDescription">
+    <div class="alert alert-danger" role="alert" *ngIf="descriptionError">
+      {{ descriptionErrorMessage }}
+    </div>
+    <quill-editor
+      [(ngModel)]="editLanguage.numeralDescription"
+      [modules]="QUILL_CONFIG"
+      [theme]="'snow'"
+    ></quill-editor>
+
+    <div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        (click)="addNumeralDescription()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+<!-- /.Numeral system form form Input-->
+
+<hr />
+
+<!-- add base number (optional) -->
+<form (ngSubmit)="addBaseNumber()" class="mb-2">
+  <p>
+    <b>Base Number </b>
+    <i
+      class="ph icon-sm icon-align-bottom ph-info"
+      tooltip='A base number of different digits or combination of digits and
+    letters that a system of counting uses to represent numbers. For example, the most common base used
+    today is the decimal system. Because "dec" means 10, it uses the 10 digits from 0 to 9.'
+    ></i>
+    <small
+      class="hide-description ml-1"
+      *ngIf="showBaseNumber"
+      (click)="showBaseNumber = false"
+    >
+      hide base number</small
+    >
+    <small
+      class="hide-description ml-1"
+      *ngIf="!showBaseNumber"
+      (click)="showBaseNumber = true"
+    >
+      show base number</small
+    >
+  </p>
+  <div *ngIf="showBaseNumber">
+    <div class="form-inline">
+      <!-- Numeral -->
+      <div class="form-group new-word-input">
+        <label for="baseNumber"> Base Number </label>
+        <input
+          [(ngModel)]="editLanguage.baseNumber"
+          name="baseNumber"
+          id="baseNumber"
+          type="number"
+          placeholder="Base Number (Optional)"
+          autocomplete="off"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2 mr-3">
+      Add Base Number
+    </button>
+    <button
+      *ngIf="language.baseNumber"
+      type="button"
+      class="btn btn-primary mt-2"
+      (click)="removeBaseNumber()"
+    >
+      Remove Base Number
+    </button>
+  </div>
+</form>
+<!-- /.add base number (optional) -->
+
+<hr />
+
+<!-- Numeral Table -->
+<div class="numeral-table-main">
+  <!-- show message if there are no numbers -->
+  <div
+    *ngIf="dataSource.length === 0"
+    class="alert-primary text-center mt-2 alphabet-alert"
+    role="alert"
+  >
+    <i class="ph icon-sm icon-align-bottom ph-info"></i>
+    No numerals have been added yet. Add some below!
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    *ngIf="dataSource.length > 0"
+  >
+    <!-- Phrase Column -->
+    <ng-container matColumnDef="numeral">
+      <th mat-header-cell *matHeaderCellDef>Numeral</th>
+      <td mat-cell *matCellDef="let element">{{ element.numeral }}</td>
+    </ng-container>
+
+    <!-- Transliteration Column -->
+    <ng-container matColumnDef="pronunciation">
+      <th mat-header-cell *matHeaderCellDef>Phonetic Transcription</th>
+      <td mat-cell *matCellDef="let element">{{ element.pronunciation }}</td>
+    </ng-container>
+
+    <!-- Spelling Column -->
+    <ng-container matColumnDef="spelling">
+      <th mat-header-cell *matHeaderCellDef>Spelling</th>
+      <td mat-cell *matCellDef="let element">{{ element.spelling }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="btn btn-danger" (click)="deleteNumeral(element)">
+          Delete
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+  </table>
+</div>
+
+<hr class="cl-hr" />
+<!-- add numeral form -->
+<form [formGroup]="addNumeralForm" (ngSubmit)="addNumeral()" class="mb-2">
+  <p><b>Add Numeral</b></p>
+  <div class="add-numeral-wrapper">
+    <!-- Numeral -->
+    <div class="form-group new-word-input">
+      <label for="numeral"> Numeral<span class="text-danger">*</span> </label>
+      <input
+        class="form-control"
+        formControlName="numeral"
+        name="numeral"
+        id="numeral"
+        type="number"
+        placeholder="Numeral"
+        autocomplete="off"
+        [ngClass]="{ 'is-invalid': submitted && f.numeral.errors }"
+      />
+    </div>
+    <!-- Pronunciation -->
+    <div class="form-group new-word-input">
+      <label for="pronunciation">
+        Phonetic Transcription<span class="text-danger">*</span>
+        <i
+          class="ph icon-sm icon-align-bottom ph-info"
+          tooltip="While IPA is preferred, this can be ipa or loose transcription.
+          Whatever system you have that is clear to define your pronunciation will work."
+          placement="right">
+        </i>
+      </label>
+      <input
+        class="form-control"
+        formControlName="pronunciation"
+        name="pronunciation"
+        id="pronunciation"
+        type="text"
+        placeholder="Enter pronunciation"
+        autocomplete="off"
+        [ngClass]="{ 'is-invalid': submitted && f.pronunciation.errors }"
+      />
+    </div>
+    <!-- Spelling -->
+    <div class="form-group new-word-input">
+      <label for="spelling"> {{ language.name }} Spelling </label>
+      <input
+        class="form-control"
+        formControlName="spelling"
+        name="spelling"
+        id="spelling"
+        type="text"
+        placeholder="Spelling (If possible)"
+        autocomplete="off"
+        [ngClass]="{ 'is-invalid': submitted && f.spelling.errors }"
+      />
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-2">Add Numeral</button>
+</form>
+<!-- /.add numeral form -->

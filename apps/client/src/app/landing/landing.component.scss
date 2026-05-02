@@ -1,0 +1,28 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.landing {
+  @include displayFlex(row, center, center, nowrap);
+
+  height: 100vh;
+  background-color: $background-subtle;
+
+  &-form {
+    @include displayFlex(column, center, center, nowrap);
+
+    app-login-form,
+    app-signup-form,
+    app-reset-password-form {
+      width: toRem(406px);
+    }
+
+    app-forgot-password-form {
+      @include displayFlex(column, center, center);
+
+      width: toRem(610px);
+    }
+  }
+}

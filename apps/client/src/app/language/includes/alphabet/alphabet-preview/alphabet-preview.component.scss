@@ -1,0 +1,19 @@
+@import "../../../../../scss/functions/common.scss";
+@import "../../../../../scss/mixins/common.scss";
+@import "../../../../../scss/mixins/typography.scss";
+@import "../../../../../scss/variables/colors.scss";
+@import "../../../../../scss/variables/spacing.scss";
+
+.alphabet-grid {
+  @include grid(2);
+
+  .letter-cell {
+    @include body3SemiBold;
+
+    color: $content-primary;
+  }
+
+  .pronunciation-cell {
+    color: $content-secondary;
+  }
+}

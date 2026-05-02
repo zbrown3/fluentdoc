@@ -1,0 +1,37 @@
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.button-toggle {
+  &-container {
+    .mat-button-toggle-group-appearance-standard {
+      border: 1px solid $border-subtle;
+      border-radius: 1rem;
+      height: 32px;
+      align-items: center;
+
+      .mat-button-toggle-appearance-standard {
+        @include body3SemiBold;
+
+        color: $content-secondary;
+        background-color: $background-bold;
+
+        &.mat-button-toggle-checked {
+          color: $content-brand;
+          background-color: $background-subtle;
+        }
+
+        &.mat-button-toggle-disabled {
+          color: $content-disabled;
+          background-color: $background-disabled;
+          border-color: $border-disabled;
+        }
+
+        i {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

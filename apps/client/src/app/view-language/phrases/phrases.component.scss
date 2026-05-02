@@ -1,0 +1,149 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.phrases-view {
+  @include displayFlex(column, center, flex-start);
+  @include body3Regular;
+
+  gap: $spacing-2xl;
+  width: 100%;
+
+  &-header {
+    @include displayFlex(row, center, flex-start);
+
+    gap: $spacing-4xl;
+    width: 100%;
+    max-width: toRem(1158px);
+    position: fixed;
+
+    padding: $spacing-3xl 0;
+    background-color: $background-bold;
+
+    &.public-mode {
+      top: 3rem;
+    }
+
+    &.edit-mode,
+    &.preview-mode {
+      top: 7.25rem;
+    }
+
+    .input-wrapper {
+      min-width: 50%;
+    }
+  }
+
+  &-nav {
+    @include displayFlex(row, center, space-between);
+
+    width: 100%;
+    max-width: toRem(1158px);
+    position: fixed;
+
+    padding: toRem(14px) 0;
+    background-color: $background-bold;
+
+    &.public-mode {
+      top: 125px;
+    }
+
+    &.edit-mode,
+    &.preview-mode {
+      top: 13rem;
+    }
+
+    .btn.btn-link {
+      @include body3Regular;
+
+      &:disabled {
+        background-color: unset;
+        border: unset;
+      }
+    }
+  }
+
+  &-body {
+    width: 100%;
+    max-width: toRem(1158px);
+
+    &-content {
+      @include displayFlex(column, flex-start, flex-start);
+
+      overflow: auto;
+      padding: toRem(145px) 0;
+
+      app-view-language-phrases-view-section {
+        width: 100%;
+      }
+
+      .no-phrases-message {
+        @include displayFlex(column, center, center);
+        width: 100%;
+        padding: $spacing-xl;
+        text-align: center;
+
+        p {
+          color: $content-secondary;
+          margin: 0;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    padding: 0;
+    max-width: toRem(923px);
+    align-items: normal;
+
+    &-header {
+      padding: toRem(20px);
+
+      &.public-mode {
+        top: 2.5rem;
+      }
+
+      &-title {
+        display: none;
+      }
+
+      .input-wrapper {
+        width: 100%;
+      }
+    }
+
+    &-nav {
+      @include displayFlex(column, center, space-between);
+
+      gap: $spacing-xs;
+      width: 5%;
+      position: fixed;
+      right: $spacing-md;
+      background-color: $background-bold;
+      padding: 0;
+
+      .btn.btn-link {
+        @include fontRegular;
+      }
+    }
+
+    &-body {
+      @include displayFlex(row, flex-start, flex-start);
+
+      width: 100%;
+      gap: toRem(18px);
+      margin-top: $spacing-6xl;
+
+      &-content {
+        width: 95%;
+        overflow: auto;
+        padding: $spacing-xl toRem(20px);
+      }
+    }
+  }
+}

@@ -1,0 +1,236 @@
+<div class="language-section-header">
+  <div>
+    <h4>{{LANGUAGE_SUBSECTIONS.alphabet.title}}</h4>
+    <p>
+      {{formatDynamicString(LANGUAGE_SUBSECTIONS.alphabet.description,
+      language.name)}}
+    </p>
+  </div>
+  <div>
+    <button class="btn btn-primary save-btn" (click)="update()" [disabled]="isSaving">
+      @if (!isSaving) {
+        <i class="ph ph-floppy-disk"></i> Save changes
+      } @else {
+        <span class="spinner-border spinner-border-sm me-2"></span> Saving...
+      }
+    </button>
+  </div>
+</div>
+
+<!-- Alphabet Form -->
+<form>
+  <!-- Consonant Mapping -->
+  <p class="alphabet-header">Consonants</p>
+  <div class="row">
+    <!-- show message if there are no consonants selected -->
+    <div
+      *ngIf="consonants.length === 0"
+      class="alert-primary text-center mt-2 alphabet-alert"
+      role="alert"
+    >
+    <i class="ph icon-sm icon-align-bottom ph-info"></i> No consonants
+      selected!
+    </div>
+    <!-- /.show message if there are no consonants selected -->
+
+    <div class="col-12 col-xl-3" *ngIf="consonants.length > 0">
+      <table class="table table-striped sound-table table-sm">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let consonant of consonants.slice(0,23); let i = index">
+            <td>{{consonant}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[consonants[i]]"
+                name="{{consonant}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="consonants.length > 23" class="col-12 col-xl-3">
+      <table class="table table-striped sound-table table-sm">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let consonant of consonants.slice(23,46); let i = index">
+            <td>{{consonant}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[consonants[i+23]]"
+                name="{{consonant}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="consonants.length > 46" class="col-12 col-xl-3">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let consonant of consonants.slice(46,consonants.length); let i = index"
+          >
+            <td>{{consonant}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[consonants[i+46]]"
+                name="{{consonant}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- /.Consonant Mapping -->
+
+  <hr />
+
+  <!-- Vowel Mapping -->
+  <p class="alphabet-header">Vowels</p>
+  <div class="row">
+    <!-- show message if there are no consonants selected -->
+    <div
+      *ngIf="vowels.length === 0"
+      class="alert-primary text-center mt-2 alphabet-alert"
+      role="alert"
+    >
+    <i class="ph icon-sm icon-align-bottom ph-info"></i> No
+      vowels selected!
+    </div>
+    <!-- /.show message if there are no consonants selected -->
+
+    <div class="col-12 col-xl-3" *ngIf="vowels.length > 0">
+      <table class="table table-striped sound-table table-sm">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vowel of vowels.slice(0,15); let i = index">
+            <td>{{vowel}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[vowels[i]]"
+                name="{{vowel}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="vowels.length > 15" class="col-12 col-xl-3">
+      <p class="alphabet-header">Vowels</p>
+      <table class="table table-striped sound-table table-sm">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vowel of vowels.slice(15,30); let i = index">
+            <td>{{vowel}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[vowels[i+15]]"
+                name="{{vowel}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="vowels.length > 30" class="col-12 col-xl-3">
+      <p class="alphabet-header">Vowels</p>
+      <table class="table table-striped sound-table table-sm">
+        <thead>
+          <tr>
+            <th>Sound</th>
+            <th>Symbol</th>
+            <th><span class="badge badge-primary">Coming Soon</span> Sound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let vowel of vowels.slice(30,vowels.length); let i = index"
+          >
+            <td>{{vowel}}</td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="alphabet[vowels[i+30]]"
+                name="{{vowel}}"
+              />
+            </td>
+            <td>
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-microphone"></i> /
+              <i class="ph icon-sm icon-align-bottom ph-fill ph-speaker-high"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- /.Vowel Mapping -->
+</form>
+<!-- /.Alphabet Form -->

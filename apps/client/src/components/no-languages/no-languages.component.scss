@@ -1,0 +1,25 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/spacing.scss";
+
+.no-languages {
+  @include displayFlex(column, center, center);
+
+  gap: $spacing-xl;
+  margin-top: $spacing-xl;
+
+  &-container {
+    @include displayFlex(column, center, center);
+    margin-bottom: toRem(30px);
+
+    .create-language-btn {
+      margin-top: toRem(30px);
+    }
+  }
+
+  & > span {
+    @include h5SemiBold;
+  }
+}

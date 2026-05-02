@@ -1,0 +1,22 @@
+<div class="consonants-grid">
+  <div
+    class="grid-container"
+    [ngClass]="{
+      'grid-sm': consonantsByType[tablesByType].length < 5
+    }"
+    *ngFor="let tablesByType of tablesByConsonantType; let i = index"
+  >
+    <div class="grid-header">
+      {{ tablesByType }}
+    </div>
+    <div
+      class="grid-item"
+      [ngClass]="{
+        'custom-start-row': consonantsByType[tablesByType].length < 5
+      }"
+      *ngFor="let consonant of consonantsByType[tablesByType]"
+    >
+      {{ consonant.symbol }}
+    </div>
+  </div>
+</div>

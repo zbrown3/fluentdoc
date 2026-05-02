@@ -1,0 +1,89 @@
+<div class="language-card-section">
+  <div class="profile-languages">
+    @if(fullLanguagesList.length === 0) {
+    <app-no-languages
+      [isPublicRoute]="isPublicRoute"
+    ></app-no-languages>
+    } @else {
+    <div
+      class="language-view-filters-container d-flex justify-content-between align-items-center w-100"
+    >
+      <!-- Sorting Dropdown -->
+      <div class="language-view-sort-container">
+        <button
+          class="btn sort-btn"
+          type="button"
+          id="sortMenu"
+          data-bs-toggle="dropdown"
+        >
+          {{ currentSortLabel }}
+          <i class="ph ph-caret-down ms-2"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="sortMenu">
+          <li>
+            <span
+              class="dropdown-item"
+              (click)="
+                updateSort('lastUpdated', 'Updated'); $event.preventDefault()
+              "
+            >
+              Updated
+            </span>
+          </li>
+          <li>
+            <span
+              class="dropdown-item"
+              (click)="updateSort('name', 'Name'); $event.preventDefault()"
+            >
+              Name
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Search Language Input -->
+      <div class="language-view-search-container">
+        <div class="input-wrapper">
+          <i class="ph ph-magnifying-glass input-icon"></i>
+          <input
+            id="search-phrases"
+            type="text"
+            class="form-control"
+            placeholder="Search languages"
+            aria-label="Search languages"
+            autocomplete="off"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onLanguageSearchChange($event)"
+          />
+        </div>
+      </div>
+      <!-- Language View Toggle -->
+      <app-fdds-button-toggle
+        [buttonToggles]="viewButtonToggles"
+        [currentValue]="languageView"
+        [disabled]="fullLanguagesList.length === 0"
+      ></app-fdds-button-toggle>
+    </div>
+
+    <!-- Language views -->
+    @if(!!searchTerm && filteredLanguages.length === 0) {
+    <app-empty-search-result
+      (deleteLanguageSearchEvent)="onLanguageSearchChange($event)"
+    ></app-empty-search-result>
+    } @else { @if(languageView === 'card') {
+    <app-language-cards
+      class="w-100"
+      [languages]="!!searchTerm ? filteredLanguages : fullLanguagesList"
+      [isPublicRoute]="isPublicRoute"
+      (setDeleteLanguageEvent)="populateLanguage($event)"
+    ></app-language-cards>
+    } @else {
+    <app-dashboard-list-view
+      [languages]="!!searchTerm ? filteredLanguages : fullLanguagesList"
+      [searchTerm]="searchTerm"
+      [isPublicRoute]="isPublicRoute"
+      (setDeleteLanguageEvent)="populateLanguage($event)"
+    ></app-dashboard-list-view>
+    } } }
+  </div>
+</div>

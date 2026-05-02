@@ -1,0 +1,1038 @@
+[
+  {
+    "name": "Accusative",
+    "description": "A grammatical case used to indicate the direct object of a verb."
+  },
+  {
+    "name": "Adposition",
+    "description": "A grammatical category that includes prepositions and postpositions, typically used to indicate location, direction, or other relationships."
+  },
+  {
+    "name": "Anaphora",
+    "description": "The use of a linguistic unit, such as a pronoun, to refer back to another unit, typically used for cohesion in discourse."
+  },
+  {
+    "name": "Antecedent",
+    "description": "The noun or noun phrase to which a pronoun or another referring element in the text refers."
+  },
+  {
+    "name": "Aorist",
+    "description": "A verb aspect in some languages that expresses a simple, past action."
+  },
+  {
+    "name": "Apocope",
+    "description": "The loss of one or more sounds from the end of a word, often in the evolution of a language."
+  },
+  {
+    "name": "Ablative",
+    "description": "A grammatical case in some languages used typically to express motion away from something, among other uses."
+  },
+  {
+    "name": "Affix",
+    "description": "A morpheme that is attached to a word stem to form a new word or word form."
+  },
+  {
+    "name": "Agglutination",
+    "description": "A process in linguistics where words are formed by stringing together morphemes which each represent a single grammatical function."
+  },
+  {
+    "name": "Agglutinative Language",
+    "description": "A type of language in which words are formed through the combination of morphemes, each expressing a single grammatical meaning."
+  },
+  {
+    "name": "Allomorph",
+    "description": "A variant form of a morpheme that appears in different linguistic environments or under different conditions."
+  },
+  {
+    "name": "Allophone",
+    "description": "One of a set of multiple possible spoken sounds used to pronounce a single phoneme."
+  },
+  {
+    "name": "Ambiguity",
+    "description": "A situation where a linguistic unit, such as a word, phrase, or sentence, can be understood in more than one way."
+  },
+  {
+    "name": "Amelioration",
+    "description": "A type of semantic change where a word gains a more positive meaning over time."
+  },
+  {
+    "name": "Analytic Language",
+    "description": "A language that conveys grammatical relationships without using inflectional morphemes, typically using word order and auxiliary words."
+  },
+  {
+    "name": "Anaphoric",
+    "description": "Referring to or replacing a word used earlier in a sentence, to avoid repetition."
+  },
+  {
+    "name": "Anglicism",
+    "description": "A word or construction that is characteristic of English language used in another language."
+  },
+  {
+    "name": "Animacy",
+    "description": "A grammatical and semantic feature that divides nouns based on their distinction in the hierarchy of animateness."
+  },
+  {
+    "name": "Antonym",
+    "description": "A word opposite in meaning to another (e.g., bad and good)."
+  },
+  {
+    "name": "Appositive",
+    "description": "A noun or noun phrase that renames another noun right beside it in a sentence."
+  },
+  {
+    "name": "Archaism",
+    "description": "The use of a form of speech or writing that is no longer current."
+  },
+  {
+    "name": "Article",
+    "description": "A word that is used with a noun to specify grammatical definiteness of the noun, and in some languages extending to volume or numerical scope."
+  },
+  {
+    "name": "Artlang",
+    "description": "An artistic language, created primarily for aesthetic and artistic purposes."
+  },
+  {
+    "name": "Aspect",
+    "description": "A grammatical category that expresses how an action, event, or state, denoted by a verb, extends over time."
+  },
+  {
+    "name": "Aspiration",
+    "description": "A strong burst of breath accompanying the release or closure of some consonants."
+  },
+  {
+    "name": "Assimilation",
+    "description": "The process by which a sound becomes similar to an adjacent sound."
+  },
+  {
+    "name": "Asynchronous Communication",
+    "description": "Communication that does not require the simultaneous presence of all participants."
+  },
+  {
+    "name": "Attributive",
+    "description": "A term used to describe a noun that modifies another noun in a noun phrase."
+  },
+  {
+    "name": "Autonomous Syntax",
+    "description": "A theory suggesting that the syntax of a language is not directly influenced by its meaning."
+  },
+  {
+    "name": "Auxlang",
+    "description": "An auxiliary language, designed to facilitate communication between speakers of different native languages."
+  },
+  {
+    "name": "Auxiliary Verb",
+    "description": "A verb used in forming the tenses, moods, and voices of other verbs."
+  },
+  {
+    "name": "Back Channel",
+    "description": "In conversation, signals given by the listener to indicate interest, surprise, skepticism, or other reactive responses."
+  },
+  {
+    "name": "Back Formation",
+    "description": "The process of creating a new lexeme by removing actual or supposed affixes from another word."
+  },
+  {
+    "name": "Bilabial",
+    "description": "A sound articulated with both lips (e.g., [p], [b], [m])."
+  },
+  {
+    "name": "Binary Opposition",
+    "description": "A pair of related terms or concepts that are opposite in meaning."
+  },
+  {
+    "name": "Blend",
+    "description": "A word formed from parts of two words."
+  },
+  {
+    "name": "Bound Morpheme",
+    "description": "A morpheme that cannot stand alone as a word and must be attached to other morphemes."
+  },
+  {
+    "name": "Borrowing",
+    "description": "The process of adopting words from one language into another."
+  },
+  {
+    "name": "Broadening",
+    "description": "A semantic change where the meaning of a word becomes less specific or broader over time."
+  },
+  {
+    "name": "Buffer",
+    "description": "A sound or a word used to fill pauses in speech or conversation."
+  },
+  {
+    "name": "Buzzword",
+    "description": "A trendy word or phrase that is fashionable at a particular time."
+  },
+  {
+    "name": "Back-Channeling",
+    "description": "Listener responses (verbal or non-verbal) in a conversation that indicate attention or agreement without taking the floor from the speaker."
+  },
+  {
+    "name": "Backshift",
+    "description": "A change in tense or other elements in indirect speech relative to direct speech."
+  },
+  {
+    "name": "Bilingualism",
+    "description": "The ability to speak two languages fluently."
+  },
+  {
+    "name": "Binary Feature",
+    "description": "In phonetics, a feature that has two possible values, such as [+voice] or [-voice] for voicing."
+  },
+  {
+    "name": "Bisyllabic",
+    "description": "Consisting of two syllables."
+  },
+  {
+    "name": "Breathy Voice",
+    "description": "A type of phonation in which the vocal cords vibrate loosely, creating a breathy sound."
+  },
+  {
+    "name": "Broca’s Area",
+    "description": "A region in the frontal lobe of the brain associated with language processing, particularly syntax and speech production."
+  },
+  {
+    "name": "Buffer Word",
+    "description": "A filler word used to manage pauses or hesitations in speech without interrupting the flow of conversation."
+  },
+  {
+    "name": "Cacophony",
+    "description": "A harsh, discordant mixture of sounds often used in literary context to describe an unpleasant spoken word sound."
+  },
+  {
+    "name": "Case",
+    "description": "A grammatical category determined by the syntactic or semantic function of a noun or pronoun."
+  },
+  {
+    "name": "Causative",
+    "description": "A form of verb used to indicate that one person causes another person to do something for the first person or causes a change in state of a non-human object."
+  },
+  {
+    "name": "Clitic",
+    "description": "A morpheme that has syntactic characteristics of a word, but depends phonologically on another word or phrase."
+  },
+  {
+    "name": "Code-Switching",
+    "description": "The practice of alternating between two or more languages or varieties of language in conversation."
+  },
+  {
+    "name": "Cognate",
+    "description": "Words that have a common etymological origin, often similar in several languages."
+  },
+  {
+    "name": "Collocation",
+    "description": "A sequence of words or terms that co-occur more often than would be expected by chance."
+  },
+  {
+    "name": "Complement",
+    "description": "A word, phrase, or clause that is necessary to complete the meaning of a given expression."
+  },
+  {
+    "name": "Complementary Distribution",
+    "description": "A linguistic situation where two different elements occur in non-overlapping environments."
+  },
+  {
+    "name": "Complex Sentence",
+    "description": "A sentence containing one or more dependent clauses in addition to the main clause."
+  },
+  {
+    "name": "Compound",
+    "description": "A word that consists of two or more words that function as a single unit and contain a single main stress."
+  },
+  {
+    "name": "Conjugation",
+    "description": "The variation of the form of a verb in an inflected language by which the voice, mood, tense, number, and person are identified."
+  },
+  {
+    "name": "Conlang",
+    "description": "A constructed language, also known as an artificial or invented language, created for personal, artistic, or experimental purposes."
+  },
+  {
+    "name": "Connotation",
+    "description": "The set of associations that a word or phrase usually elicits in people, in addition to its literal meaning."
+  },
+  {
+    "name": "Consonant",
+    "description": "A basic speech sound in which the breath is at least partly obstructed and which can combine with a vowel to form a syllable."
+  },
+  {
+    "name": "Constraint",
+    "description": "A rule that limits the ways in which language can be used."
+  },
+  {
+    "name": "Content Word",
+    "description": "A word that contains the principal meaning of a sentence or phrase, typically a noun, verb, adjective, or adverb."
+  },
+  {
+    "name": "Context",
+    "description": "The circumstances or events that form the environment within which something exists or takes place."
+  },
+  {
+    "name": "Contrastive Analysis",
+    "description": "A method of studying similarities and differences in languages to determine how they affect second language learning."
+  },
+  {
+    "name": "Control",
+    "description": "In syntax, the behavior of verbs that take infinitive clauses as arguments and whose subjects are understood to be the same as those of the infinitive clause."
+  },
+  {
+    "name": "Convergence",
+    "description": "The process by which two or more languages come to resemble each other more closely, usually through prolonged contact."
+  },
+  {
+    "name": "Copula",
+    "description": "A verb that links the subject of a sentence with a predicate (a subject complement)."
+  },
+  {
+    "name": "Corpus",
+    "description": "A large and structured set of texts (nowadays usually electronically stored and processed) used for linguistic analysis."
+  },
+  {
+    "name": "Creole",
+    "description": "A stable, natural language developed from the mixing of parent languages; typically arises from a pidgin."
+  },
+  {
+    "name": "Dative",
+    "description": "A grammatical case used to indicate the indirect object of a verb."
+  },
+  {
+    "name": "Deictic",
+    "description": "Words or phrases (like 'this', 'that', 'here', 'there') that require contextual information to convey meaning."
+  },
+  {
+    "name": "Derivation",
+    "description": "The process of forming a new word on the basis of an existing word, e.g., happiness from happy."
+  },
+  {
+    "name": "Descriptive Linguistics",
+    "description": "The study of language with the goal of describing it in detail, without preconceived notions of correctness."
+  },
+  {
+    "name": "Diacritic",
+    "description": "A glyph added to a letter that alters its sense, pronunciation, or distinguishment."
+  },
+  {
+    "name": "Dialect",
+    "description": "A regional or social variety of a language distinguished by pronunciation, grammar, or vocabulary."
+  },
+  {
+    "name": "Diglossia",
+    "description": "A situation in which two dialects or languages are used by a single language community under different circumstances."
+  },
+  {
+    "name": "Diphthong",
+    "description": "A complex vowel sound that begins with one vowel sound and glides into another within the same syllable."
+  },
+  {
+    "name": "Discourse",
+    "description": "Written or spoken communication or debate."
+  },
+  {
+    "name": "Disjunct",
+    "description": "An adverbial that comments on the manner in which a statement is communicated, such as 'frankly', 'honestly', etc."
+  },
+  {
+    "name": "Displacement",
+    "description": "The capability of language to communicate about things that are not immediately present (spatially or temporally)."
+  },
+  {
+    "name": "Double Negation",
+    "description": "The use of two negatives in the same clause, which can either intensify the negation or cancel it out depending on the language rules."
+  },
+  {
+    "name": "Dysphemism",
+    "description": "The use of a derogatory or unpleasant term instead of a pleasant or neutral term."
+  },
+  {
+    "name": "Echo Word",
+    "description": "A word formed by repetition or partial repetition of a sound; often used for emphasis."
+  },
+  {
+    "name": "Elision",
+    "description": "The omission of a sound or syllable when speaking."
+  },
+  {
+    "name": "Ellipsis",
+    "description": "The omission from speech or writing of a word or words that are superfluous or able to be understood from contextual clues."
+  },
+  {
+    "name": "Elocution",
+    "description": "The skill of clear and expressive speech, especially of distinct pronunciation and articulation."
+  },
+  {
+    "name": "Emphatic",
+    "description": "A stress used to indicate emphasis."
+  },
+  {
+    "name": "Endangered Language",
+    "description": "A language at risk of falling out of use, typically because it has few surviving speakers."
+  },
+  {
+    "name": "Englang",
+    "description": "An engineered language, designed for experimental purposes or to test linguistic theories."
+  },
+  {
+    "name": "Entailment",
+    "description": "A relationship between statements whereby one statement logically follows from another."
+  },
+  {
+    "name": "Epenthesis",
+    "description": "The addition of one or more sounds to a word, especially to the interior of a word."
+  },
+  {
+    "name": "Epithet",
+    "description": "An adjective or descriptive phrase expressing a quality or attribute regarded as characteristic of the person or thing mentioned."
+  },
+  {
+    "name": "Equative",
+    "description": "A construction that expresses equality, often equivalent to the English 'as ... as' in comparisons."
+  },
+  {
+    "name": "Ergative",
+    "description": "Relating to or denoting a case of nouns in certain languages, indicating the agent of a transitive verb, that is distinct from the nominative case."
+  },
+  {
+    "name": "Etymology",
+    "description": "The study of the history and origin of words."
+  },
+  {
+    "name": "Euphemism",
+    "description": "A mild or indirect word or expression substituted for one considered to be too harsh or blunt when referring to something unpleasant or embarrassing."
+  },
+  {
+    "name": "Expletive",
+    "description": "A word or expression used to fill out a sentence or a line of verse without adding to the sense."
+  },
+  {
+    "name": "Exposition",
+    "description": "A comprehensive description and explanation of an idea or theory."
+  },
+  {
+    "name": "Fricative",
+    "description": "A consonant produced by forcing air through a narrow channel made by placing two articulators close together."
+  },
+  {
+    "name": "Free Morpheme",
+    "description": "A morpheme that can stand alone as a word without another morpheme attached."
+  },
+  {
+    "name": "Functional Shift",
+    "description": "The process by which a word acquires new grammatical functions, changing its part of speech."
+  },
+  {
+    "name": "Fusional Language",
+    "description": "A type of synthetic language in which forms indicate grammatical relationships through the use of bound morphemes."
+  },
+  {
+    "name": "Fluency",
+    "description": "The ability to speak or write a language easily, smoothly, and expressively."
+  },
+  {
+    "name": "Focus",
+    "description": "The part of a sentence which is given prominence, often to contrast it with other possible referents."
+  },
+  {
+    "name": "Forensic Linguistics",
+    "description": "The application of linguistic knowledge, methods and insights to the forensic context of law, language, crime investigation, trial, and judicial procedure."
+  },
+  {
+    "name": "Glide",
+    "description": "A type of sound that is phonetically similar to a vowel sound but functions like a consonant, typically /w/ and /j/."
+  },
+  {
+    "name": "Grammaticalization",
+    "description": "The process by which words develop new grammatical functions, often evolving from lexical to grammatical or functional parts of speech."
+  },
+  {
+    "name": "Gender",
+    "description": "In some languages, a grammatical category that divides nouns to form agreement between words related to gender."
+  },
+  {
+    "name": "Gemination",
+    "description": "The phonological process that lengthens a consonant so that it becomes a long consonant or geminate."
+  },
+  {
+    "name": "Genitive",
+    "description": "A grammatical case that indicates possession or association, often marked in English by the possessive 's or by the preposition 'of'."
+  },
+  {
+    "name": "Glottochronology",
+    "description": "A branch of linguistics that attempts to determine the time at which languages diverged by analyzing the core vocabularies of the languages."
+  },
+  {
+    "name": "Gloss",
+    "description": "A brief explanatory note or translation of a difficult or complex expression, typically added between lines of text or in the margin."
+  },
+  {
+    "name": "Glossolalia",
+    "description": "Phenomenon often referred to as 'speaking in tongues', characterized by the speaker's fluid vocalizing of speech-like syllables without any comprehensible meaning."
+  },
+  {
+    "name": "Glottal Stop",
+    "description": "A type of consonantal sound used in many spoken languages, produced by obstructing airflow in the vocal tract."
+  },
+  {
+    "name": "Grammar",
+    "description": "The system of rules that govern the structure of sentences in a language, including syntax, morphology, and phonology."
+  },
+  {
+    "name": "Grapheme",
+    "description": "The smallest functional unit of a writing system."
+  },
+  {
+    "name": "Graphemics",
+    "description": "The study of writing systems and their relationship to the sounds of speech."
+  },
+  {
+    "name": "Gricean Maxims",
+    "description": "A set of rules proposed by philosopher H.P. Grice, intended to explain the link between utterances and what is understood from them."
+  },
+  {
+    "name": "Hypercorrection",
+    "description": "The phenomenon where individuals over-apply certain language rules or norms, often in an attempt to sound more correct or prestigious."
+  },
+  {
+    "name": "Hyponym",
+    "description": "A word whose meaning is included within the meaning of another word, its hypernym (e.g., 'rose' is a hyponym of 'flower')."
+  },
+  {
+    "name": "Homophone",
+    "description": "Words that are pronounced the same but differ in meaning, derivation, or spelling (e.g., 'new' and 'knew')."
+  },
+  {
+    "name": "Homograph",
+    "description": "Words that are spelled the same but have different meanings and sometimes different pronunciations (e.g., 'lead' as in the metal and 'lead' as in to guide)."
+  },
+  {
+    "name": "Haplology",
+    "description": "The phenomenon where sequences of similar sounds are reduced to a single or simpler form, such as English 'probably' becoming 'probly'."
+  },
+  {
+    "name": "Holophrastic",
+    "description": "The expression of a complex idea in a single word or a fixed phrase, often seen in the early stages of child language acquisition and in certain conlangs designed for efficiency."
+  },
+  {
+    "name": "Heteronym",
+    "description": "Words that are spelled identically but have different pronunciations and meanings (e.g., 'row' [line] vs 'row' [argument])."
+  },
+  {
+    "name": "Idiolect",
+    "description": "The language use typical of an individual. This can include personal vocabulary, grammar, and pronunciation preferences."
+  },
+  {
+    "name": "Inflection",
+    "description": "The modification of a word to express different grammatical categories such as tense, mood, voice, aspect, person, number, gender and case."
+  },
+  {
+    "name": "Interjection",
+    "description": "A word or expression that occurs as an utterance on its own and expresses a spontaneous feeling or reaction (e.g., 'Wow!', 'Oh no!')."
+  },
+  {
+    "name": "Intonation",
+    "description": "The rise and fall of the voice in speaking, used to give grammatical cues and emotional emphasis, affecting the meaning of the spoken words."
+  },
+  {
+    "name": "Isogloss",
+    "description": "A geographic boundary that separates regions with different linguistic features."
+  },
+  {
+    "name": "Isolating Language",
+    "description": "A type of language with a low morpheme-per-word ratio, where words are typically composed of a single morpheme."
+  },
+  {
+    "name": "Infix",
+    "description": "A type of affix that is inserted within a word, rather than at the beginning or end. Common in Austronesian languages but rare in English."
+  },
+  {
+    "name": "Imperative",
+    "description": "The grammatical mood used to form commands or requests (e.g., 'Come here!')."
+  },
+  {
+    "name": "Indicative",
+    "description": "A verb mood used to make factual statements or pose questions, the most commonly used mood in many languages."
+  },
+  {
+    "name": "Indirect Object",
+    "description": "The recipient of the direct object in a clause. For example, in the sentence 'She gave him a gift,' 'him' is the indirect object."
+  },
+  {
+    "name": "Interlinear Gloss",
+    "description": "A method of morphological analysis in which each word in a line of text is followed by its gloss and a grammatical description in a line immediately below."
+  },
+  {
+    "name": "Intransitive Verb",
+    "description": "A verb that does not require a direct object to complete its meaning (e.g., 'sleep', 'run')."
+  },
+  {
+    "name": "IPA (International Phonetic Alphabet)",
+    "description": "An alphabetic system of phonetic notation based primarily on the Latin alphabet, designed to represent all the sounds of spoken languages."
+  },
+  {
+    "name": "Irrealis Mood",
+    "description": "A grammatical mood used to express a hypothetical or counterfactual state, wish, desire, or imagined situation."
+  },
+  {
+    "name": "Jargon",
+    "description": "Specialized terminology associated with a particular field, profession, or group, often hard to understand for outsiders."
+  },
+  {
+    "name": "Juncture",
+    "description": "The manner of transition or mode of relationship between two consecutive sounds in speech."
+  },
+  {
+    "name": "Juvenescent",
+    "description": "A linguistic term referring to the process of a language adopting features characteristic of younger speakers' speech."
+  },
+  {
+    "name": "Kinesics",
+    "description": "The study of the way in which certain body movements and gestures serve as a form of nonverbal communication."
+  },
+  {
+    "name": "Kinship Terms",
+    "description": "Words used in a language to refer to persons to whom an individual is related through blood or marriage."
+  },
+  {
+    "name": "Koine",
+    "description": "A common dialect that emerges from the contact of several languages, serving as a lingua franca for communication among groups of different native languages."
+  },
+  {
+    "name": "Koineization",
+    "description": "The process by which a new mixed language or dialect forms from the blending or leveling of several regional dialects."
+  },
+  {
+    "name": "Kludge",
+    "description": "A clumsy or inelegant solution to a problem in language technology or programming, often used to refer to temporary fixes in software."
+  },
+  {
+    "name": "Katakana",
+    "description": "Part of the Japanese writing system, primarily used for transcription of foreign words and the representation of onomatopoeias, technical and scientific terms, and the names of plants, animals, and minerals."
+  },
+  {
+    "name": "Khuzdul",
+    "description": "A constructed language (conlang) developed by J.R.R. Tolkien for the Dwarves in his Middle-earth legendarium."
+  },
+  {
+    "name": "Labial",
+    "description": "Pertaining to the lips; used to describe sounds produced with the involvement of the lips, such as [p], [b], and [m]."
+  },
+  {
+    "name": "Lateral",
+    "description": "A sound produced by allowing the airstream to flow along the sides of the tongue, such as the English 'l'."
+  },
+  {
+    "name": "Lexeme",
+    "description": "The fundamental unit of the lexicon of a language; an abstract unit of morphological analysis representing a single word."
+  },
+  {
+    "name": "Lexicon",
+    "description": "The complete set of words in a language."
+  },
+  {
+    "name": "Linguistics",
+    "description": "The scientific study of language and its structure, including the study of morphology, syntax, phonetics, and semantics."
+  },
+  {
+    "name": "Logogram",
+    "description": "A written character that represents a word or phrase, such as Chinese characters or Egyptian hieroglyphs."
+  },
+  {
+    "name": "Loanword",
+    "description": "A word adopted from one language and used in another without translation, such as 'ballet' from French."
+  },
+  {
+    "name": "Morphology",
+    "description": "The branch of linguistics concerned with the structure of words, including the formation of words through the application of morphemes."
+  },
+  {
+    "name": "Morpheme",
+    "description": "The smallest grammatical unit in a language. A morpheme is not identical to a word, and can be either free or bound."
+  },
+  {
+    "name": "Metathesis",
+    "description": "The transposition of sounds or letters in a word, as in the pronunciation [ˈpɝspl̩] for 'purple' or [æks] for 'ask'."
+  },
+  {
+    "name": "Minimal Pair",
+    "description": "A pair of words that differ only in one element of sound, demonstrating the change in meaning that can result, such as 'ship' and 'sheep'."
+  },
+  {
+    "name": "Modal Verb",
+    "description": "A type of verb that is used to indicate modality – that is, likelihood, ability, permission, and obligation, such as 'can', 'may', 'must'."
+  },
+  {
+    "name": "Monolingual",
+    "description": "Speaking or using only one language, as opposed to bilingual or multilingual."
+  },
+  {
+    "name": "Monophthong",
+    "description": "A simple vowel sound with a single perceived auditory quality, such as the 'o' in 'note'."
+  },
+  {
+    "name": "Mutual Intelligibility",
+    "description": "A relationship between languages or dialects in which speakers of different but related varieties can readily understand each other without prior familiarity or special effort."
+  },
+  {
+    "name": "Metaphor",
+    "description": "A figure of speech in which a word or phrase is applied to an object or action to which it is not literally applicable, such as 'a sea of troubles'."
+  },
+  {
+    "name": "Metonymy",
+    "description": "A figure of speech in which a thing or concept is referred to by the name of something closely associated with that thing or concept, such as 'the pen is mightier than the sword' where 'pen' stands for 'written word' and 'sword' for 'military power'."
+  },
+  {
+    "name": "Markedness",
+    "description": "The state of standing out as unusual or difficult in comparison to a more common or regular form or structure within a language."
+  },
+  {
+    "name": "Mood",
+    "description": "A grammatical feature of verbs that allows speakers to express their attitude toward what they are saying, such as indicative, imperative, and subjunctive."
+  },
+  {
+    "name": "Nasal",
+    "description": "A sound produced with airflow through the nose, such as [m], [n], and [ŋ]."
+  },
+  {
+    "name": "Neologism",
+    "description": "A newly coined word, expression, or usage in a language."
+  },
+  {
+    "name": "Nominalization",
+    "description": "The process of converting a word, usually a verb or an adjective, into a noun."
+  },
+  {
+    "name": "Nonfinite Verb",
+    "description": "Verbs that do not show tense, person, or number, such as infinitives, participles, and gerunds."
+  },
+  {
+    "name": "Noun Phrase",
+    "description": "A phrase that has a noun or pronoun as its head and functions within a sentence as a subject, object, or prepositional object."
+  },
+  {
+    "name": "Null Subject",
+    "description": "A grammatical phenomenon where the subject of the sentence is not explicitly expressed, common in languages like Italian and Spanish."
+  },
+  {
+    "name": "Orthography",
+    "description": "The conventional spelling system of a language."
+  },
+  {
+    "name": "Obstruent",
+    "description": "A consonant sound formed by obstructing airflow, leading to a build-up of pressure, including fricatives, affricates, and stops."
+  },
+  {
+    "name": "Onomatopoeia",
+    "description": "The formation of a word from a sound associated with what is named (e.g., cuckoo, sizzle)."
+  },
+  {
+    "name": "Opacity",
+    "description": "A characteristic of language rules that leads to outcomes that are not transparent or directly predictable from the input."
+  },
+  {
+    "name": "Open Syllable",
+    "description": "A syllable that ends in a vowel sound, as opposed to a closed syllable, which ends in a consonant."
+  },
+  {
+    "name": "Optative",
+    "description": "A grammatical mood that expresses wishes, hopes, or commands, found in some languages."
+  },
+  {
+    "name": "Orthography",
+    "description": "The conventional spelling system of a language."
+  },
+  {
+    "name": "Orthoepy",
+    "description": "The correct or accepted pronunciation of words in a language."
+  },
+  {
+    "name": "Overgeneralization",
+    "description": "The application of a grammatical rule in cases where it does not apply, typically observed in language development stages of children."
+  },
+  {
+    "name": "Oxymoron",
+    "description": "A figure of speech in which contradictory terms appear in conjunction (e.g., 'deafening silence')."
+  },
+  {
+    "name": "Palatal",
+    "description": "Pertaining to sounds produced by raising the body of the tongue to the hard palate."
+  },
+  {
+    "name": "Paradigm",
+    "description": "A set of all the formative affixes of a word, used to express all the syntactic or semantic differences, such as tense, mood, voice, aspect, person, number, gender and case."
+  },
+  {
+    "name": "Paralinguistic",
+    "description": "The aspects of spoken communication that do not involve words. These may include gestures, facial expressions, tone and pitch of voice, and others."
+  },
+  {
+    "name": "Parse",
+    "description": "To analyze a sentence into its parts and describe their syntactic roles."
+  },
+  {
+    "name": "Participle",
+    "description": "A form of a verb that is used in a sentence to modify a noun or noun phrase and expresses an aspect such as tense, mood, or voice, which may also be used as an adjective."
+  },
+  {
+    "name": "Phoneme",
+    "description": "The smallest unit of sound in a language that can distinguish words."
+  },
+  {
+    "name": "Phonetics",
+    "description": "The branch of linguistics that deals with the sounds of speech and their production, transmission, and reception, and their analysis, classification, and transcription."
+  },
+  {
+    "name": "Phonology",
+    "description": "The study of the sound system of a language, including the rules for combining and using phonemes."
+  },
+  {
+    "name": "Pidgin",
+    "description": "A simplified form of speech used for communication between people with different languages."
+  },
+  {
+    "name": "Polysemy",
+    "description": "The coexistence of many possible meanings for a word or phrase."
+  },
+  {
+    "name": "Polysynthetic Language",
+    "description": "A type of language in which words are often composed of many morphemes, and can express complex ideas in single words."
+  },
+  {
+    "name": "Pragmatics",
+    "description": "The branch of linguistics dealing with language in use and the contexts in which it is used, including such matters as dealing with its usage in various discourse types."
+  },
+  {
+    "name": "Predicate",
+    "description": "The part of a sentence or clause containing a verb and stating something about the subject (e.g., went home in John went home)."
+  },
+  {
+    "name": "Preposition",
+    "description": "A word governing, and usually preceding, a noun or pronoun and expressing a relation to another word or element in the clause."
+  },
+  {
+    "name": "Prescriptive Linguistics",
+    "description": "The study of language with the goal of establishing rules for 'correct' usage."
+  },
+  {
+    "name": "Prescriptivism",
+    "description": "The attitude or belief that one variety of a language is superior to others and should be promoted as such."
+  },
+  {
+    "name": "Prosody",
+    "description": "The patterns of rhythm and sound used in poetry; the study of versification."
+  },
+  {
+    "name": "Proto-Language",
+    "description": "A hypothetical undocumented parent language from which actual languages are derived."
+  },
+  {
+    "name": "Quantifier",
+    "description": "A word or phrase which precedes a noun and indicates the amount or quantity (e.g., all, some, every)."
+  },
+  {
+    "name": "Question",
+    "description": "A sentence, phrase, or gesture that seeks information through a reply."
+  },
+  {
+    "name": "Quotative",
+    "description": "A marker used to signal quoted speech, as in 'He was like, \"What happened?\"'"
+  },
+  {
+    "name": "Recursion",
+    "description": "The property of language that allows for the embedding of a phrase within a phrase of the same type, potentially indefinitely."
+  },
+  {
+    "name": "Reduplication",
+    "description": "A morphological process in which the root or stem of a word, or part of it, is repeated."
+  },
+  {
+    "name": "Register",
+    "description": "A variety of a language used for a particular purpose or in a particular social setting."
+  },
+  {
+    "name": "Rhotic",
+    "description": "Relating to or denoting a dialect or variety of English (such as US English) in which r is pronounced before a consonant (as in hard) and at the end of words (as in far)."
+  },
+  {
+    "name": "Rime",
+    "description": "The part of a syllable that includes the vowel and any consonant sounds that come after it."
+  },
+  {
+    "name": "Root",
+    "description": "The base form of a word, from which other words can be derived."
+  },
+  {
+    "name": "Semantic Field",
+    "description": "A set of words grouped by meaning referring to a specific subject."
+  },
+  {
+    "name": "Semantics",
+    "description": "The study of meaning in language, concerning the meaning of words, phrases, and sentences."
+  },
+  {
+    "name": "Sibilant",
+    "description": "A speech sound characterized by a hissing sound (e.g., s, sh)."
+  },
+  {
+    "name": "Slang",
+    "description": "A type of language consisting of words and phrases that are regarded as very informal, are more common in speech than writing, and are typically restricted to a particular context or group of people."
+  },
+  {
+    "name": "Syllable",
+    "description": "A unit of pronunciation having one vowel sound, with or without surrounding consonants, forming the whole or a part of a word."
+  },
+  {
+    "name": "Subjunctive",
+    "description": "A grammatical mood used to express various states of unreality such as wish, emotion, possibility, judgment, opinion, obligation, or action that has not yet occurred."
+  },
+  {
+    "name": "Suprasegmental",
+    "description": "A phonetic feature such as stress, tone, or intonation, which is not a segment but a characteristic of syllables or larger units of speech."
+  },
+  {
+    "name": "Schwa",
+    "description": "The mid-central vowel sound (rounded or unrounded) in the middle of the vowel chart, typically occurring in unstressed syllables."
+  },
+  {
+    "name": "Syncope",
+    "description": "The loss of one or more sounds from the interior of a word, especially the loss of an unstressed vowel."
+  },
+  {
+    "name": "Synonym",
+    "description": "A word or phrase that means exactly or nearly the same as another word or phrase in the same language."
+  },
+  {
+    "name": "Syntax",
+    "description": "The set of rules, principles, and processes that govern the structure of sentences in a language, particularly the order of words and phrases."
+  },
+  {
+    "name": "Sociolinguistics",
+    "description": "The study of the effects of any and all aspects of society, including cultural norms, expectations, and context, on the way language is used."
+  },
+  {
+    "name": "Sprachbund",
+    "description": "A group of languages that are geographically contiguous and share several grammatical features, despite being unrelated."
+  },
+  {
+    "name": "Tautology",
+    "description": "The use of redundant words, or words that repeat the same idea, such as 'free gift' or 'true fact'."
+  },
+  {
+    "name": "Telegraphic Speech",
+    "description": "Speech during the early stages of child language development, where non-essential elements are omitted, as in 'want cookie' for 'I want a cookie'."
+  },
+  {
+    "name": "Tense",
+    "description": "A grammatical category that locates a situation in time, to indicate when the situation takes place."
+  },
+  {
+    "name": "Thematic Role",
+    "description": "The function that a noun phrase plays with respect to the action or state described by a governing verb, such as agent, patient, instrument, etc."
+  },
+  {
+    "name": "Tone",
+    "description": "The use of pitch in language to distinguish lexical or grammatical meaning – that is, to distinguish or to inflect words."
+  },
+  {
+    "name": "Transcription",
+    "description": "The process of representing spoken sounds by written symbols."
+  },
+  {
+    "name": "Transliteration",
+    "description": "The process of transferring a word or text from one alphabet or script to another."
+  },
+  {
+    "name": "Typology",
+    "description": "The study and classification of languages according to their structural features and their arrangements in classes or families."
+  },
+  {
+    "name": "Underlying Representation",
+    "description": "In generative grammar, the abstract form that a word or phrase is postulated to have before any phonological rules have been applied to it."
+  },
+  {
+    "name": "Uvular",
+    "description": "Pertaining to a consonant that is articulated with the back of the tongue against or near the uvula."
+  },
+  {
+    "name": "Universal Grammar",
+    "description": "A theory in linguistics that suggests that the ability to learn grammar is hard-wired into the brain and is part of the innate biological endowment of the human species."
+  },
+  {
+    "name": "Unmarked",
+    "description": "A term used in typology to refer to the basic, default form of a word or grammatical category, which carries no special emphasis or restriction."
+  },
+  {
+    "name": "Velar",
+    "description": "Pertaining to consonant sounds articulated with the back of the tongue against the soft palate (the velum), such as English [k] in 'cat' and [g] in 'go'."
+  },
+  {
+    "name": "Verb",
+    "description": "A word that describes an action, state, or occurrence, and forms the main part of the predicate of a sentence."
+  },
+  {
+    "name": "Vernacular",
+    "description": "The language or dialect spoken by the ordinary people in a particular country or region."
+  },
+  {
+    "name": "Vocative",
+    "description": "An address or exclamation used in speech to call the attention of the listener, often marked in languages with declension."
+  },
+  {
+    "name": "Voice",
+    "description": "A grammatical feature that describes the relationship between the verb and the participants identified by its arguments."
+  },
+  {
+    "name": "Vowel",
+    "description": "A speech sound made with your mouth fairly open, the nucleus of a syllable."
+  },
+  {
+    "name": "Vowel Harmony",
+    "description": "A type of long-distance assimilatory phonological process involving vowels that occurs in some languages."
+  },
+  {
+    "name": "Voicing",
+    "description": "A characteristic of speech sounds (especially consonants) determined by the vibration of the vocal cords."
+  },
+  {
+    "name": "Wh-movement",
+    "description": "A syntactic phenomenon where interrogative words (wh-words) are moved to the beginning of the sentence to form questions."
+  },
+  {
+    "name": "Word Order",
+    "description": "The arrangement of words in a sentence, which varies according to language and can significantly affect meaning."
+  },
+  {
+    "name": "Word Formation",
+    "description": "The creation of new words in a language, including processes like derivation, compounding, and affixation."
+  },
+  {
+    "name": "Xenoglossy",
+    "description": "The purported phenomenon in which a person is able to speak or write a language they could not have acquired by natural means."
+  },
+  {
+    "name": "X-bar Theory",
+    "description": "A component of generative grammar that provides a syntactic framework for describing the structure of phrases and their constituents."
+  },
+  {
+    "name": "Yield",
+    "description": "In computational linguistics, the output or result that a natural language processing system generates from a given input."
+  },
+  {
+    "name": "Yiddish",
+    "description": "A High German-derived language historically spoken by the Ashkenazi Jews that incorporates elements from several other languages and is written with the Hebrew alphabet."
+  },
+  {
+    "name": "Zero Derivation",
+    "description": "The process of changing the function of a word, such as from a noun to a verb, without altering its form, also known as conversion."
+  },
+  {
+    "name": "Zeugma",
+    "description": "A figure of speech in which a word, usually a verb or an adjective, applies to more than one noun, blending together grammatically and logically different ideas."
+  },
+  {
+    "name": "Zipf's Law",
+    "description": "An empirical law formulated using mathematical statistics that suggests that in any corpus of natural language utterances, the frequency of any word is inversely proportional to its rank in the frequency table."
+  },
+  {
+    "name": "Zonal Constructed Language",
+    "description": "A constructed language designed to facilitate communication between speakers of a closely related group of languages."
+  }
+]

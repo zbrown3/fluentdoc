@@ -1,0 +1,120 @@
+<div class="language-cards-container">
+  <div class="languages-container">
+    <div
+      class="language-card"
+      *ngFor="let language of getLanguagesListByPage(); let i = index"
+      (click)="handleNavigation(language.id)"
+    >
+      <div
+        class="language-flag-container"
+        [style.backgroundImage]="getDefaultFlag(i)"
+      >
+        @if (language.flagUrl) {
+        <img
+          ngSrc="{{ language.flagUrl }}"
+          alt="language flag"
+          class="flag-img"
+          priority
+          fill
+        />
+        } @else {
+        <img
+          src="assets/images/brand/fluentdoc_icon.svg"
+          alt=""
+          width="34px"
+          height="41px"
+        />
+        } @if(!isPublicRoute) {
+        <div class="language-actions-container">
+          <button
+            type="button"
+            class="btn btn-secondary-gray btn-icon action-btn"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            (click)="$event.stopPropagation()"
+          >
+            <i class="ph ph-dots-three-outline-vertical"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="profileMenu">
+            <li>
+              <span
+                class="dropdown-item"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmDeleteModal"
+                (click)="populateLanguage(language, $event)"
+              >
+                <i class="ph ph-trash"></i> Delete
+              </span>
+            </li>
+          </ul>
+        </div>
+        }
+      </div>
+      <div class="language-details-container">
+        <!-- first line -->
+        <div class="language-details w-100">
+          <span
+            #languageNameSpan
+            tooltip="{{
+              isTextOverflowing(languageNameSpan) ? language.name : null
+            }}"
+            placement="bottom"
+          >
+            {{ language.name }}
+          </span>
+          <span>{{ language.description || "" }}</span>
+        </div>
+        <div class="language-info">
+          <div class="language-types">
+            <span
+              class="purpose-container"
+              *ngFor="let languageReason of language.reasons; let k = index"
+            >
+              #{{ getLanguagePurpose(languageReason) }}
+            </span>
+            {{ " " }}
+          </div>
+
+          <div class="language-footer-wrapper">
+            <div>
+              @if (language.privacyLevel === 'PRIVATE') {
+              <div class="badge badge-secondary language-privacy">
+                <i class="ph ph-lock"></i>
+                <span>Private</span>
+              </div>
+              } @if (language.privacyLevel === 'PUBLIC') {
+              <div class="badge badge-success language-privacy">
+                <i class="ph ph-globe"></i>
+                <span>Public</span>
+              </div>
+              }
+            </div>
+            @if(!isPublicRoute) {
+            <div class="percentage-display">
+              <span>{{ language.progressPercentage }}%</span>
+              <progressbar
+                [value]="language.progressPercentage || 0"
+                [type]="'success'"
+                [animate]="true"
+              />
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (languages.length > 0) {
+  <mat-paginator
+    aria-label="Select page"
+    [hidePageSize]="paginationConfig.hidePageSize"
+    [length]="languages.length"
+    (page)="handlePageEvent($event)"
+    [pageIndex]="paginationConfig.pageIndex"
+    [pageSize]="paginationConfig.pageSize"
+    [pageSizeOptions]="paginationConfig.pageSizeOptions"
+    [showFirstLastButtons]="paginationConfig.showFirstLastButtons"
+  >
+  </mat-paginator>
+  }
+</div>

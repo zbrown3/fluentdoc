@@ -1,0 +1,13 @@
+<div class="dashboard-list-view">
+  <app-fdds-data-table
+    [data]="languages"
+    [columns]="columns"
+    [paginationConfig]="paginationConfig"
+    [showPaginationControls]="languages.length > 0"
+    [showSearchInput]="false"
+    [searchValue]="searchTerm"
+    [isPublicRoute]="isPublicRoute"
+    [searchInputPlaceholder]="'Search languages name, purposes or categories'"
+    [stickyHeaderRow]="true"
+  ></app-fdds-data-table>
+</div>

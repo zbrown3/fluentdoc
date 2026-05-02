@@ -1,0 +1,221 @@
+@if(language) {
+<div class="view-language-overview">
+  @if(showLanguageFlag) {
+  <div
+    class="flag-container"
+    [ngClass]="{
+          'default-flag-background': !language.flagUrl,
+        }"
+  >
+    @if (language.flagUrl) {<img
+      [src]="language.flagUrl"
+      alt="language flag"
+      class="flag-img"
+    />} @else {
+    <img
+      src="assets/images/brand/fluentdoc_icon.svg"
+      alt=""
+      width="34px"
+      height="41px"
+    />
+    }
+  </div>
+  }
+  <div class="language-details-container">
+    <p class="language-title">
+      {{ language.name }}
+    </p>
+    <div class="language-badges">
+      <div
+        class="badge rounded-pill badge-secondary"
+        *ngFor="let languageType of language.types; let j = index"
+      >
+        {{ getLanguageType(languageType) }}
+      </div>
+    </div>
+  </div>
+  <div class="language-creator-details-container">
+    <div class="language-creator">
+      <img
+        [ngStyle]="{
+          'background-color': BACKGROUND_COLOR_DEFAULT
+        }"
+        class="profile-avatar"
+        [ngSrc]="
+          language.creator.profileImageUrl ||
+          'assets/images/avatars/avatar_0.svg'
+        "
+        height="42"
+        width="42"
+        alt="Creator profile avatar"
+      />
+      <div class="language-creator-details">
+        <div>
+          <p class="creator-name">
+            {{ language.creator.displayName }}
+          </p>
+          <button class="btn btn-tertiary btn-sm">Follow</button>
+        </div>
+        <p>Updated {{ language.lastUpdated | date }}</p>
+      </div>
+    </div>
+    <!-- TODO: FLU-358 -->
+    <!-- <app-social-interactions
+      [buttonVariant]="'secondaryGray'"
+      [languageStats]="language.languageStats"
+    ></app-social-interactions> -->
+  </div>
+  <app-view-language-section
+    [sectionContent]="language.description"
+  ></app-view-language-section>
+  <app-ellipsis class="align-items-center w-100"></app-ellipsis>
+  <div
+    *ngFor="let section of language.overview?.sections; let j = index"
+    class="overview-section-container"
+  >
+    <app-view-language-section
+      [sectionId]="section?.title | slugify"
+      [sectionTitle]="section.title"
+      [sectionSubtitle]="section.subtitle"
+      [sectionContent]="section.content"
+      [showSection]="!getIsSectionHidden(section?.title)"
+    ></app-view-language-section>
+
+    @if(section.subsections) {
+    <app-view-language-section
+      *ngFor="let subsection of section.subsections; let k = index"
+      [isSubsection]="true"
+      [sectionId]="subsection.title | slugify"
+      [sectionSubtitle]="subsection.title"
+      [sectionContent]="subsection.content"
+      [hasTable]="subsection.hasTable"
+      [tableData]="subsection.meta"
+      [showSection]="!getIsSectionHidden(subsection?.title)"
+    ></app-view-language-section>
+    } @if(!getIsSectionHidden(section?.title)) {
+    <app-ellipsis class="align-items-center w-100"></app-ellipsis>}
+  </div>
+  <div
+    class="offcanvas offcanvas-start"
+    [ngClass]="{
+      'edit-mode': isEditMode,
+      'preview-mode': isPreviewMode,
+      'public-mode': isPublicMode,
+      show:
+        (!isPublicMode && !isCustomizeStylesDrawerOpen) ||
+        (isPublicMode && !isMobileView)
+    }"
+    data-bs-scroll="true"
+    data-bs-backdrop="false"
+    tabindex="-1"
+    id="table-of-contents-drawer"
+    aria-labelledby="offcanvasScrollingLabel"
+  >
+    @if (isPublicMode && isMobileView) {
+    <div class="offcanvas-header">
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    } @else {
+    <div class="offcanvas-header"></div>
+    }
+    <div class="offcanvas-body">
+      <div class="table-of-contents">
+        <div
+          *ngFor="let section of language.overview?.sections; let l = index"
+          class="table-of-contents-section"
+          [ngClass]="{
+            'd-none':
+              (isPreviewMode || isPublicMode) &&
+              getIsSectionHidden(section?.title)
+          }"
+        >
+          <div
+            (click)="goToSection(section?.title)"
+            data-bs-dismiss="offcanvas"
+            class="table-of-contents-section-label"
+            [ngClass]="{
+              active: activeSectionId === section.title,
+              'edit-mode': isEditMode,
+              'preview-mode': isPreviewMode,
+              'public-mode': isPublicMode,
+            }"
+          >
+            <p
+              [ngClass]="{
+                'hidden-section':
+                  isEditMode && getIsSectionHidden(section?.title)
+              }"
+            >
+              {{ section.title }}
+            </p>
+            @if (isEditMode) {
+            <i
+              class="ph"
+              [ngClass]="{
+                'ph-eye': getIsSectionHidden(section?.title),
+                'ph-eye-slash': !getIsSectionHidden(section?.title)
+              }"
+              (click)="
+                toggleHiddenLanguageSections(
+                  section?.title,
+                  true,
+                  null,
+                  section?.subsections
+                )
+              "
+            ></i>
+            }
+          </div>
+          @if (section.subsections) {
+          <div
+            class="table-of-contents-subsection"
+            [ngClass]="{
+              active: activeSectionId === subsection.title,
+              'd-none': (isPreviewMode || isPublicMode) && getIsSectionHidden(subsection?.title),
+              'edit-mode': isEditMode,
+              'preview-mode': isPreviewMode,
+              'public-mode': isPublicMode,
+            }"
+            *ngFor="let subsection of section.subsections; let m = index"
+            (click)="goToSection(subsection?.title)"
+            data-bs-dismiss="offcanvas"
+          >
+            <p
+              [ngClass]="{
+                'hidden-section':
+                  isEditMode && getIsSectionHidden(subsection?.title)
+              }"
+            >
+              {{ subsection.title }}
+            </p>
+            @if (isEditMode) {
+            <i
+              class="ph"
+              [ngClass]="{
+                'ph-eye': getIsSectionHidden(subsection?.title),
+                'ph-eye-slash': !getIsSectionHidden(subsection?.title)
+              }"
+              (click)="
+                toggleHiddenLanguageSections(
+                  section.title,
+                  false,
+                  subsection?.title,
+                  section?.subsections
+                )
+              "
+            ></i>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      <app-made-with-fd></app-made-with-fd>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,32 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.profile-stats-container {
+  .divider {
+    margin: 0 $spacing-lg;
+    background-color: #000;
+    height: toRem(16px);
+  }
+
+  .stats {
+    @include displayFlex(row, center, center, wrap);
+    gap: $spacing-xs;
+
+    &:not(:first-child) {
+      padding-right: $spacing-lg;
+    }
+
+    span {
+      @include body3Regular;
+
+      &:first-child {
+        @include body3Bold;
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+/********************************************************************
+* Common functions
+*********************************************************************/
+
+@use "sass:math";
+
+$default-font-size: 16px;
+
+// // Function for converting a px based font-size to rem.
+@function stripUnit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+@function toRem($pxValue) {
+  @return #{math.div(stripUnit($pxValue), stripUnit($default-font-size))}rem;
+}

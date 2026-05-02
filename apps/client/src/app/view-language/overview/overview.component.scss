@@ -1,0 +1,292 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+@mixin baseTocHoverActiveStyles($isMobile: false) {
+  color: $content-primary;
+  border-radius: 100px;
+  background-color: $background-bold;
+
+  @if ($isMobile) {
+    background-color: $background-subtle;
+  }
+
+  &.preview-mode,
+  &.public-mode {
+    &.active {
+      @include body3SemiBold;
+
+      color: $content-brand;
+    }
+  }
+}
+
+@mixin tocHoverActiveStyles($isMobile: false) {
+  &:hover {
+    @include baseTocHoverActiveStyles($isMobile);
+
+    cursor: pointer;
+  }
+
+  &.active {
+    @include baseTocHoverActiveStyles($isMobile);
+  }
+}
+
+@mixin editModeSectionStyles {
+  &.edit-mode {
+    @include displayFlex(row, center, space-between);
+
+    width: 100%;
+
+    p.hidden-section {
+      text-decoration: line-through;
+    }
+
+    i {
+      display: none;
+      color: $content-brand;
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      i {
+        display: block;
+        color: $content-brand;
+      }
+    }
+  }
+}
+
+.view-language-overview {
+  @include displayFlex(column, flex-start, flex-start);
+  @include body3Regular;
+
+  gap: $spacing-2xl;
+  padding: toRem(29px) toRem(60px);
+  width: toRem(923px);
+
+  .flag-container {
+    @include displayFlex(column, center, center);
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-height: toRem(292px);
+    overflow: hidden;
+    border-radius: 0.5rem;
+    aspect-ratio: 260/145.04;
+
+    &.default-flag-background {
+      background-color: $colors-aqua-100;
+    }
+
+    & > .flag-img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .language {
+    &-badges {
+      @include displayFlex(row, center, flex-start, wrap);
+
+      gap: $spacing-xs;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-title {
+      @include h0Bold;
+    }
+
+    &-creator {
+      @include displayFlex(row, center, flex-start);
+
+      gap: $spacing-md;
+
+      & > img {
+        width: toRem(61px);
+        height: toRem(61px);
+        padding: toRem(5px);
+
+        border-radius: 50%;
+      }
+
+      &-details {
+        @include displayFlex(column, flex-start, flex-start);
+        gap: $spacing-xs;
+
+        &-container {
+          @include displayFlex(row, center, space-between);
+
+          width: 100%;
+        }
+
+        & > div {
+          @include displayFlex(row, center, flex-start);
+          gap: $spacing-md;
+
+          .creator-name {
+            @include body2SemiBold;
+          }
+
+          & + p {
+            @include body3Regular;
+
+            color: $content-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  .overview-section-container {
+    @include displayFlex(column, flex-start, flex-start);
+    gap: $spacing-lg;
+    width: 100%;
+  }
+
+  #table-of-contents-drawer {
+    margin-top: 120.5px;
+    height: 100%;
+    max-width: toRem(328px);
+
+    &.edit-mode {
+      margin-top: 121.5px;
+    }
+
+    &.preview-mode {
+      margin-top: 113px;
+      border-right: none;
+    }
+
+    &.public-mode {
+      margin-top: 51.75px;
+      border-right: none;
+    }
+
+    .offcanvas {
+      &-header {
+        @include displayFlex(row, center, space-between);
+
+        &.edit-mode {
+          height: 4rem;
+        }
+      }
+
+      &-body {
+        @include displayFlex(column, flex-start, flex-start);
+        @include body3Regular;
+
+        gap: $spacing-xl;
+        color: $content-secondary;
+        max-height: 750px;
+
+        .table-of-contents {
+          @include displayFlex(column, flex-start, flex-start);
+
+          gap: $spacing-lg;
+          width: 100%;
+
+          &-section {
+            @include displayFlex(column, flex-start, flex-start);
+
+            width: 100%;
+            gap: $spacing-sm;
+
+            &-label {
+              @include editModeSectionStyles;
+              @include tocHoverActiveStyles;
+              @include body3SemiBold;
+
+              width: 100%;
+              height: toRem(30px);
+              padding: $spacing-xs 0 $spacing-xs $spacing-lg;
+            }
+          }
+
+          &-subsection {
+            @include editModeSectionStyles;
+            @include tocHoverActiveStyles;
+
+            padding: $spacing-xs 0 $spacing-xs $spacing-2xl;
+            width: 100%;
+            height: toRem(30px);
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    width: toRem(390px);
+
+    .flag-container {
+      position: relative;
+      width: 100%;
+      max-height: toRem(125px);
+      overflow: hidden;
+      border-radius: unset;
+
+      & > .flag-img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    padding: 0;
+    gap: toRem(18px);
+
+    .language {
+      &-details-container {
+        padding: 0 toRem(20px);
+      }
+
+      &-creator {
+        & > img {
+          width: toRem(42px);
+          height: toRem(42px);
+        }
+
+        &-details {
+          &-container {
+            justify-content: flex-start;
+            padding: 0 1.25rem;
+
+            app-social-interactions {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    #table-of-contents-drawer {
+      margin-top: 0;
+
+      &.public-mode {
+        margin-top: 43px;
+
+        border-right: 1px solid $border-subtle;
+      }
+
+      &.preview-mode {
+        margin-top: 96.5px;
+      }
+
+      .offcanvas {
+        &-body {
+          padding-top: 0;
+
+          app-made-with-fd {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

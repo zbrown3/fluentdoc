@@ -1,0 +1,22 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/variables/spacing.scss";
+@import "../../scss/variables/colors.scss";
+
+.stepper {
+  &-container {
+    @include displayFlex(row, center, flex-start);
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+
+    .step {
+      width: toRem(100px);
+      height: toRem(8px);
+      background-color: $background-pressed-subtle;
+
+      &.is-active {
+        background-color: $background-hover-inverse;
+      }
+    }
+  }
+}

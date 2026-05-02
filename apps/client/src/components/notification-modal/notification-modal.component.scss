@@ -1,0 +1,72 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.notification-modal {
+  max-height: 80vh;
+  overflow-y: auto;
+
+  .no-notifications {
+    @include displayFlex(column, center, center);
+    @include body3SemiBold;
+
+    gap: $spacing-lg;
+    height: 100%;
+    margin-top: $spacing-xl;
+  }
+
+  .notification {
+    &-container {
+      @include displayFlex(column, flex-start, flex-start);
+
+      gap: $spacing-lg;
+    }
+
+    &-card {
+      border: 2px solid $border-subtle;
+      border-radius: 0.5rem;
+      padding: $spacing-md $spacing-lg;
+
+      &-header {
+        @include displayFlex(row, center, space-between);
+
+        margin-bottom: $spacing-md;
+
+        // Date & badge container
+        & > div {
+          @include displayFlex(row, center, flex-start);
+          gap: $spacing-sm;
+
+          width: 40%;
+
+          & > span:first-child {
+            @include body3Regular;
+
+            color: $content-secondary;
+          }
+        }
+      }
+
+      &-title {
+        @include displayFlex(row, center, flex-start);
+        @include body3SemiBold;
+
+        margin-bottom: $spacing-sm;
+      }
+
+      &-body {
+        @include body3Regular;
+      }
+
+      &-footer {
+        @include displayFlex(row, center, flex-start);
+        @include subtitleRegular;
+
+        gap: $spacing-md;
+      }
+    }
+  }
+}

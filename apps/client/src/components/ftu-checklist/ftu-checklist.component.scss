@@ -1,0 +1,142 @@
+@import '../../scss/functions/common.scss';
+@import '../../scss/mixins/common.scss';
+@import '../../scss/mixins/typography.scss';
+@import '../../scss/variables/colors.scss';
+@import '../../scss/variables/spacing.scss';
+
+.onboarding-card {
+  background: #fff;
+  border: 2px solid $border-positive;
+  border-radius: 12px;
+  padding: 16px 20px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.onboarding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+
+    h4 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      color: #777;
+    }
+  }
+
+  .ph {
+    font-size: 18px;
+    color: #999;
+    transition: transform 0.2s ease;
+    margin-left: 12px;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+  }
+}
+
+.progress-bar-container {
+  margin-bottom: 12px;
+
+  .progress-bar-bg {
+    background: #f3e6f9;
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    background: $border-positive;
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+}
+
+.onboarding-steps {
+  list-style: none;
+  padding: 10px 0 0 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 16px;
+    opacity: 1;
+    transition: opacity 0.3s;
+
+    &.locked {
+      opacity: 0.5;
+    }
+
+    .step-icon {
+      margin-top: 4px;
+
+      .icon {
+        font-size: 24px;
+        color: #ccc;
+
+        &.done {
+          color: #50c878;
+        }
+
+        &.current {
+          color: $colors-blue-500;
+        }
+      }
+    }
+
+    .step-content {
+      flex: 1;
+
+      h5 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+      }
+    }
+
+    .btn-start {
+      background: $colors-blue-500;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      &:disabled {
+        background: $colors-blue-200;
+        cursor: not-allowed;
+      }
+
+      &:hover:not(:disabled) {
+        background: $colors-blue-500;
+      }
+    }
+  }
+}
+

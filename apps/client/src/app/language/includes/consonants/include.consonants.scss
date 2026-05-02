@@ -1,0 +1,58 @@
+@import "../../language.component.scss";
+
+.mat-mdc-header-row {
+  background-color: $colors-blue-200;
+  font-family: NotoSans-SemiBold, sans-serif;
+}
+
+.add-word-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selected-row-wrapper {
+  @include displayFlex(row, center, flex-start);
+  gap: toRem(5px);
+  margin-bottom: toRem(5px);
+
+  i {
+    font-size: toRem(20px);
+    color: $colors-red-500;
+  }
+
+  .selected-count {
+    background-color: $colors-blue-200;
+    padding: toRem(5px) toRem(10px);
+    border-radius: toRem(10px);
+
+    &.no-selection {
+      background-color: $colors-greyscale-200;
+    }
+  }
+}
+
+// search bar
+input.form-control[type="search"] {
+  padding: toRem(5px);
+  min-width: toRem(400px);
+}
+
+.action-wrapper {
+  @include displayFlex('row', 'flex-start', 'flex-start');
+  gap: $spacing-sm;
+  padding-left: toRem(8px);
+
+  i {
+    cursor: pointer;
+    font-size: 18px;
+
+    &.ph-info {
+      margin-left: -25px;
+    }
+  }
+}

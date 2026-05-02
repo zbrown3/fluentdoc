@@ -1,0 +1,22 @@
+@if (story !== undefined) {
+<div class="view-language-stories">
+  <div class="story">
+    <div class="story-header">
+      @if (story && story.title) {
+        <h1>{{ story.title }}</h1>
+      } @else {
+        <h1>Stories</h1>
+      }
+    </div>
+    <div class="story-body">
+      @if (story && story.content && story.content.trim()) {
+        <section class="rich-text" [innerHTML]="story.content | sanitizeHtml"></section>
+      } @else {
+        <div class="no-stories-message">
+          <p>{{languageName}} doesn't have any stories... yet!</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+}

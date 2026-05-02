@@ -1,0 +1,64 @@
+@if (phrases !== undefined) {
+<div class="phrases-view">
+  <div
+    class="phrases-view-header"
+    [ngClass]="{
+      'edit-mode': isEditMode,
+      'public-mode': isPublicMode,
+      'preview-mode': isPreviewMode
+    }"
+  >
+    <h1 class="phrases-view-header-title">Phrases</h1>
+    <div class="input-wrapper">
+      <i class="ph ph-magnifying-glass input-icon"></i>
+      <input
+        id="search-phrases"
+        type="text"
+        class="form-control"
+        [placeholder]="searchPlaceholder"
+        aria-label="Search phrases, meanings, pronunciation, and notes"
+        autocomplete="off"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+      />
+    </div>
+  </div>
+  <div class="phrases-view-body">
+    <div
+      class="phrases-view-nav"
+      [ngClass]="{
+        'edit-mode': isEditMode,
+        'public-mode': isPublicMode,
+        'preview-mode': isPreviewMode
+      }"
+    >
+      <button
+        class="btn btn-link"
+        *ngFor="let letter of dictionaryKeys; let i = index"
+        (click)="goToSection(letter)"
+        [disabled]="
+          (!!searchTerm && (!filteredPhrases[letter] || filteredPhrases[letter].length === 0)) ||
+          !fullPhrasesDictionary[letter] || fullPhrasesDictionary[letter].length === 0
+        "
+      >
+        {{ letter }}
+      </button>
+    </div>
+    <div class="phrases-view-body-content">
+      @if (phrases && phrases.length > 0) {
+        <app-view-language-phrases-view-section
+          *ngFor="let letter of dictionaryKeys; let i = index"
+          [listKey]="letter"
+          [listByKey]="
+            !!searchTerm ? (filteredPhrases[letter] || []) : (fullPhrasesDictionary[letter] || [])
+          "
+        ></app-view-language-phrases-view-section>
+      } @else {
+        <div class="no-phrases-message">
+          <p>{{languageName}} doesn't have any phrases... yet!</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+}

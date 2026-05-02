@@ -1,0 +1,42 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.edit-language-primary-header {
+  @include displayFlex(row, center, flex-start);
+
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-xl;
+  width: 100%;
+
+  .btn-icon i {
+    font-size: 1.5rem;
+  }
+
+  &-content {
+    @include displayFlex(column, flex-start, flex-start);
+
+    flex-grow: 1;
+    gap: $spacing-sm;
+
+    & > div:first-child {
+      @include displayFlex(row, center, flex-start);
+
+      gap: $spacing-lg;
+      width: 100%;
+    }
+
+    p {
+      @include textTruncate(1000px);
+    }
+  }
+
+  &-actions {
+    @include displayFlex(row, center, flex-end);
+
+    gap: $spacing-md;
+    width: 100%;
+  }
+}

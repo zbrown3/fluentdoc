@@ -1,0 +1,148 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.global-nav {
+  @include displayFlex(row, center, space-between);
+
+  padding: $spacing-md $spacing-xl;
+  background-color: $background-bold;
+  height: toRem(55px);
+  width: 100%;
+  flex-shrink: 0;
+  border-bottom: 1px solid $border-subtle;
+
+  &-logo {
+    @include displayFlex(row, center, flex-start);
+
+    gap: $spacing-xs;
+    cursor: pointer;
+    height: 2rem;
+    width: toRem(133px);
+
+    img {
+      &:first-child {
+        height: 100%;
+      }
+    }
+  }
+
+  &-items {
+    @include displayFlex(row, center, flex-start);
+
+    gap: $spacing-2xl;
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    .nav-item {
+      @include displayFlex(row, center, center);
+      @include body3Regular;
+
+      gap: toRem(6px);
+      cursor: pointer;
+      border-radius: toRem(50px);
+
+      &.active {
+        color: $colors-blue-500;
+        @include body3SemiBold;
+      }
+
+      &:hover:not(.active) {
+        i,
+        span {
+          color: $colors-blue-500;
+        }
+      }
+
+      & + .divider {
+        margin: 0;
+      }
+
+      &-actions {
+        @include displayFlex(row, center, center);
+        @include body3Regular;
+
+        gap: $spacing-lg;
+
+        & > div:not(:last-child) {
+          margin-top: toRem(6px);
+        }
+
+        i:hover {
+          cursor: pointer;
+          color: $colors-blue-500;
+        }
+      }
+    }
+  }
+
+  .profile-image {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+
+  #profileMenu {
+    padding: toRem(2px);
+    border-radius: 50%;
+    border: toRem(1px) solid $colors-greyscale-300;
+    cursor: pointer;
+    margin-bottom: toRem(5px);
+  }
+
+  #notification-bell {
+    position: relative;
+
+    .highlighted {
+      @include displayFlex(row, center, center);
+      top: toRem(-9px);
+      height: toRem(20px);
+      width: toRem(20px);
+      font-size: toRem(10px);
+      color: $content-inverse-primary;
+      background-color: $colors-red-600;
+      right: toRem(10px);
+    }
+  }
+
+  .nav-gradient {
+    &-block {
+      padding: toRem(20px) toRem(40px);
+      margin: toRem(10px) 0;
+      height: 100%;
+      border-radius: toRem(10px);
+      background: linear-gradient(180deg, $colors-blue-200, $colors-blue-500);
+    }
+
+    &-circle {
+      padding: toRem(20px) toRem(20px);
+      border-radius: 50%;
+      background: linear-gradient(180deg, $colors-blue-200, $colors-blue-500);
+    }
+
+    &-pill {
+      padding: toRem(20px) toRem(85px);
+      border-radius: toRem(20px);
+      background: linear-gradient(180deg, $colors-blue-200, $colors-blue-500);
+    }
+  }
+  .mobile-menu {
+    display: none;
+  }
+}
+
+@media (max-width: $breakpoints-md) {
+  .global-nav {
+    &-items {
+      display: none;
+    }
+    .mobile-menu {
+      display: block;
+    }
+  }
+}

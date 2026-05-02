@@ -1,0 +1,199 @@
+<div
+  class="modal fade"
+  id="exportOrShareModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exportOrShareModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Export
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        @if (view === 'export') {
+          <div class="export-content-view">
+            <div>
+              <p>Language guide (PDF)</p>
+              <div class="form-check">
+                <input
+                  id="language-guide-checkbox"
+                  class="form-check-input"
+                  type="checkbox"
+                  [(ngModel)]="exportOptions.includeLanguageGuide"
+                  (ngModelChange)="autoSelectIncludeSections()"
+                />
+                <label class="form-check-label" for="language-guide-checkbox">
+                  Language guide
+                </label>
+              </div>
+
+              @if(language.vocab || language.vocab?.length > 0) {
+                <div class="form-check sub-option">
+                  <input
+                    id="include-dictionary-checkbox"
+                    class="form-check-input"
+                    type="checkbox"
+                    [disabled]="!exportOptions.includeLanguageGuide"
+                    [(ngModel)]="exportOptions.includeDictionaryInGuide"
+                  />
+                  <label class="form-check-label" for="include-dictionary-checkbox"
+                    >Include dictionary</label
+                  >
+                </div>
+              }
+              @if(language.phrases || language.phrases?.length > 0) {
+                <div class="form-check sub-option">
+                  <input
+                    id="include-phrase-book-checkbox"
+                    class="form-check-input"
+                    type="checkbox"
+                    [disabled]="!exportOptions.includeLanguageGuide"
+                    [(ngModel)]="exportOptions.includePhraseBookInGuide"
+                  />
+                  <label class="form-check-label" for="include-phrase-book-checkbox"
+                    >Include phrase book</label
+                  >
+                </div>
+              }
+          </div>
+
+          @if((language.vocab || language.vocab?.length > 0) &&
+          (language.phrases || language.phrases?.length > 0)) {
+          <div class="export-separate-section">
+            <p>Or export separately</p>
+
+            @if(language.vocab || language.vocab?.length > 0) {
+            <div>
+              <div class="form-check">
+                <input
+                  id="export-separate-dictionary-checkbox"
+                  class="form-check-input"
+                  type="checkbox"
+                  [(ngModel)]="exportOptions.standaloneDictionary.include"
+                />
+                <label
+                  class="form-check-label"
+                  for="export-separate-dictionary-checkbox"
+                >
+                  Dictionary
+                  <i
+                    class="ph ph-info"
+                    tooltip="Alphabetically sorted words and definitions"
+                    placement="top"
+                  >
+                  </i>
+                </label>
+              </div>
+
+              <div class="form-check export-type">
+                <label class="form-check-label" for="dictionary-export-option"
+                  >Export as</label
+                >
+                <app-fdds-dropdown
+                  [disabled]="true"
+                  [options]="exportAsOptions"
+                  [selected]="exportAsOptions[0]"
+                  (selectedOptionEvent)="
+                    setExportType('standaloneDictionary', $event)
+                  "
+                ></app-fdds-dropdown>
+              </div>
+            </div>
+            } @if(language.phrases || language.phrases?.length > 0) {
+            <div>
+              <div class="form-check">
+                <input
+                  id="export-separate-phrase-book-checkbox"
+                  class="form-check-input"
+                  type="checkbox"
+                  [(ngModel)]="exportOptions.standalonePhraseBook.include"
+                />
+                <label
+                  class="form-check-label"
+                  for="export-separate-phrase-book-checkbox"
+                >
+                  Phrase book
+                  <i
+                    class="ph ph-info"
+                    tooltip="Common phrases and sentence examples in your language"
+                    placement="top"
+                  >
+                  </i>
+                </label>
+              </div>
+
+              <div class="form-check export-type">
+                <label class="form-check-label" for="phrase-book-export-option"
+                  >Export as</label
+                >
+                <app-fdds-dropdown
+                  [disabled]="true"
+                  [options]="exportAsOptions"
+                  [selected]="exportAsOptions[0]"
+                  (selectedOptionEvent)="
+                    setExportType('standalonePhraseBook', $event)
+                  "
+                ></app-fdds-dropdown>
+              </div>
+            </div>
+            }
+          </div>
+          }
+        </div>
+        }
+
+      </div>
+      <div class="modal-footer">
+        @if (view === 'export') {
+          @if (exportStatus === EXPORT_STATE.NOT_STARTED) {
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="isExportDisabled"
+              (click)="exportPDF()"
+            >
+              Export
+            </button>
+          }
+          @if (exportStatus === EXPORT_STATE.EXPORTING) {
+            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="true">
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Exporting...
+            </button>
+          }
+          @if (exportStatus === EXPORT_STATE.SUCCESS
+            || exportStatus === EXPORT_STATE.ERROR) {
+            <button class="btn btn-outline-primary" (click)="resetExportOptions()">
+              Export More
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+              Done
+            </button>
+          }
+        }
+        @if (isSharedLanguageFeatureEnabled && view === 'share') {
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Done
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

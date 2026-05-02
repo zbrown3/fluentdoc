@@ -1,0 +1,109 @@
+<div class="data-table-container">
+  @if(showSearchInput) {
+  <div class="search-container">
+    <div class="input-wrapper">
+      <i class="ph ph-magnifying-glass input-icon"></i>
+      <input
+        id="search-phrases"
+        type="text"
+        class="form-control"
+        placeholder="Search word"
+        aria-label="Search word"
+        [(ngModel)]="searchString"
+        (keyup)="applyFilter()"
+      />
+    </div>
+  </div>
+  }
+
+  <div class="data-table">
+    <mat-table matSort [dataSource]="dataSource">
+      <ng-container
+        *ngFor="let column of columns; let i = index"
+        [matColumnDef]="column.key"
+      >
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [disabled]="!column.sortable"
+        >
+          {{ column.label }}
+        </mat-header-cell>
+        <mat-cell
+          *matCellDef="let row"
+          [tooltip]="
+            row[column.key]?.tooltip ||
+            formatColumnData(column, row[column.key])
+          "
+          [isDisabled]="!column.showTooltip"
+          placement="bottom"
+          [adaptivePosition]="false"
+        >
+          @if (column.key === 'actions' && column.actions) {
+          <div class="action-buttons">
+            <div *ngFor="let action of column.actions">
+              <!-- Had to have specific data-bs attributes to launch Delete modal, without them, it won't render...
+               TODO: Figure out how to get the Delete Confirmation modal to render without these data-bs-toggle/target
+                attributes here -->
+              @if(action.isDelete) { @if(!this.isPublicRoute) {
+              <button
+                type="button"
+                class="btn btn-icon btn-tertiary-gray btn-sm"
+                (click)="action.onClick(row)"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmDeleteModal"
+                [tooltip]="action.tooltip"
+                [isDisabled]="!action.tooltip"
+                placement="bottom"
+              >
+                <i class="ph" [ngClass]="action.icon"></i>
+              </button>
+              } } @else {
+              <button
+                type="button"
+                class="btn btn-sm"
+                [ngClass]="{
+                  'btn-icon': action.isIconButton,
+                  'btn-link': !action.isIconButton
+                }"
+                (click)="action.onClick(row)"
+                [tooltip]="action.tooltip"
+                [isDisabled]="!action.tooltip"
+                placement="bottom"
+              >
+                @if(action.icon) {
+                <i class="ph" [ngClass]="action.icon"></i>
+                } @if(!action.isIconButton) {
+                <span>{{ action.label }}</span>
+                }
+              </button>
+              }
+            </div>
+          </div>
+          } @else {
+          <div>
+            {{ formatColumnData(column, row[column.key]) }}
+          </div>
+          }
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row
+        *matHeaderRowDef="displayedColumns; sticky: stickyHeaderRow"
+      ></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    @if (showPaginationControls) {
+    <mat-paginator
+      [length]="dataSource.data.length"
+      [pageSize]="paginationConfig!.pageSize"
+      (page)="handlePageEvent($event)"
+      [pageSizeOptions]="paginationConfig!.pageSizeOptions"
+      showFirstLastButtons
+      aria-label="Select page"
+    >
+    </mat-paginator>
+    }
+  </div>
+</div>

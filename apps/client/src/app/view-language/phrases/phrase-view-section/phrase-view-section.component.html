@@ -1,0 +1,20 @@
+@if (listByKey && listByKey.length > 0) {
+<section class="phrase-view-section" [id]="listKey | slugify">
+  <p>{{ listKey }}</p>
+  <div class="phrase-view-section-container">
+    <div class="phrase-view-section-content">
+      <div
+        class="phrases-content"
+        *ngFor="let phraseObj of listByKey; let i = index"
+      >
+        <div class="phrase-details">
+          <p>{{ phraseObj.phrase }}</p>
+          <p>{{ phraseObj.pronunciation }}</p>
+          <p>{{ phraseObj.meaning }}</p>
+        </div>
+        <p>{{ phraseObj.notes }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+}

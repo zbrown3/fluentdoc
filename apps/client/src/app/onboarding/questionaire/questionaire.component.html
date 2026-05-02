@@ -1,0 +1,145 @@
+<div class="onboarding-questionaire">
+  <div class="questionaire-card card">
+    <div class="card-body">
+      <div class="questionaire-container">
+        <div>
+          <p class="questionaire-question">
+            How would you describe your experience with conlanging (language
+            creation)?
+          </p>
+          <div class="selection-cards-container">
+            <div
+              class="selection-card-lg"
+              [ngClass]="{
+                selected: questionaireAnswers.experience === 'BEGINNER'
+              }"
+              (click)="updateQuestionaireAnswers('experience', 'BEGINNER')"
+            >
+              <div class="selection-card-title">
+                <i
+                  class="ph-duotone icon-lg"
+                  [ngClass]="getExperienceSelectionCardIcon('BEGINNER')"
+                ></i>
+                <span>Beginner</span>
+              </div>
+              <span class="selection-card-body">
+                I would appreciate assistance in creating conlangs.
+              </span>
+            </div>
+            <div
+              class="selection-card-lg"
+              [ngClass]="{
+                selected: questionaireAnswers.experience === 'HOBBYIST'
+              }"
+              (click)="updateQuestionaireAnswers('experience', 'HOBBYIST')"
+            >
+              <div class="selection-card-title">
+                <i
+                  class="ph-duotone icon-lg"
+                  [ngClass]="getExperienceSelectionCardIcon('HOBBYIST')"
+                ></i>
+                <span>Hobbyist</span>
+              </div>
+              <span class="selection-card-body">
+                I possess some knowledge of conlanging.
+              </span>
+            </div>
+            <div
+              class="selection-card-lg"
+              [ngClass]="{
+                selected: questionaireAnswers.experience === 'ADVANCED'
+              }"
+              (click)="updateQuestionaireAnswers('experience', 'ADVANCED')"
+            >
+              <div class="selection-card-title">
+                <i
+                  class="ph-duotone icon-lg"
+                  [ngClass]="getExperienceSelectionCardIcon('ADVANCED')"
+                ></i>
+                <span>Advanced</span>
+              </div>
+              <span class="selection-card-body">
+                I&apos;m confident in creating conlangs on my own.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="questionaire-question">
+            Do you collaborate with others on your languages?
+          </p>
+          <div class="selection-cards-container">
+            <div
+              class="selection-card-sm"
+              [ngClass]="{
+                selected: questionaireAnswers.collaborative === true
+              }"
+              (click)="updateQuestionaireAnswers('collaborative', true)"
+            >
+              <div class="selection-card-title">
+                <span>Yes</span>
+              </div>
+            </div>
+            <div
+              class="selection-card-sm"
+              [ngClass]="{
+                selected: questionaireAnswers.collaborative === false
+              }"
+              (click)="updateQuestionaireAnswers('collaborative', false)"
+            >
+              <div class="selection-card-title">
+                <span>No</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="questionaire-question">
+            Do you plan on sharing your languages?
+          </p>
+          <div class="selection-cards-container">
+            <div
+              class="selection-card-sm"
+              [ngClass]="{
+                selected: questionaireAnswers.shareLanguage === true
+              }"
+              (click)="updateQuestionaireAnswers('shareLanguage', true)"
+            >
+              <div class="selection-card-title">
+                <span>Yes</span>
+              </div>
+            </div>
+            <div
+              class="selection-card-sm"
+              [ngClass]="{
+                selected: questionaireAnswers.shareLanguage === false
+              }"
+              (click)="updateQuestionaireAnswers('shareLanguage', false)"
+            >
+              <div class="selection-card-title">
+                <span>No</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="onboarding-questionaire-footer">
+    <div
+      tooltipPlacement="top"
+      tooltip="Please finish the questions to go to the next step"
+      trigger="hover manual"
+      [tooltipEnable]="!getIsQuestionaireComplete()"
+    >
+      <button
+        class="btn btn-primary"
+        [ngClass]="{ disabled: !getIsQuestionaireComplete() }"
+        (click)="submitQuestionaire()"
+      >
+        <span>Next: Set up profile</span>
+        <i class="ph ph-arrow-right icon-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>

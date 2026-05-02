@@ -1,0 +1,64 @@
+@if (vocabulary !== undefined) {
+<div class="dictionary-view">
+  <div
+    class="dictionary-view-header"
+    [ngClass]="{
+      'edit-mode': isEditMode,
+      'public-mode': isPublicMode,
+      'preview-mode': isPreviewMode
+    }"
+  >
+    <h1 class="dictionary-view-header-title">Dictionary</h1>
+    <div class="input-wrapper">
+      <i class="ph ph-magnifying-glass input-icon"></i>
+      <input
+        id="search-dictionary"
+        type="text"
+        class="form-control"
+        [placeholder]="searchPlaceholder"
+        aria-label="Search dictionary words, meanings, pronunciation, and notes"
+        autocomplete="off"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+      />
+    </div>
+  </div>
+  <div class="dictionary-view-body">
+    <div
+      class="dictionary-view-nav"
+      [ngClass]="{
+        'edit-mode': isEditMode,
+        'public-mode': isPublicMode,
+        'preview-mode': isPreviewMode
+      }"
+    >
+      <button
+        class="btn btn-link"
+        *ngFor="let letter of dictionaryKeys; let i = index"
+        (click)="goToSection(letter)"
+        [disabled]="
+          (!!searchTerm && (!filteredDictionary[letter] || filteredDictionary[letter].length === 0)) ||
+          !fullDictionary[letter] || fullDictionary[letter].length === 0
+        "
+      >
+        {{ letter }}
+      </button>
+    </div>
+    <div class="dictionary-view-body-content">
+      @if (vocabulary && vocabulary.length > 0) {
+        <app-view-language-dictionary-view-section
+          *ngFor="let letter of dictionaryKeys; let i = index"
+          [listKey]="letter"
+          [listByKey]="
+            !!searchTerm ? (filteredDictionary[letter] || []) : (fullDictionary[letter] || [])
+          "
+        ></app-view-language-dictionary-view-section>
+      } @else {
+        <div class="no-dictionary-message">
+          <p>{{languageName}} doesn't have any words... yet!</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+}

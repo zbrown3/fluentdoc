@@ -1,0 +1,494 @@
+<div class="language-section-header">
+  <div>
+    <div class="dis-flex align-items-center gap-3">
+      <h4 class="language-view-title">
+        {{ LANGUAGE_SUBSECTIONS.vocabulary.title }}
+        @if (isStarterPlan()) {
+          ({{dataSource.length > limits.words ? limits.words : dataSource.length}} / {{limits.words}})
+        }
+      </h4>
+    </div>
+    <p>
+      {{ formatDynamicString(LANGUAGE_SUBSECTIONS.vocabulary.description,
+      language.name) }}
+    </p>
+  </div>
+  <div>
+    <div class="btn-row">
+      <button
+        type="button"
+        class="btn btn-outline-primary me-2"
+        data-bs-toggle="modal"
+        data-bs-target="#exportOrShareModal"
+        [disabled]="dataSource.length < 1 || reachedVocabLimit()"
+      >
+        <i
+          class="ph ph-export"
+          [ngClass]="dataSource.length < 1 ? '' : 'text-primary'"
+        ></i>
+        Export dictionary
+      </button>
+        <div
+          class="btn-group"
+          [tooltip]="reachedVocabLimit() ? 'Word limit reached.\nUpgrade to add unlimited words.' : ''"
+          placement="bottom"
+        >
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#wordPanel"
+            aria-controls="wordPanel"
+            (click)="resetWordForm()"
+            [disabled]="reachedVocabLimit()"
+          >
+          Add word
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+          id="saveSplit"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          [disabled]="reachedVocabLimit()"
+        >
+          <span class="visually-hidden">Toggle dropdown</span>
+        </button>
+        @if (importWordsEnabled) {
+        <div class="dropdown-menu" aria-labelledby="saveSplit">
+          <li class="dropdown-item" (click)="openImportFileModal()">
+            <i class="ph ph-download-simple"></i> Import words
+          </li>
+        </div>
+        } @else {
+        <div class="dropdown-menu" aria-labelledby="saveSplit">
+          <div class="badge badge-primary">Coming soon</div>
+          <div class="dropdown-item" aria-disabled="true" disabled="true">
+            <i class="ph ph-download-simple"></i> Import words
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No words wrapper -->
+@if (dataSource.length === 0 && vocab.length === 0) {
+<div class="no-vocab-wrapper">
+  <img
+    ngSrc="assets/images/illustrations/empty_state.svg"
+    class="img-fluid"
+    width="300"
+    alt="empty box"
+    height="309"
+  />
+  <p>
+    No words created yet.<br />Add your first word, or import words from an
+    existing file.
+  </p>
+  <div class="button-wrapper">
+    <button
+      class="btn btn-primary"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#wordPanel"
+      aria-controls="wordPanel"
+    >
+      Add word
+    </button>
+  </div>
+</div>
+}
+
+<!-- offcanvas drawer -->
+<div
+  class="offcanvas offcanvas-end"
+  data-bs-scroll="true"
+  data-bs-backdrop="false"
+  tabindex="-1"
+  id="wordPanel"
+  aria-labelledby="wordPanelLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="wordPanelLabel">
+      {{ editMode ? 'Edit ' : 'Add ' }} word
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <form [formGroup]="addWordForm" (ngSubmit)="addWord()">
+      <div class="mb-3">
+        <label for="newWord" class="form-label"
+          >Word in {{ language.name }} <sup class="required-asterisk">*</sup>
+          <i
+            class="ph ph-info ms-1"
+            tooltip="i.e. if the Word is 'House' - how do you spell house in your language?"
+            placement="right"
+          ></i>
+        </label>
+        <input
+          class="form-control"
+          formControlName="word"
+          name="newWord"
+          id="newWord"
+          type="text"
+          placeholder="How do you say it in {{language.name}}?"
+          autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.word.errors }"
+        />
+        @if (submitted && f.word.errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (f.word.errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="pronunciation" class="form-label"
+          >Phonetic transcription <sup class="required-asterisk">*</sup>
+          <i
+            class="ph ph-info ms-1"
+            tooltip="While IPA is preferred, this can be ipa or loose transcription. Whatever system you have that is clear to define your pronunciation will work."
+            placement="right"
+          ></i>
+        </label>
+        <app-ipa-input
+          name="pronunciation"
+          id="pronunciation"
+          formControlName="pronunciation"
+          [ngClass]="{ 'is-invalid': submitted && f.pronunciation.errors }"
+        />
+        @if (submitted && f.pronunciation.errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (f.pronunciation.errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="partOfSpeech" class="form-label"
+          >Part of Speech <sup class="required-asterisk">*</sup>
+          @if (addWordForm.controls.pos.value &&
+          vocabList.getPartOfSpeechDescription(addWordForm.controls.pos.value)
+          !== '') {
+          <i
+            class="ph ph-lightbulb ms-1 text-success"
+            tooltip="{{ addWordForm.controls.pos.value ? vocabList.getPartOfSpeechDescription(addWordForm.controls.pos.value) : '' }}"
+            placement="right"
+          ></i>
+          }
+        </label>
+        <input
+          formControlName="pos"
+          name="partOfSpeech"
+          id="partOfSpeech"
+          type="text"
+          [ngClass]="{ 'is-invalid': submitted && f.pos.errors }"
+          [typeahead]="vocabList.partsOfSpeech"
+          typeaheadOptionField="name"
+          typeaheadGroupField="group"
+          placeholder="Enter part of speech"
+          autocomplete="off"
+          class="form-control"
+        />
+        @if (submitted && f.pos.errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (f.pos.errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="meaning" class="form-label"
+          >Meaning in English <sup class="required-asterisk">*</sup></label
+        >
+        <input
+          class="form-control"
+          formControlName="meaning"
+          name="meaning"
+          id="meaning"
+          type="text"
+          placeholder="English translation"
+          autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.meaning.errors }"
+        />
+        @if (submitted && f.meaning.errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (f.meaning.errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+      <div>
+        <label for="notes" class="form-label"
+          >Notes
+          <i
+            class="ph ph-info"
+            tooltip="Add anything unique about this word in your language that you'd like to remember, readers to know or for someone to make note of."
+            placement="right"
+          ></i>
+        </label>
+        <textarea
+          class="form-control"
+          id="notes"
+          rows="5"
+          formControlName="notes"
+          placeholder="(Etymology, etc)"
+        ></textarea>
+      </div>
+      <div class="offcanvas-form-footer">
+        <div class="button-wrapper">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="offcanvas"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            {{ editMode ? 'Save ' : 'Add ' }} word
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Vocab Table -->
+<div class="vocab-table-main">
+  @if (vocab.length !== 0) {
+  <div class="dis-flex justify-content-between me-2">
+    <div class="selected-row-wrapper">
+      @if (selection.selected.length) {
+      <div class="selected-count">{{ selection.selected.length }} selected</div>
+      <i
+        class="ph ph-trash cursor-pointer"
+        (click)="openModal(deleteWordsModal)"
+      ></i>
+      } @else {
+      <div class="selected-count no-selection">
+        {{ selection.selected.length }} selected
+      </div>
+      }
+
+      <input
+        [(ngModel)]="searchQuery"
+        class="form-control me-2 w-25"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        (input)="filterDataOnQuery()"
+      />
+    </div>
+    <div>
+      <span (click)="openModal(swadeshList)" class="cursor-pointer text-primary"
+        ><i class="ph ph-lightbulb"></i> Get inspiration</span
+      >
+    </div>
+  </div>
+  } @if (dataSource.length === 0 && (searchQuery !== '' && this.vocab.length >
+  0)) {
+  <div class="no-vocab-wrapper">
+    <img
+      ngSrc="assets/images/illustrations/void.svg"
+      class="img-fluid"
+      width="300"
+      alt="empty box"
+      height="309"
+    />
+    <p>No words match your search criteria</p>
+    <div class="button-wrapper">
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="clearSearchFilter()"
+      >
+        Clear filter
+      </button>
+    </div>
+  </div>
+  } @if (dataSource.length > 0) {
+  <table
+    mat-table
+    [dataSource]="displayedWords"
+    matSort
+    (matSortChange)="sortData($event)"
+    class="mat-elevation-z8"
+  >
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          color="primary"
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox
+          color="primary"
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(element) : null"
+          [checked]="selection.isSelected(element)"
+          [aria-label]="checkboxLabel(element)"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Word Column -->
+    <ng-container matColumnDef="word">
+      <th mat-header-cell mat-sort-header="word" *matHeaderCellDef>
+        Word ({{ language.name }})
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.word }}</td>
+    </ng-container>
+
+    <!-- Phonetic Transcription Column -->
+    <ng-container matColumnDef="pronunciation">
+      <th mat-header-cell *matHeaderCellDef>Phonetic transcription</th>
+      <td mat-cell *matCellDef="let element">
+        {{ filterPronunciation(element.pronunciation) }}
+      </td>
+    </ng-container>
+
+    <!-- Meaning Column -->
+    <ng-container matColumnDef="meaning">
+      <th mat-header-cell *matHeaderCellDef>Translation (English)</th>
+      <td mat-cell *matCellDef="let element">{{ element.meaning }}</td>
+    </ng-container>
+
+    <!-- Part of Speech Column -->
+    <ng-container matColumnDef="pos">
+      <th mat-header-cell *matHeaderCellDef>Part of Speech</th>
+      <td mat-cell *matCellDef="let element">{{ element.pos }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <div class="action-wrapper">
+          @if (element.notes) {
+          <i
+            class="ph ph-info"
+            tooltip="{{element.notes}}"
+            placement="start"
+          ></i>
+          }
+          <i
+            class="ph ph-pencil-simple text-primary"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#wordPanel"
+            (click)="populatePanel(element, i)"
+          ></i>
+          <i class="ph ph-trash" (click)="deleteWord(element)"></i>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+  </table>
+  <mat-paginator
+    [length]="dataSource.length"
+    [pageSize]="pageSize"
+    (page)="handlePageEvent($event)"
+    [pageSizeOptions]="pageSizeOptions"
+    showFirstLastButtons
+    aria-label="Select page"
+  >
+  </mat-paginator>
+  }
+</div>
+<div class="vocab-table-mobile">
+  <!--    TODO-->
+</div>
+
+<ng-template #deleteWordsModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Bulk Deletion</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="bsModalRef.hide()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <b
+        >Are you sure you want to delete {{ selection.selected.length }}
+        words?</b
+      >
+    </p>
+
+    <p>
+      This action cannot be undone, and the words will be permanently removed
+      from your dictionary.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="bsModalRef.hide()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deleteSelectedWords()"
+    >
+      Delete words
+    </button>
+  </div>
+</ng-template>
+<!-- /.Common Phrase List -->
+
+<!-- Common Phrase List -->
+<ng-template #swadeshList>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Swadesh List</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li *ngFor="let word of vocabList.words">{{ word }}</li>
+    </ul>
+  </div>
+</ng-template>
+<!-- /.Common Phrase List -->
+<app-export-or-share-modal
+  [language]="language"
+  [isStarterPlan]="isStarterPlan()"
+  [source]="exportDictionaryPdfType"
+>
+</app-export-or-share-modal>

@@ -1,0 +1,66 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: toRem(32px);
+}
+
+.menu-panel {
+  width: toRem($breakpoints-sm);
+  background: $background-bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: toRem(20px);
+  z-index: 2;
+  position: absolute;
+  right: 0;
+}
+
+.menu-section {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  li {
+    @include displayFlex(row, center, center);
+    gap: 10px;
+    padding: toRem(8px) 0;
+    cursor: pointer;
+
+    i {
+      font-size: toRem(20px);
+    }
+
+    &:hover {
+      color: $colors-blue-500;
+    }
+  }
+}
+
+hr {
+  border-top: 1px solid $border-subtle;
+}
+
+#notification-bell {
+  > i {
+    position: relative;
+
+    .highlighted {
+      @include displayFlex(row, center, center);
+      top: toRem(-9px);
+      height: toRem(20px);
+      width: toRem(20px);
+      font-size: toRem(10px);
+      color: $content-inverse-primary;
+      background-color: $colors-red-600;
+      right: toRem(10px);
+    }
+  }
+}

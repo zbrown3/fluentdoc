@@ -1,0 +1,19 @@
+@import "../../../../../scss/mixins/common.scss";
+@import "../../../../../scss/mixins/typography.scss";
+@import "../../../../../scss/variables/colors.scss";
+@import "../../../../../scss/variables/spacing.scss";
+
+.consonants-grid {
+  @include grid;
+  @include displayFlex(column, flex-start);
+
+  gap: $spacing-xl;
+
+  .grid-sm {
+    width: unset;
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include grid(2);
+  }
+}

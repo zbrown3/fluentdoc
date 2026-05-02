@@ -1,0 +1,43 @@
+<div class="dropdown">
+  <div class="input-wrapper">
+    <input
+      type="text"
+      name="dropdownField"
+      class="form-control"
+      (click)="toggleDropdownMenu()"
+      [disabled]="disabled"
+      [placeholder]="placeholder"
+      [value]="selectedOption.label"
+    />
+    @if (disabled) {
+      <i
+        class="ph ph-caret-down"
+      ></i>
+    } @else {
+      <i
+        class="ph ph-caret-down"
+        [ngClass]="{
+      'ph-caret-up': showDropdownMenu,
+      'ph-caret-down': !showDropdownMenu
+    }"
+        (click)="toggleDropdownMenu()"
+      ></i>
+    }
+  </div>
+  @if (!disabled && showDropdownMenu) {
+  <ul class="dropdown-menu" aria-labelledby="profileMenu">
+    <li
+      *ngFor="let option of options"
+      class="dropdown-item"
+      (click)="dropdownItemSelected(option)"
+    >
+      @if (option.icon) {
+      <i class="ph" [ngClass]="option.icon"></i>
+      }
+      <span>
+        {{ option.label }}
+      </span>
+    </li>
+  </ul>
+  }
+</div>

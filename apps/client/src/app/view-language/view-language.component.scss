@@ -1,0 +1,119 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.view-language {
+  &-container {
+    .view-language-header {
+      @include displayFlex(row, center, space-between);
+
+      background-color: $background-subtle;
+      padding: $spacing-md $spacing-xl;
+      border-bottom: 1px solid $colors-greyscale-200;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+
+      &-content {
+        width: 100%;
+
+        & > div:first-child {
+          @include displayFlex(row, baseline, flex-start);
+
+          flex-grow: 1;
+          gap: $spacing-md;
+          width: 100%;
+
+          p {
+            @include h4SemiBold;
+          }
+
+          span {
+            @include subtitleRegular;
+
+            color: $content-secondary;
+          }
+        }
+      }
+
+      &-actions {
+        @include displayFlex(row, center, flex-end);
+
+        width: 100%;
+        gap: $spacing-md;
+      }
+    }
+
+    .view-language-body {
+      @include displayFlex(row, center, center);
+
+      height: 100%;
+      width: 100%;
+
+      .offcanvas-backdrop {
+        margin-top: 122px !important;
+      }
+
+      #customize-styles-drawer {
+        margin-top: 122px;
+
+        .offcanvas {
+          &-header {
+            @include displayFlex(row, center, space-between);
+
+            padding: $spacing-xl;
+
+            & > p:first-child {
+              @include h5SemiBold;
+
+              & + .btn-close {
+                margin-bottom: $spacing-lg;
+              }
+            }
+          }
+
+          &-body {
+            padding-top: 0;
+
+            &-container {
+              @include displayFlex(column, flex-start, space-between);
+
+              height: 100%;
+              width: 100%;
+            }
+
+            &-content {
+              @include displayFlex(column, flex-start, flex-start);
+
+              gap: $spacing-xl;
+            }
+          }
+          &-footer {
+            @include displayFlex(row, center, space-between);
+
+            padding: $spacing-xl;
+            width: 100%;
+            border-top: 1px solid $border-subtle;
+          }
+        }
+      }
+    }
+
+    app-view-language-dictionary-view,
+    app-view-language-phrases-view {
+      width: 100%;
+    }
+
+    @media screen and (max-width: $breakpoints-md) {
+      .view-language-body {
+        padding-top: $spacing-lg;
+        overflow: auto;
+      }
+    }
+  }
+}

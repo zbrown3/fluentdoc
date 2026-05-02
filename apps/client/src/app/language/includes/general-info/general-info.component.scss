@@ -1,0 +1,56 @@
+@import "../../language.component.scss";
+@import "../../../../scss/variables/colors.scss";
+@import "../../../../scss/variables/spacing.scss";
+
+.general-info-wrapper {
+  .edit-language-form {
+    @include displayFlex(column, flex-start, flex-start);
+
+    gap: $spacing-xl;
+    width: 100%;
+
+    & > .form-group {
+      width: 100%;
+    }
+  }
+
+  .type-option-wrapper {
+    display: flex;
+    gap: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+
+    .option {
+      border-radius: 25px;
+      background-color: $background-bold;
+      min-width: 4rem;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.5s ease;
+      border: 1px solid $border-subtle;
+
+      &.selected {
+        background-color: $background-inverse;
+        color: $content-inverse-primary;
+      }
+    }
+  }
+
+  .language-overview-form-container {
+    @include displayFlex(row, flex-start, space-between);
+
+    gap: $spacing-xl;
+    width: 100%;
+
+    .chips-container {
+      margin-bottom: $spacing-lg;
+    }
+
+    input,
+    textarea {
+      width: toRem(600px);
+      max-width: 100%;
+    }
+  }
+}

@@ -1,0 +1,155 @@
+<!-- TODO: Make this section header div into it's own reusable component OR create a PageLayout component -->
+<div class="language-section-header">
+  <div>
+    <h4 class="language-view-title">
+      {{ SUB_SECTIONS.mainInformation.title }}
+    </h4>
+    <p>
+      {{
+        formatDynamicString(
+          SUB_SECTIONS.mainInformation.description,
+          language.name
+        )
+      }}
+    </p>
+  </div>
+  <div>
+    <button
+      class="btn btn-primary save-btn"
+      (click)="update()"
+      [disabled]="
+        editLanguage.name.trim() === '' ||
+        editLanguage.reasons.length === 0 ||
+        editLanguage.types.length === 0 ||
+        editLanguage.description.trim() === '' ||
+        isSaving
+      "
+    >
+      @if (!isSaving) {
+      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+      <span class="spinner-border spinner-border-sm me-2"></span> Saving... }
+    </button>
+  </div>
+</div>
+<!-----END TODO----->
+
+<div class="general-info-wrapper">
+  <form (ngSubmit)="update()" class="edit-language-form">
+    <div class="language-overview-form-container">
+      <div class="form-wrapper">
+        <!-- language name -->
+        <div class="form-group">
+          <label for="language-name" class="form-label"
+            >Language name<sup class="required-asterisk">*</sup></label
+          >
+          <input
+            [(ngModel)]="editLanguage.name"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': editLanguage.name.trim() === '' }"
+            name="language-name"
+            id="language-name"
+            type="text"
+            maxlength="50"
+          />
+          <div class="text-muted small mt-1">
+            {{ editLanguage.name?.length || 0 }}/50 characters
+          </div>
+          @if (editLanguage.name.trim() === '') {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            <span>Please provide a language name.</span>
+          </div>
+          }
+        </div>
+
+        <!-- language description -->
+        <div class="form-group">
+          <label for="language-description" class="form-label"
+            >Language description<sup class="required-asterisk">*</sup></label
+          >
+          <textarea
+            [(ngModel)]="editLanguage.description"
+            name="language-description"
+            id="language-description"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': editLanguage.description.trim() === '' }"
+            rows="10"
+            maxlength="1000"
+          ></textarea>
+          <div class="text-muted small mt-1">
+            {{ editLanguage.description?.length || 0 }}/1000 characters
+          </div>
+          @if (editLanguage.description.trim() === '') {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            <span>Please describe the language.</span>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="form-wrapper">
+        <!-- language purpose -->
+        <div class="form-group">
+          <label for="language-purpose" class="form-label"
+            >Language purpose <small>(can select multiple)</small>
+            <sup class="required-asterisk">*</sup></label
+          >
+          <div class="chips-container">
+            <span
+              id="language-purpose"
+              class="chip"
+              *ngFor="let purpose of languagePurposes"
+              [ngClass]="{
+                selected: editLanguage.reasons?.includes(purpose.key),
+                'is-invalid': editLanguage.reasons.length === 0
+              }"
+              (click)="updateLanguagePurposeSelection(purpose)"
+            >
+              {{ purpose.description }}
+            </span>
+          </div>
+          @if (editLanguage.reasons.length === 0) {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            <span>Select at least one language purpose.</span>
+          </div>
+          }
+        </div>
+
+        <!-- language type -->
+        <div class="form-group">
+          <label for="language-types" class="form-label"
+            >Language type <small>(can select multiple)</small>
+            <sup class="required-asterisk">*</sup></label
+          >
+          <div class="chips-container">
+            <span
+              id="language-types"
+              class="chip"
+              *ngFor="let type of languageTypes"
+              [ngClass]="{
+                selected: editLanguage.types?.includes(type.key),
+                'is-invalid': editLanguage.types.length === 0
+              }"
+              (click)="updateLanguageTypeSelection(type)"
+              tooltip="{{ type.description }}"
+              placement="top"
+            >
+              {{ type.type }}
+            </span>
+          </div>
+          @if (editLanguage.types.length === 0) {
+          <div class="invalid-feedback">
+            <i class="ph-fill ph-warning-circle"></i>
+            <span>Select at least one language type.</span>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div></div>
+  </form>
+</div>

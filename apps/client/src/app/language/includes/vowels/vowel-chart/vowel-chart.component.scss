@@ -1,0 +1,163 @@
+@import "../../../../../scss/functions/common.scss";
+@import "../../../../../scss/mixins/common.scss";
+@import "../../../../../scss/mixins/typography.scss";
+@import "../../../../../scss/variables/colors.scss";
+
+// Note: this file is using px units instead of REM because the SVG is scaled to fit the container and these values are in px.
+
+/* ---------- Layout wrapper ---------- */
+.chart-wrap {
+  max-width: 650px;
+  margin: 0 auto;
+  color: $colors-blue-900;
+}
+
+/* ---------- Top labels above the trapezoid ---------- */
+.labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: min(560px, 80%);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: toRem(12px);
+  line-height: 1.2;
+  color: $content-secondary;
+}
+
+.labels > span {
+  text-align: center;
+}
+
+/* ---------- SVG canvas ---------- */
+.chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Trapezoid boundary (IPA-like proportions) */
+.trap {
+  fill: $colors-white;
+  stroke: $colors-blue-200;
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Row labels inside the SVG */
+.rows text {
+  font-size: 2.4px; /* SVG units (viewBox 0..100) */
+  fill: $content-secondary;
+}
+
+/* Invisible, larger tap/click area for each symbol */
+.hit {
+  fill: transparent;
+  cursor: pointer;
+}
+
+/* IPA vowel symbols */
+.ipa {
+  font-size: 4px; /* scaled for 0..100 viewBox */
+  dominant-baseline: central;
+  text-anchor: middle;
+  cursor: pointer;
+  user-select: none;
+  fill: $colors-blue-900; /* default: unrounded = near-black */
+}
+
+/* Rounded vowels (blue tint, like IPA convention) */
+.ipa.rounded {
+  fill: $colors-blue-500; /* blue for rounded */
+}
+
+.ipa:focus {
+  outline: none; /* remove default focus outline */
+}
+
+/* Selected state */
+.ipa.selected {
+  fill: $colors-green-600; /* green */
+  font-weight: 700;
+}
+
+/* Optional header text if you render FRONT/CENTRAL/BACK inside SVG */
+.hdr {
+  font-size: 2.2px;
+  fill: $content-secondary;
+  text-anchor: middle;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Small helper text under the chart */
+.hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: $content-secondary;
+  text-align: center;
+}
+
+.helper {
+  font-size: 11px;
+  position: absolute;
+  left: 43%;
+}
+
+/* Checkbox square */
+.cb-box {
+  fill: $colors-white;
+  stroke: $colors-blue-200;
+  stroke-width: 0.4;
+  cursor: pointer;
+}
+
+.cb-box.checked {
+  fill: $colors-blue-500;
+  stroke: $colors-blue-500;
+}
+
+.cb-box:focus {
+  outline: none; /* remove default focus outline */
+}
+
+/* Check mark */
+.cb-check {
+  fill: none;
+  stroke: $colors-white;
+  stroke-width: 0.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none; /* clicks pass through to cb-box/hit */
+}
+
+/* Make sure hit area doesn’t visually interfere */
+.hit {
+  fill: transparent;
+  cursor: pointer;
+}
+
+/* Speaker icon in foreignObject */
+.icon-wrap {
+  width: 6px;
+  height: 6px;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.icon-wrap .ph {
+  font-size: 4px;
+  color: $colors-blue-900;
+}
+
+/* ---------- Responsive tweak ---------- */
+@media (max-width: 420px) {
+  .labels {
+    font-size: 11px;
+  }
+  .rows text {
+    font-size: 3px;
+  }
+  .ipa {
+    font-size: 6px;
+  }
+}

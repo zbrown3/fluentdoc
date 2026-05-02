@@ -1,0 +1,81 @@
+<!-- Toggle Button -->
+<button (click)="toggleMobileMenu()" class="menu-toggle">
+  <i class="ph ph-list"></i>
+</button>
+
+@if (isMobileMenuOpen) {
+  @if (isLoggedIn) {
+  <div class="menu-panel">
+    <ul class="menu-section">
+      <!-- Commented out since it is not optimized for mobile yet -->
+      <!-- TODO: https://linear.app/fluentdoc/issue/FLU-430/optimize-dashboard-page-for-mobile-view -->
+      <!-- <li routerLinkActive="active" routerLink="/dashboard" (click)="closeMenu()">
+        <i class="ph ph-squares-four"></i><span>Dashboard</span>
+      </li> -->
+      <!-- TODO: https://linear.app/fluentdoc/issue/FLU-431/optimize-profile-page-for-mobile-view -->
+      <!-- <li routerLinkActive="active" routerLink="/profile" (click)="closeMenu()">
+        <i class="ph ph-user"></i> Profile
+      </li> -->
+      <!-- TODO: https://linear.app/fluentdoc/issue/FLU-429/fix-resources-mobile-view -->
+      <!-- <li
+        id="nav-resources"
+        routerLinkActive="active"
+        routerLink="/resources"
+        (click)="closeMenu()"
+      >
+        <i class="ph ph-link-simple-break"></i><span>Resources</span>
+      </li> -->
+      <li
+        id="nav-glossary"
+        routerLinkActive="active"
+        routerLink="/glossary"
+        (click)="closeMenu()"
+      >
+        <i class="ph ph-text-aa"></i><span>Glossary</span>
+      </li>
+    </ul>
+    <hr />
+    <ul class="menu-section">
+      <li (click)="onNotificationsClick()" id="notification-bell">
+        <i class="ph ph-bell"
+          >@if (uncheckedNotifications?.length > 0) {
+          <span class="position-absolute rounded-circle highlighted">
+            <span>{{ uncheckedNotifications?.length }}</span>
+          </span>
+          }</i
+        >
+        <span>Notifications</span>
+      </li>
+      <li routerLinkActive="active" routerLink="/account" (click)="closeMenu()">
+        <i class="ph ph-gear"></i> Account settings
+      </li>
+      <li routerLinkActive="active" (click)="onLogoutClicked()">
+        <i class="ph ph-sign-out"></i> Sign out
+      </li>
+    </ul>
+  </div>
+  } @else {
+  <div class="menu-panel">
+    <ul class="menu-section">
+      <li (click)="onFluentDocClicked()">
+        <i class="ph ph-globe"></i><span>More about FluentDoc</span>
+      </li>
+    </ul>
+    <hr />
+    <ul class="menu-section">
+      <li>
+        <button
+          class="btn btn-light btn-outline-secondary text-dark w-100"
+          routerLink="/"
+          [queryParams]="{ signUp: true }"
+        >
+          Sign up
+        </button>
+      </li>
+      <li>
+        <button class="btn btn-primary w-100" routerLink="/">Log in</button>
+      </li>
+    </ul>
+  </div>
+  }
+}

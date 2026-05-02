@@ -1,0 +1,19 @@
+<div class="achievement-modal">
+  <div class="modal-body">
+    <div class="icon">{{ icon }}</div>
+
+    <h2 class="title">{{ title }}</h2>
+    <p class="description">{{ description }}</p>
+
+    <div class="actions">
+      @if (ctaLabel && ctaLink) {
+        <a [routerLink]="ctaLink" class="btn btn-primary">
+          {{ ctaLabel }}
+        </a>
+      }
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        {{ dismissLabel }}
+      </button>
+    </div>
+  </div>
+</div>

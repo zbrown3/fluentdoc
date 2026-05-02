@@ -1,0 +1,62 @@
+@import "../../.././../scss/functions/common.scss";
+@import "../../.././../scss/mixins/common.scss";
+@import "../../.././../scss/mixins/typography.scss";
+@import "../../.././../scss/variables/colors.scss";
+@import "../../.././../scss/variables/spacing.scss";
+
+.login {
+  @include displayFlex(column, center, center);
+
+  & > img {
+    @include logo;
+
+    margin-bottom: toRem(60px);
+  }
+
+  &-container {
+    @include displayFlex(column, center, center);
+    width: 100%;
+
+    asl-google-signin-button {
+      margin-bottom: 2rem;
+    }
+
+    &-divider {
+      @include displayFlex(row, center, space-evenly);
+
+      span {
+        @include body3SemiBold;
+
+        color: $content-secondary;
+        margin: 0 toRem(25px);
+      }
+
+      &-line {
+        @include divider(169px);
+      }
+
+      & + .alert {
+        margin-top: $spacing-lg;
+      }
+    }
+  }
+
+  &-form {
+    margin: 2rem 0 1rem 0;
+
+    .btn-tertiary {
+      float: right;
+      margin-top: $spacing-md;
+    }
+  }
+
+  .hstack {
+    .btn-primary {
+      @include buttonSize("xl", toRem(343px));
+    }
+
+    .btn-link {
+      margin-left: $spacing-sm;
+    }
+  }
+}

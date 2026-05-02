@@ -1,0 +1,592 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+@import "../../scss/variables/typography.scss";
+
+quill-editor {
+  width: 100%;
+}
+
+.language {
+  &-edit-page {
+    &-container {
+      @include displayFlex(row, flex-start, flex-start);
+
+      background-color: $colors-blue-100;
+      gap: $spacing-lg;
+      border-top: 1px solid $colors-greyscale-200;
+
+      & > .left-nav {
+        background-color: #ffffff;
+        min-width: 21.125rem;
+        padding: 1.5rem;
+        min-height: 100vh; /* FULL page height, not just viewport */
+        height: auto; /* allow it to grow if needed */
+        display: flex;
+        flex-direction: column;
+
+        .nav-scroll-area {
+          overflow-y: auto;
+          max-height: 80vh; /* Scroll only this inner part */
+        }
+
+        & > .progress-bar-wrapper {
+          @include displayFlex(row, center, flex-start);
+          @include subtitleSemiBold;
+
+          width: 100%;
+          gap: $spacing-sm;
+          margin-bottom: $spacing-xl;
+
+          & > div:first-child {
+            width: 50%;
+          }
+
+          progressbar > bar.bg-success {
+            background-color: $colors-green-600 !important;
+          }
+        }
+
+        .accordion {
+          border-bottom: 1px solid $border-subtle;
+          padding-bottom: $spacing-lg;
+          margin-bottom: $spacing-lg;
+
+          &-item.pinned-section {
+            cursor: default;
+
+            & + #pinnedSectionContentAccordion {
+              border-bottom: 1px solid $border-subtle;
+              padding-bottom: $spacing-xl;
+              margin-bottom: $spacing-xl;
+            }
+          }
+
+          .list-group {
+            &-item {
+              @include displayFlex(row, center, space-between);
+
+              cursor: pointer;
+
+              & > div:first-child {
+                @include displayFlex(row, center, flex-start);
+
+                gap: $spacing-sm;
+
+                &.incomplete {
+                  padding-left: $spacing-xl;
+                }
+              }
+
+              .ph-check {
+                color: $colors-green-600;
+              }
+
+              .ph-push-pin {
+                font-size: 1.5rem;
+                color: $content-brand;
+              }
+            }
+          }
+        }
+
+        .language-actions {
+          &-container {
+            @include displayFlex(column, flex-start, flex-start);
+
+            gap: $spacing-lg;
+            width: 100%;
+            margin-bottom: $spacing-2xl;
+
+            p {
+              @include body3SemiBold;
+
+              color: $content-secondary;
+            }
+
+            .ph-fill.ph-circle {
+              font-size: 0.5rem;
+              color: $border-positive;
+            }
+          }
+        }
+      }
+    }
+  }
+  &-edit-content-container {
+    padding: $spacing-xl toRem(38px);
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.no-vocab-wrapper {
+  @include displayFlex(column, center, center, wrap);
+  gap: $spacing-lg;
+
+  p {
+    @include h5Regular;
+
+    max-width: toRem(600px);
+    text-align: center;
+  }
+
+  .button-wrapper {
+    @include displayFlex(row, center, center);
+
+    margin-top: 0.75rem;
+    gap: 0.75rem;
+  }
+}
+
+.offcanvas-form-footer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-top: $spacing-lg;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e5e5;
+  bottom: 0;
+
+  .button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 1rem;
+    width: 100%;
+
+    span {
+      cursor: pointer;
+      font-weight: bold;
+      color: #93192f;
+    }
+  }
+}
+
+.language-section-header {
+  @include displayFlex(row, center, space-between);
+
+  margin-bottom: $spacing-lg;
+
+  .save-btn {
+    min-width: 150px;
+  }
+
+  & > div:first-child {
+    width: 70%;
+
+    h4 + p {
+      color: $content-secondary;
+    }
+  }
+}
+
+.centered-image-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.form-control .quill-editor {
+  overflow: visible;
+
+  .form-group {
+    border: 1px solid $border-subtle;
+    position: relative;
+  }
+  .has-error {
+    border-color: $border-negative;
+  }
+  .has-success {
+    border-color: $border-positive;
+  }
+}
+
+/* -------------------------------------------------------------
+Language Section List */
+
+.language-menu-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  .settings {
+    display: flex;
+    align-items: center;
+    i {
+      height: 24%;
+      font-size: 20px;
+      border-radius: 50px;
+      padding: 6px 6px;
+      background-color: $background-bold;
+      cursor: pointer;
+      border: 1px solid black;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+        0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    }
+  }
+
+  .language-switch {
+    line-height: 1.25rem;
+    border: 2px solid $border-bold;
+    color: $colors-blue-500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+}
+
+.language-page-block {
+  height: 100%;
+}
+
+.language-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* -------------------------------------------------------------
+End Language Section List */
+
+/* -------------------------------------------------------------
+Views Section Styling */
+
+.language-view-header {
+  display: block;
+  font-weight: $font-weight-semi-bold;
+  max-width: 400px;
+  color: $content-primary;
+}
+
+/* -------------------------------------------------------------
+End Views Section Styling */
+
+/*-------------------------------------------------------------
+Form Styling */
+.symbol-check {
+  width: initial;
+  height: initial;
+}
+
+.app-button-sm {
+  margin-left: 0;
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+  background-color: $background-selected-inverse;
+  border-radius: 50%;
+}
+
+.custom-control-label {
+  color: $content-secondary;
+  /*font-size: 10px;*/
+  font-weight: $font-weight-semi-bold;
+  line-height: 16px;
+  display: block;
+  float: none;
+  margin: 0 0 2px;
+  text-align: left;
+  width: auto;
+  padding-top: 5px;
+}
+
+.classification-text {
+  max-width: 400px;
+  color: $content-secondary;
+  font-size: 0.8rem;
+}
+
+.other-symbol-checkbox {
+  margin-right: 20px;
+  vertical-align: bottom;
+  width: max-content;
+}
+/*-------------------------------------------------------------
+Form Styling */
+
+/*-------------------------------------------------------------
+Text Styling */
+
+.language-description-subheader {
+  font-size: 0.725rem;
+  color: $content-secondary;
+  text-transform: uppercase;
+  font-weight: $font-weight-regular;
+}
+.include-story-text {
+  max-width: 500px;
+}
+
+.table-description-text {
+  max-width: 600px;
+  white-space: normal;
+  margin: auto;
+  font-size: 14px;
+}
+
+.phoneme-symbol {
+  font-weight: $font-weight-regular;
+  //cursor: pointer;
+}
+
+.phoneme-selected {
+  background-color: $background-selected-inverse;
+  color: $content-inverse-primary;
+}
+
+.hide-description {
+  cursor: pointer;
+  color: $content-link;
+}
+
+/*-------------------------------------------------------------
+End Text Styling */
+
+/*-------------------------------------------------------------
+Audio File */
+
+.phoneme-playback {
+  cursor: pointer;
+  color: $content-link;
+}
+
+.phoneme-spinner {
+  height: 22px;
+  width: 22px;
+  color: $content-secondary;
+}
+
+/*-------------------------------------------------------------
+Audio File Styling */
+
+/*-------------------------------------------------------------
+Collaborator Styling */
+
+.collaborator-header {
+  width: fit-content;
+  border-bottom: 2px $border-bold solid;
+}
+
+.collaborator-name {
+  @include displayFlex(row, center, flex-start);
+  gap: $spacing-sm;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 4px 8px 4px 0px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+  font-weight: $font-weight-regular;
+  max-width: 400px;
+}
+
+.add-collaborator {
+  max-width: 400px;
+  margin: 1rem auto;
+}
+
+.collaborator-input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+
+  &.w-600px {
+    width: 600px;
+  }
+
+  .form-group {
+    flex: 1;
+  }
+
+  button {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.delete-collab-link {
+  cursor: pointer;
+}
+
+/*-------------------------------------------------------------
+End Collaborator Styling */
+
+/*-------------------------------------------------------------
+Alphabet Styling */
+
+.alphabet-header {
+  color: $content-secondary;
+  font-weight: $font-weight-semi-bold;
+  line-height: 16px;
+  display: block;
+  float: none;
+  margin: 1rem 0;
+  padding: 0;
+  text-align: left;
+  width: fit-content;
+  border-bottom: 2px $border-bold solid;
+}
+
+.alphabet-alert {
+  background-color: $background-bold;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  max-width: 600px;
+  margin-left: 0.5rem;
+}
+
+/*-------------------------------------------------------------
+End Alphabet Styling */
+
+/*-------------------------------------------------------------
+Table Styling */
+
+.example-pronunciation {
+  text-decoration: underline;
+}
+
+/*-------------------------------------------------------------
+End Table Styling */
+
+/* -------------------------------------------------------------
+TOOLTIP STYLING */
+
+//:host >>> .tooltip-inner {
+//  background-color: $primary-blue;
+//  font-size: .725rem;
+//}
+
+/*:host >>> .tooltip .tooltip-arrow {*/
+/*border-bottom-color: #ffffff;;*/
+/*}*/
+
+/* -------------------------------------------------------------
+End TOOLTIP STYLING */
+
+/* -------------------------------------------------------------
+TOOLTIP STYLING */
+
+.vocab-select {
+  border: 1px solid $border-subtle;
+  border-radius: 3.01px;
+  box-sizing: border-box;
+  font-size: inherit;
+  width: 100%;
+  height: 24px;
+  font-size: 0.725rem;
+  margin-right: 5px;
+  max-width: 400px;
+}
+
+.new-word-input {
+  width: 100%;
+  margin-right: 0.5rem;
+}
+
+.edit-word {
+  margin-right: 1rem;
+}
+
+/* -------------------------------------------------------------
+End Vocab STYLING */
+
+/* -------------------------------------------------------------
+FLAG STYLING */
+
+.flag-img {
+  max-width: 700px;
+  max-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+}
+
+@media (max-width: $breakpoints-lg) {
+  .flag-img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* -------------------------------------------------------------
+End FLAG STYLING */
+
+/* Story Toggle Switch */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $background-bold;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $background-selected-subtle;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $background-selected-subtle;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Story Toggle Switch Styling */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.slider-text {
+  margin-top: 18px;
+  padding: 10px 10px 10px 10px;
+}
+/* End Story Toggle Switch Styling */
+
+@media (max-width: $breakpoints-sm) {
+  .vocab-table-main,
+  .vocab-table-mobile {
+    display: none;
+  }
+}

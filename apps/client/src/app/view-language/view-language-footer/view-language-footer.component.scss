@@ -1,0 +1,34 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.view-language-footer {
+  display: none;
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include displayFlex(row, center, space-between);
+
+    background-color: $background-bold;
+    padding: toRem(15px) toRem(19px);
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    height: toRem(78px);
+    border-top: 1px solid $border-subtle;
+    z-index: 2;
+
+    &.no-menu {
+      justify-content: center;
+    }
+
+    .interactions-container {
+      @include displayFlex(row, center, center);
+
+      gap: $spacing-xs;
+    }
+  }
+}

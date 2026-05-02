@@ -1,0 +1,110 @@
+<div class="login">
+  <img src="assets/images/brand/fluentdoc_logo.svg" alt="logo" />
+  <div class="login-container">
+    <asl-google-signin-button
+      text="signin_with"
+      type="standard"
+      size="large"
+      [width]="400"
+      shape="rectangular"
+      theme="outline"
+    />
+    <div class="login-container-divider">
+      <div class="login-container-divider-line"></div>
+      <span>Or</span>
+      <div class="login-container-divider-line"></div>
+    </div>
+    @if(!!errorMessage) {
+    <div class="alert alert-danger" role="alert">
+      <span>
+        {{ errorMessage }}
+      </span>
+    </div>
+    }
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+      class="login-form vstack gap-4 needs-validation"
+      novalidate
+    >
+      <div>
+        <label for="email" class="form-label">Email</label>
+        <input
+          required
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': loginFormSubmitted && loginControls['email'].errors
+          }"
+          id="email"
+          placeholder="Enter email address"
+        />
+        @if (loginFormSubmitted && loginControls['email'].errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (loginControls['email'].errors['email']) {
+          <span>Please enter a valid email</span>
+          } @if (loginControls['email'].errors['required']) {
+          <span>This field is required.</span>
+          }
+        </div>
+        }
+      </div>
+      <div>
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <input
+            required
+            type="{{ showPassword ? 'text' : 'password' }}"
+            name="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                loginFormSubmitted && loginControls['password'].errors
+            }"
+            id="password"
+            placeholder="Enter password"
+            minlength="8"
+            maxlength="40"
+          />
+          <i
+            class="ph input-icon"
+            [ngClass]="getPasswordIcon()"
+            (click)="togglePasswordVisibility()"
+          ></i>
+        </div>
+        @if (loginFormSubmitted && loginControls['password'].errors) {
+        <div class="invalid-feedback">
+          <i class="ph-fill ph-warning-circle"></i>
+          @if (loginControls['password'].errors['required']) {
+          <span>This field is required.</span>} @if
+          (loginControls['password'].errors['minlength']) {
+          <span
+            >Please enter a valid password. It must contain at least 8
+            characters, with one uppercase and one number.</span
+          >}
+        </div>
+        }
+        <button
+          class="btn btn-tertiary"
+          type="button"
+          (click)="switchForm('forgotPassword')"
+        >
+          Forgot password?
+        </button>
+      </div>
+
+      <div class="hstack mx-auto">
+        <button class="btn btn-primary" type="submit">Log in</button>
+      </div>
+    </form>
+    <div class="hstack mx-auto">
+      Don't have an account?
+      <button class="btn btn-link" type="button" (click)="switchForm('signup')">
+        Sign up for free
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,249 @@
+@import "../functions/common.scss";
+@import "../variables/spacing.scss";
+
+/********************************************************************
+* Common mixins
+*********************************************************************/
+
+/********************************************************************
+* Layout
+********************************************************************/
+@mixin displayFlex(
+  $direction: row,
+  $alignItems: center,
+  $justifyContent: center,
+  $flexWrap: nowrap
+) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $alignItems;
+  justify-content: $justifyContent;
+  flex-wrap: $flexWrap;
+}
+
+/********************************************************************
+* Images, Icons, Logos
+********************************************************************/
+@mixin imageSizing($width, $height) {
+  width: toRem($width);
+  height: toRem($height);
+}
+
+@mixin logo($width: 222px, $height: 55px) {
+  @include imageSizing($width, $height);
+}
+
+@mixin icon($width: 32px, $height: 32px) {
+  @include imageSizing($width, $height);
+
+  flex-shrink: 0;
+}
+
+/********************************************************************
+* Borders, Dividers
+********************************************************************/
+@mixin divider($width: 106px, $height: 1px, $dividerColor: $border-subtle) {
+  background-color: $border-subtle;
+  height: $height;
+  width: toRem($width);
+}
+
+/********************************************************************
+* Buttons
+********************************************************************/
+/**
+* Sets the button size
+* @param $size: string - Can be the following values: 'xs', 'sm', 'md', 'lg', 'xl'
+*/
+@mixin buttonSize($size: "lg", $width: auto) {
+  width: $width;
+  line-height: 1.5rem;
+  font-size: 1rem;
+
+  i {
+    font-size: toRem(20px);
+  }
+
+  @if $size == "xs" {
+    height: toRem(32px);
+    padding: $spacing-sm toRem(14px);
+  } @else if $size == "sm" {
+    height: toRem(40px);
+    padding: toRem(10px) $spacing-lg;
+  } @else if $size == "md" {
+    height: toRem(44px);
+    padding: toRem(18px) $spacing-lg;
+  } @else if $size == "xl" {
+    height: toRem(56px);
+    padding: $spacing-lg toRem(28px);
+  } @else {
+    height: toRem(48px);
+    padding: $spacing-md toRem(20px);
+  }
+
+  &.btn-icon {
+    padding: toRem(10px);
+    width: toRem(40px);
+    height: toRem(40px);
+  }
+}
+
+/********************************************************************
+* Inputs
+********************************************************************/
+@mixin validationInput() {
+  @include displayFlex(row, center, flex-start);
+  margin-top: $spacing-sm;
+  gap: $spacing-xs;
+
+  & .ph,
+  & .ph-duotone,
+  & .ph-fill {
+    font-size: toRem(18px);
+
+    &.ph-warning-circle {
+      color: $colors-red-600;
+    }
+
+    &.ph-check-circle {
+      color: $colors-green-600;
+    }
+  }
+}
+
+/********************************************************************
+* Cards
+********************************************************************/
+@mixin card($width: 100px, $height: 100px, $gap: 0) {
+  padding: $spacing-3xl toRem(42px);
+  border-radius: 2rem;
+  width: toRem($width);
+  min-height: toRem($height);
+  gap: toRem($gap);
+}
+
+@mixin selectionCard($size: "sm") {
+  @include displayFlex(column, center, center);
+
+  border-radius: 20px;
+  background-color: $background-bold;
+  gap: $spacing-xs;
+  cursor: pointer;
+
+  @if $size == "sm" {
+    width: toRem(198px);
+    height: toRem(80px);
+    padding: $spacing-md $spacing-xl;
+  } @else if $size == "lg" {
+    width: toRem(308px);
+    height: toRem(134px);
+    padding: $spacing-lg $spacing-2xl;
+  }
+
+  &:hover {
+    border: 2px solid $border-bold;
+  }
+
+  &.selected {
+    border: 2px solid $border-bold;
+    background-color: $background-inverse;
+    color: $content-inverse-primary;
+
+    .selection-card-body {
+      @include body3SemiBold;
+    }
+
+    i {
+      color: $content-inverse-primary;
+    }
+  }
+}
+
+/********************************************************************
+* Banner
+********************************************************************/
+@mixin banner($height: 125px, $background: rgb(4, 42, 154)) {
+  min-height: toRem(125px);
+  border-radius: toRem(20px);
+  // background: rgb(4, 42, 154);
+  background: linear-gradient(
+    90deg,
+    rgba(4, 42, 154, 1) 0%,
+    rgba(68, 96, 253, 1) 100%,
+    rgba(41, 58, 152, 1) 100%
+  );
+}
+
+/********************************************************************
+* Vertical Divider
+********************************************************************/
+@mixin verticalDivider(
+  $width: 1px,
+  $height: 34px,
+  $backgroundColor: $border-subtle,
+  $margin: $spacing-xl
+) {
+  height: toRem($height);
+  width: $width;
+  background-color: $backgroundColor;
+  margin: $margin;
+}
+
+/********************************************************************
+* Text
+********************************************************************/
+@mixin multiLineTruncate($maxLines: 4, $maxHeight: 48px, $lineHeight: 24px) {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  max-height: toRem($maxHeight);
+  line-height: $lineHeight;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  -webkit-line-clamp: $maxLines;
+  -webkit-box-orient: vertical;
+}
+
+@mixin textTruncate($maxWidth: 200px) {
+  max-width: toRem($maxWidth);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+}
+
+@mixin grid($numberOfColumns: auto-fill, $columnWidth: 120px) {
+  .grid {
+    &-container {
+      display: grid;
+      grid-template-columns: repeat($numberOfColumns, $columnWidth);
+      width: 100%;
+      border-left: 1px solid $border-subtle;
+
+      > .grid-header {
+        @if $numberOfColumns == auto-fill {
+          grid-column: 1 / -1;
+        }
+
+        background-color: $background-subtle;
+        border: 1px solid $border-subtle;
+        border-left: none;
+        padding: $spacing-sm;
+      }
+
+      > .grid-item {
+        border: 1px solid $border-subtle;
+        border-left: none;
+        border-top: none;
+        padding: $spacing-sm $spacing-md;
+        height: toRem(48px);
+
+        &.custom-start-row {
+          grid-row-start: 2;
+          width: $columnWidth;
+        }
+      }
+    }
+  }
+}

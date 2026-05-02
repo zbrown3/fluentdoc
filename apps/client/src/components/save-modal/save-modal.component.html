@@ -1,0 +1,16 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Projection for custom content -->
+    <ng-content></ng-content>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-tertiary" (click)="onCancel()" [disabled]="disabled">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="disabled">Save</button>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="alphabet-grid">
+  <div class="grid-container">
+    <div class="grid-header">Letter</div>
+    <div class="grid-header">Pronunciation</div>
+    @for (pair of alphabetPairs; track pair.letter) {
+    <div class="grid-item letter-cell">
+      {{ pair.letter }}
+    </div>
+    <div class="grid-item pronunciation-cell">
+      {{ pair.pronunciation }}
+    </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,27 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.view-language-section {
+  @include displayFlex(column, flex-start, flex-start);
+
+  gap: $spacing-lg;
+  width: 100%;
+
+  app-ellipsis,
+  app-consonants-preview {
+    width: 100%;
+  }
+
+  &.subsection {
+    padding-left: $spacing-2xl;
+  }
+
+  @media screen and (max-width: $breakpoints-md) {
+    padding: 0 1.25rem;
+  }
+}

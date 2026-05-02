@@ -1,0 +1,25 @@
+<div class="no-languages-container">
+  <div class="no-languages">
+    <img
+      src="assets/images/illustrations/empty_state.svg"
+      height="225"
+      width="218"
+      alt="No languages"
+    />
+    @if (isPublicRoute) {
+      <span>This creator hasn't published any languages. Stay tuned!</span>
+    } @else {
+      <span>Create a language to see how FluentDoc can help!</span>
+    }
+
+  </div>
+  @if (!isPublicRoute) {
+  <button
+    type="button"
+    class="btn btn-primary btn-md create-language-btn mx-auto"
+    routerLink="/new-language"
+  >
+    <i class="ph ph-feather"></i> Create language
+  </button>
+  }
+</div>

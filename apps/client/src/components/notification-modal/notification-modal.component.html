@@ -1,0 +1,75 @@
+<div class="notification-modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Notifications</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="bsModalRef.hide()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    @if (notifications && notifications?.length === 0) {
+      <div
+        class="no-notifications"
+      >
+        <!-- free image from https://www.freepngimg.com/png/58335-web-wide-freelancer-lovejob-world-airdrop-email -->
+        <img
+          ngSrc="assets/images/illustrations/notification.svg"
+          width="250"
+          class="img-fluid"
+          alt="graphic of balloons and paper"
+          height="217"
+        />
+        <p>You're all caught up!</p>
+      </div>
+    }
+
+    @if (notifications && notifications.length > 0) {
+      <div
+        class="notification-container"
+      >
+        <p>Hover over the notification card to mark it as viewed.</p>
+        <div
+          *ngFor="
+          let notification of notifications.slice().reverse();
+          let i = index
+        "
+          class="notification-card"
+          (mouseover)="updateNotificationView(notification)"
+        >
+          <div class="notification-card-header">
+            <div>
+              <span>{{ notification.dateCreated | date }}</span>
+              @if (!notification.viewed) {
+                <span class="badge bg-success"
+                >New!</span
+                >
+              }
+            </div>
+            <button
+              (click)="removeNotification(notification, i)"
+              class="btn btn-tertiary btn-danger btn-xs"
+            >
+              Remove
+            </button>
+          </div>
+          <div class="notification-card-body">
+            <div class="notification-card-title">
+            <span>
+              {{ notification.notification }}
+            </span>
+            </div>
+
+            <p>{{ notification.details }}</p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+      Close
+    </button>
+  </div>
+</div>

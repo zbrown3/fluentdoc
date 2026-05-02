@@ -1,0 +1,271 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.language-card-section {
+  @include displayFlex(column, flex-start, flex-start);
+  app-no-languages,
+  .language-view-search-container,
+  app-dashboard-card-view,
+  app-dashboard-list-view,
+  app-empty-search-result,
+  app-fdds-pagination {
+    width: 100%;
+  }
+
+  .profile-languages {
+    @include displayFlex(column, flex-start, flex-start);
+
+    gap: $spacing-xl;
+    width: 100%;
+    border-radius: 8px;
+
+    &-header {
+      @include displayFlex(row, center, space-between);
+
+      width: 100%;
+    }
+
+    .language-view-filters-container {
+      height: toRem(32px);
+
+      .language-view-sort-container {
+        height: 100%;
+        width: toRem(100px);
+
+        .sort-btn {
+          @include subtitleRegular;
+          font-size: toRem(12px);
+          background-color: $background-bold;
+          border: $border-subtle 1px solid;
+          border-radius: 8px;
+          height: 100%;
+          width: 100%;
+          justify-content: space-between;
+
+          &:hover,
+          &:focus {
+            background-color: $colors-greyscale-200;
+          }
+
+          &::after {
+            display: none !important;
+          }
+
+          i {
+            font-size: 1rem;
+            color: $colors-greyscale-800;
+          }
+        }
+      }
+
+      .language-view-search-container {
+        height: 100%;
+        width: 68%;
+        margin: 0 $spacing-md;
+        .input-wrapper {
+          height: toRem(32px);
+
+          .input-icon {
+            top: unset;
+          }
+
+          input {
+            @include subtitleRegular;
+            border: $border-subtle 1px solid;
+            border-radius: toRem(8px);
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .no-languages-container {
+    @include displayFlex(column, center, center);
+
+    gap: $spacing-xl;
+    width: 100%;
+    margin-top: $spacing-xl;
+
+    span {
+      @include h4SemiBold;
+    }
+  }
+
+  .languages {
+    &-container {
+      @include displayFlex(row, stretch, flex-start, wrap);
+
+      gap: $spacing-lg;
+      width: 100%;
+
+      .language {
+        &-card {
+          @include displayFlex(column, flex-start, flex-start);
+
+          gap: $spacing-md;
+          width: 30.5%;
+          padding: $spacing-sm $spacing-sm $spacing-xl $spacing-sm;
+          border: 1px solid $border-subtle;
+          border-radius: 6px;
+
+          &:hover {
+            border: 1px solid $border-bold;
+            cursor: pointer;
+
+            .language-actions-container {
+              display: block;
+            }
+          }
+        }
+
+        &-flag {
+          &-container {
+            @include displayFlex(column, center, center);
+
+            position: relative;
+            width: 100%;
+            max-height: 11.5rem;
+            border: 1px solid $border-subtle;
+            border-radius: toRem(6px);
+            margin-bottom: -8px;
+            aspect-ratio: 260/145.04;
+
+            & img.flag-img {
+              border-radius: toRem(6px);
+            }
+
+            & + span {
+              @include subtitleRegular;
+
+              color: $content-secondary;
+            }
+
+            .language-actions-container {
+              position: absolute;
+              display: none;
+              z-index: 2;
+              top: 0;
+              right: 0;
+
+              .action-btn {
+                justify-self: flex-end;
+                margin: 0.5rem;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        &-details {
+          @include displayFlex(column, flex-start, flex-start);
+
+          gap: $spacing-xs;
+          margin-top: $spacing-sm;
+
+          &-container {
+            padding-left: $spacing-xs;
+            padding-right: $spacing-xs;
+            width: 100%;
+
+            & > span {
+              @include subtitleRegular;
+
+              color: $content-secondary;
+            }
+          }
+
+          & > span {
+            &:first-child {
+              @include h5SemiBold;
+            }
+
+            &:nth-child(2) {
+              @include subtitleRegular;
+
+              color: $content-secondary;
+            }
+          }
+        }
+
+        &-badges {
+          @include displayFlex(row, center, flex-start, wrap);
+
+          gap: $spacing-sm;
+          margin-top: $spacing-md;
+
+          .hide-badge {
+            display: none;
+          }
+
+          .more-badges-btn {
+            float: right;
+          }
+        }
+
+        &-description {
+          @include body3Regular;
+          @include multiLineTruncate(4, 96px);
+
+          color: $content-secondary;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoints-md) {
+  .language-card-section {
+    .profile-languages {
+      .language-view-filters-container {
+        flex-wrap: wrap;
+        margin-bottom: $spacing-3xl;
+
+        .language-view-sort-container {
+          order: 1;
+        }
+        .language-view-search-container {
+          width: 100%;
+          order: 3;
+          margin: $spacing-md 0;
+        }
+        app-fdds-button-toggle {
+          order: 2;
+        }
+      }
+
+      // adjust pagination for tablet and mobile sizes
+      ::ng-deep .mat-mdc-paginator {
+        background-color: transparent;
+        .mat-mdc-paginator-outer-container {
+          .mat-mdc-paginator-container {
+            justify-content: center;
+
+            .mat-mdc-form-field {
+              background: $colors-greyscale-100;
+            }
+
+            .mat-mdc-paginator-range-actions {
+              .mat-mdc-paginator-range-label {
+                margin: 0;
+              }
+              .mat-mdc-paginator-navigation-first,
+              .mat-mdc-paginator-navigation-last {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

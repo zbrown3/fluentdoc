@@ -1,0 +1,22 @@
+@if(showSection) {
+<section
+  class="view-language-section"
+  [ngClass]="{ subsection: isSubsection }"
+  [id]="sectionId"
+>
+  @if ( !!sectionTitle) {
+  <h3>{{ sectionTitle }}</h3>
+  } @if (!!sectionSubtitle) {
+  <h4>{{ sectionSubtitle }}</h4>
+  } @if (!!sectionContent) {
+  <section [innerHTML]="sectionContent | sanitizeHtml"></section>
+  } @if (hasTable) { @if (sectionSubtitle ===
+  LANGUAGE_SUBSECTIONS.consonants.title) {
+  <app-consonants-preview [consonantsData]="tableData"></app-consonants-preview>
+  } @if (sectionSubtitle === LANGUAGE_SUBSECTIONS.vowels.title) {
+  <app-vowel-chart-preview [vowelsData]="tableData"></app-vowel-chart-preview>
+  } @if (sectionSubtitle === LANGUAGE_SUBSECTIONS.alphabet.title && tableData) {
+  <app-alphabet-preview [alphabetData]="tableData"></app-alphabet-preview>
+  } }
+</section>
+}

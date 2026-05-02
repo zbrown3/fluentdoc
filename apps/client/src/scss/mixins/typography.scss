@@ -1,0 +1,275 @@
+/********************************************************************
+* Typography mixins
+*********************************************************************/
+@import "../functions/common.scss";
+@import "../variables/breakpoints.scss";
+@import "../variables/typography.scss";
+
+@mixin fontRegular() {
+  font-family: $font-family-regular;
+  font-weight: $font-weight-regular;
+}
+
+@mixin fontSemiBold() {
+  font-family: $font-family-semi-bold;
+  font-weight: $font-weight-semi-bold;
+}
+
+@mixin fontBold() {
+  font-family: $font-family-bold;
+  font-weight: $font-weight-bold;
+}
+
+@mixin setFontSizeAndHeight($fontSizeInPx, $fontHeightInPx) {
+  font-size: toRem($fontSizeInPx);
+  line-height: toRem($fontHeightInPx);
+}
+
+// Headings
+@mixin h0SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(64px, 87px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(36px, 50px);
+  }
+}
+
+@mixin h0Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(64px, 87px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(36px, 50px);
+  }
+}
+
+@mixin h1Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(40px, 54px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(32px, 44px);
+  }
+}
+
+@mixin h1SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(40px, 54px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(32px, 44px);
+  }
+}
+
+@mixin h2Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(32px, 44px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(28px, 38px);
+  }
+}
+
+@mixin h2SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(32px, 44px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(28px, 38px);
+  }
+}
+
+@mixin h3Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(28px, 38px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(20px, 27px);
+  }
+}
+
+@mixin h3SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(28px, 38px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(20px, 27px);
+  }
+}
+
+@mixin h4Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(24px, 33px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(16px, 22px);
+  }
+}
+
+@mixin h4SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(24px, 33px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(16px, 22px);
+  }
+}
+
+@mixin h5Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+@mixin h5SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+@mixin h5Regular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+// Body
+@mixin body1Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(28px, 38px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(20px, 27px);
+  }
+}
+
+@mixin body1SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(28px, 38px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(20px, 27px);
+  }
+}
+
+@mixin body1Regular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(28px, 38px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(20px, 27px);
+  }
+}
+
+@mixin body2Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+@mixin body2SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+@mixin body2Regular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(20px, 27px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(14px, 18px);
+  }
+}
+
+@mixin body3Bold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(16px, 22px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(12px, 16px);
+  }
+}
+
+@mixin body3SemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(16px, 22px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(12px, 16px);
+  }
+}
+
+@mixin body3Regular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(16px, 22px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(12px, 16px);
+  }
+}
+
+// Subtitle
+@mixin subtitleBold() {
+  @include fontBold;
+  @include setFontSizeAndHeight(12px, 16px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(10px, 14px);
+  }
+}
+
+@mixin subtitleSemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(12px, 16px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(10px, 14px);
+  }
+}
+
+@mixin subtitleRegular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(12px, 16px);
+
+  @media screen and (max-width: $breakpoints-md) {
+    @include setFontSizeAndHeight(10px, 14px);
+  }
+}
+
+// Footnote
+@mixin footnoteSemiBold() {
+  @include fontSemiBold;
+  @include setFontSizeAndHeight(10px, 14px);
+}
+@mixin footnoteRegular() {
+  @include fontRegular;
+  @include setFontSizeAndHeight(10px, 14px);
+}
+
+// Caption
+@mixin captionSemiBold() {
+  @include footnoteSemiBold;
+  text-transform: capitalize;
+}
+
+@mixin captionRegular() {
+  @include foonoteRegular;
+  text-transform: capitalize;
+}

@@ -1,0 +1,59 @@
+<!--Main layout-->
+<main role="main" class="px-5 dashboard-wrapper">
+  <h2 class="page-header">Resources</h2>
+
+  <p class="page-description">Whether you're a beginner or an experienced conlanger, these resources will help you dive
+    deeper into the art and science of constructed languages.</p>
+
+  <div class="row mt-5">
+
+    <!-- Tags -->
+    <div class="col-3">
+      <div class="search-wrapper">
+        <input type="text" class="form-control" [(ngModel)]="searchText"
+               id="exampleFormControlInput1" placeholder="Search">
+      </div>
+      <div class="filter-wrapper">
+        <p class="filter-header">Filter by Tag:</p>
+        <div class="select-options-wrapper">
+            <span class="option" [ngClass]="{ 'selected': activeFilter === 'All'}"
+                  (click)="setActiveFilter('All')">
+              All
+            </span>
+          <span class="option" *ngFor="let tag of getAllTags()"
+                [ngClass]="{ 'selected': activeFilter === tag}"
+                (click)="setActiveFilter(tag)">
+        {{ tag }}
+      </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-9">
+      <div *ngIf="filteredResources().length > 0" class="list-group mb-3">
+        <div *ngFor="let resource of filteredResources()" class="card resource-card">
+          <a href={{resource.url}} target="_blank"
+             class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-2 h5">{{ resource.name }}</h5>
+              <small>{{ resource.platform }}</small>
+            </div>
+            <p class="mb-2">{{ resource.description }}</p>
+          </a>
+        </div>
+      </div>
+      <!-- no search results -->
+      <div *ngIf="filteredResources().length === 0">
+        <div class="no-search-wrapper">
+          <img src="assets/images/illustrations/void.svg" alt="No search results" class="no-search-image">
+          <p class="no-search-header">No results found!</p>
+          <p class="no-search-description">Try searching for something or clear search field.</p>
+          <button class="btn btn-primary btn-sm" (click)="clearSearch()">Clear Search</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- ./Tags -->
+
+</main>

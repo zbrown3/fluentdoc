@@ -1,0 +1,20 @@
+<div class="button-toggle-container">
+  <mat-button-toggle-group [value]="currentValue" [disabled]="disabled">
+    <mat-button-toggle
+      *ngFor="let buttonToggle of buttonToggles"
+      [aria-label]="buttonToggle.ariaLabel || buttonToggle.label || ''"
+      [aria-labelledby]="buttonToggle.ariaLabelledby || null"
+      (click)="buttonToggle.onClick?.(buttonToggle.value)"
+      [disabled]="buttonToggle.disabled"
+      [name]="buttonToggle.name || ''"
+      [ngClass]="buttonToggle.isActive ? 'active' : ''"
+      [value]="buttonToggle.value"
+    >
+      @if (buttonToggle.icon) {
+      <i class="ph" [ngClass]="buttonToggle.icon"></i>} @if (buttonToggle.label)
+      {
+      <span>{{ buttonToggle.label }}</span>
+      }
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

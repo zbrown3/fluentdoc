@@ -1,0 +1,23 @@
+@import "../../scss/functions/common.scss";
+@import "../../scss/mixins/common.scss";
+@import "../../scss/mixins/typography.scss";
+@import "../../scss/variables/breakpoints.scss";
+@import "../../scss/variables/colors.scss";
+@import "../../scss/variables/spacing.scss";
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%; // Adjust width as needed
+
+  i {
+    position: absolute;
+    right: toRem(10px);
+    top: 50%;
+    transform: translateY(-50%);
+    color: $colors-greyscale-700;
+    font-size: toRem(18px);
+    pointer-events: none; // Prevent clicking on the icon
+  }
+}

@@ -1,0 +1,54 @@
+<div class="vowel-chart-preview-container">
+  <svg
+    aria-label="IPA vowel chart"
+    class="vowel-chart"
+    viewBox="0 0 575 375"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="575" height="375" fill="transparent" />
+    <!-- vowel chart labels (i.e., top and left) -->
+    <g *ngFor="let vowelChartLabelGroup of vowelChartLabels">
+      <g *ngFor="let vowelChartLabel of vowelChartLabelGroup">
+        <text
+          [attr.x]="vowelChartLabel['x']"
+          [attr.y]="vowelChartLabel['y']"
+          class="vowel-chart-label"
+          text-anchor="start"
+        >
+          {{ vowelChartLabel["label"] }}
+        </text>
+      </g>
+    </g>
+    <!-- Drawing out the vowel symbols, divider separator and lines -->
+    <g *ngFor="let vowelType of ipaVowelTypes; let i = index">
+      <g *ngFor="let vowelGroup of ipaVowelsByType[vowelType]; let j = index">
+        <g *ngFor="let vowel of vowelGroup; let k = index">
+          @if(vowel['isDivider']) {
+          <circle [attr.cx]="vowel['x']" [attr.cy]="vowel['y']" r="2" />
+          } @if (vowel['isLine']) {
+          <line
+            [attr.x1]="vowel['x1']"
+            [attr.y1]="vowel['y1']"
+            [attr.x2]="vowel['x2']"
+            [attr.y2]="vowel['y2']"
+            class="vowel-chart-lines"
+            stroke="black"
+            stroke-width="1"
+          />
+          } @else {
+          <text
+            [attr.id]="vowel['id']"
+            [attr.x]="vowel['x']"
+            [attr.y]="vowel['y']"
+            [class.selected]="getIsSelected(vowel['id'])"
+            class="vowel-chart-symbol"
+          >
+            {{ vowel["symbol"] }}
+          </text>
+          }
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>

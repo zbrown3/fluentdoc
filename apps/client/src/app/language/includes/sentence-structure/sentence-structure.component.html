@@ -1,0 +1,75 @@
+<div class="language-section-header">
+  <div>
+    <h4>{{ LANGUAGE_SUBSECTIONS.sentenceStructure.title }}</h4>
+    <p>
+      {{
+        formatDynamicString(
+          LANGUAGE_SUBSECTIONS.sentenceStructure.description,
+          language.name
+        )
+      }}
+    </p>
+  </div>
+  <div>
+    <button class="btn btn-primary save-btn" (click)="update()" [disabled]="wordOrderForm.invalid || isSaving">
+      @if (!isSaving) {
+        <i class="ph ph-floppy-disk"></i> Save changes
+      } @else {
+        <span class="spinner-border spinner-border-sm me-2"></span> Saving...
+      }
+    </button>
+  </div>
+</div>
+
+<p class="language-view-description">
+  You can identify the <b>word order</b>, which is the order that a subject,
+  object and verb will appear. The most common word order is
+  <b>SVO (Subject-Verb-Object)</b> - which can be found in English.<br /><br />
+  Note: We will be working on our own syntax tree generator but in the meantime
+  you can head over to
+  <a href="http://mshang.ca/syntree/" target="_blank">mshang.ca</a> to create
+  some syntax trees for {{ language.name }}.
+</p>
+
+<hr />
+<!-- Word Order  -->
+<form [formGroup]="wordOrderForm" class="mb-4">
+  <p>
+    <b>Select the word order for {{ language.name }}</b>
+  </p>
+  <div class="form-group new-word-input">
+    <label for="wordOrder">
+      Word Order<span class="text-danger">*</span>
+    </label>
+    <select
+      formControlName="wordOrder"
+      name="wordOrder"
+      id="wordOrder"
+      class="form-select"
+      [ngClass]="{ 'is-invalid': submitted && f.wordOrder.errors }"
+    >
+      <option
+        [ngValue]="order"
+        *ngFor="let order of wordOrderList"
+        [disabled]="order === 'Select option'"
+      >
+        {{ order }}
+      </option>
+    </select>
+  </div>
+</form>
+<!-- /.Word Order -->
+
+<!-- Syntax form Input-->
+<p>
+  <b>Describe {{ language.name }}'s sentence structure below (optional): </b>
+</p>
+<div class="form-group">
+  <app-ipa-quill-editor
+    [(ngModel)]="editLanguage.syntax"
+    [name]="'syntax'"
+    [editorMinHeight]="100"
+    [editorHeight]="300"
+  ></app-ipa-quill-editor>
+</div>
+<!-- /.Syntax form Input-->

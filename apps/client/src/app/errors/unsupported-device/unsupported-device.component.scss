@@ -1,0 +1,21 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/mixins/typography.scss";
+@import "../../../scss/variables/breakpoints.scss";
+@import "../../../scss/variables/colors.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.unsupported-device {
+  @include displayFlex(column, center, center);
+  @include h5Regular;
+
+  gap: $spacing-2xl;
+  padding: $spacing-2xl;
+  width: 100vw;
+  height: 90vh;
+  text-align: center;
+
+  img {
+    margin-top: $spacing-2xl;
+  }
+}

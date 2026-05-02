@@ -1,0 +1,41 @@
+@import "../../language.component.scss";
+@import "../../../../scss/variables/colors.scss";
+@import "../../../../scss/variables/spacing.scss";
+
+// set all max-width: toRem(500px);
+.general-info-wrapper {
+  max-width: toRem(500px);
+}
+
+.flag-container {
+  .flag-empty-state {
+    background-color: $background-bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: toRem(2px) dashed $border-bold;
+    height: toRem(250px);
+    border-radius: toRem(10px);
+    box-shadow: 0 toRem(3px) toRem(15px) rgba(0, 0, 0, 0.2);
+  }
+}
+
+.flag-btn-grp {
+  display: flex;
+  justify-content: end;
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  gap: 0.5rem;
+  border-bottom: 1px solid $border-subtle;
+}
+
+.flag-generation-container {
+  .form-text + .form-text {
+    color: $content-brand;
+    margin-top: 0;
+  }
+
+  .btn-primary {
+    float: right;
+  }
+}

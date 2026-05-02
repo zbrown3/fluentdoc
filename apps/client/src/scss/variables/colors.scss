@@ -1,0 +1,136 @@
+/********************************************************************
+* Primitive Colors
+* Main color variables that will be referenced throughout the entire application
+*********************************************************************/
+$colors-black: #000000;
+$colors-white: #ffffff;
+
+// Red
+$colors-red-100: #fdd4dc;
+$colors-red-200: #fba9b8;
+$colors-red-300: #f97f95;
+$colors-red-400: #f75471;
+$colors-red-500: #f5294e;
+$colors-red-600: #c4213e;
+$colors-red-700: #93192f;
+$colors-red-800: #62101f;
+$colors-red-900: #310810;
+
+// Orange
+$colors-orange-100: #ffeccf;
+$colors-orange-200: #ffd99f;
+$colors-orange-300: #ffc56e;
+$colors-orange-400: #ffb23e;
+$colors-orange-500: #ff9f0e;
+$colors-orange-600: #cc7f0b;
+$colors-orange-700: #995f08;
+$colors-orange-800: #664006;
+$colors-orange-900: #332003;
+
+// Green
+$colors-green-100: #d4fdd8;
+$colors-green-200: #a9fbb1;
+$colors-green-300: #7ff98b;
+$colors-green-400: #54f764;
+$colors-green-500: #29f53d;
+$colors-green-600: #21c431;
+$colors-green-700: #199325;
+$colors-green-800: #106218;
+$colors-green-900: #08310c;
+
+// Aqua
+$colors-aqua-100: #ebf7ff;
+$colors-aqua-200: #b4dffe;
+$colors-aqua-300: #8fcffe;
+$colors-aqua-400: #69bffd;
+$colors-aqua-500: #44affd;
+$colors-aqua-600: #368cca;
+$colors-aqua-700: #296998;
+$colors-aqua-800: #1b4665;
+$colors-aqua-900: #0e2333;
+
+// Blue
+$colors-blue-100: #f4f4f9;
+$colors-blue-200: #d6dcff;
+$colors-blue-300: #b5c0ff;
+$colors-blue-400: #6980fd;
+$colors-blue-500: #4460fd;
+$colors-blue-600: #364dca;
+$colors-blue-700: #293a98;
+$colors-blue-800: #1b2665;
+$colors-blue-900: #0e1333;
+
+// Nude
+$colors-nude-100: #fcf9f8;
+$colors-nude-200: #f8f2f0;
+$colors-nude-300: #f5ece9;
+$colors-nude-400: #f1e5e1;
+$colors-nude-500: #eedfda;
+$colors-nude-600: #beb2ae;
+$colors-nude-700: #8f8683;
+$colors-nude-800: #5f5957;
+$colors-nude-900: #302d2c;
+
+// Greyscale
+$colors-greyscale-50: #f9fafb;
+$colors-greyscale-100: #ffffff;
+$colors-greyscale-200: #e7e7e7;
+$colors-greyscale-300: #b7b7b7;
+$colors-greyscale-400: #9f9f9f;
+$colors-greyscale-500: #878787;
+$colors-greyscale-600: #6c6c6c;
+$colors-greyscale-700: #515151;
+$colors-greyscale-800: #363636;
+$colors-greyscale-900: #1b1b1b;
+
+/********************************************************************
+* Semantic Colors
+* Colors used for specific usage
+*********************************************************************/
+// Content
+$content-primary: $colors-greyscale-900;
+$content-secondary: $colors-greyscale-700;
+$content-link: $colors-aqua-800;
+$content-positive: $colors-green-800;
+$content-negative: $colors-red-700;
+$content-notice: $colors-orange-800;
+$content-brand: $colors-blue-700;
+$content-inverse-primary: $colors-greyscale-100;
+$content-inverse-secondary: $colors-greyscale-200;
+$content-disabled: $colors-greyscale-600;
+
+// Border
+$border-warning: $colors-orange-600;
+$border-negative: $colors-red-600;
+$border-positive: $colors-green-600;
+$border-inverse: $colors-greyscale-100;
+$border-subtle: $colors-greyscale-300;
+$border-bold: $colors-blue-600;
+$border-disabled: $colors-greyscale-600;
+$border-information: $colors-aqua-500;
+
+// Background
+$background-warning: $colors-orange-100;
+$background-positive: $colors-green-100;
+$background-negative: $colors-red-100;
+$background-hover-negative: $colors-red-200;
+$background-hover-inverse: $colors-blue-600;
+$background-hover-subtle: $colors-blue-200;
+$background-hover-bold: $colors-aqua-100;
+$background-pressed-negative: $colors-red-300;
+$background-pressed-inverse: $colors-blue-700;
+$background-pressed-subtle: $colors-blue-300;
+$background-pressed-bold: $colors-aqua-200;
+$background-selected-negative: $colors-red-300;
+$background-selected-inverse: $colors-blue-700;
+$background-selected-subtle: $colors-blue-300;
+$background-selected-bold: $colors-aqua-200;
+$background-inverse: $colors-blue-500;
+$background-subtle: $colors-blue-100;
+$background-bold: $colors-greyscale-100;
+$background-disabled: $colors-greyscale-200;
+$background-information: #e2f3ff;
+
+// Overlay
+$overlay-primary: #00000073;
+$overlay-inverse: #ffffff73;

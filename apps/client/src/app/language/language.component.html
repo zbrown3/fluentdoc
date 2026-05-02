@@ -1,0 +1,1434 @@
+<main role="main" class="dashboard-wrapper">
+  <app-loading-spinner />
+
+  <div *ngIf="!loading" class="language-page-wrapper">
+    @if (gettingStartedSteps && !gettingStartedStepsCompleted) {
+    <app-ftu-checklist-fab
+      [steps]="gettingStartedSteps"
+    ></app-ftu-checklist-fab>
+    }
+
+    <app-edit-language-header
+      (backButtonEvent)="switchView()"
+      (exportAndShareLanguageEvent)="updateLanguagePrivacyLevel($event)"
+      [isSharedLanguageFeatureEnabled]="isLanguageSharingEnabled"
+      [isWorldBuildingStoryPage]="view === STORY_VIEW"
+      [language]="language"
+      (languageExportedEvent)="updateLanguageExportedChecklistStep()"
+      [planType]="planType"
+    ></app-edit-language-header>
+
+    <div class="language-page-block">
+      <!-- STORY VIEW -->
+      @if (view === STORY_VIEW) {
+      <div class="px-4">
+        <app-story
+          [story]="language?.story"
+          [languageId]="language.id"
+          [languageName]="language.name"
+        ></app-story>
+      </div>
+      }
+
+      <!-- LANGUAGE VIEW -->
+      @if (view === LANGUAGE_VIEW) {
+      <div class="h-100">
+        <div class="language-edit-page-container">
+          <!-- Language Section Group -->
+          <div class="left-nav">
+            <div class="nav-scroll-area">
+              <div class="progress-bar-wrapper">
+                <div>
+                  <span>{{ getLanguageProgressPercentage() }}% complete</span>
+                </div>
+                <progressbar
+                  [value]="getLanguageProgressPercentage()"
+                  [type]="getProgressBarDisplayColor()"
+                  [animate]="true"
+                />
+              </div>
+
+              <!-- Pinned pages -->
+              <div class="left-nav-menu accordion">
+                <div
+                  class="accordion-item pinned-section"
+                  *ngIf="editLanguage.pinnedSections.length > 0"
+                >
+                  <div class="accordion-header"><span>Pinned pages</span></div>
+                </div>
+                <div
+                  id="pinnedSectionContentAccordion"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#pinnedSectionAccordion"
+                >
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        [ngClass]="{
+                          active: activeLink === pinnedSection.name,
+                          pinned:
+                            isPinnedSection(pinnedSection.name) &&
+                            activeLink !== pinnedSection.name
+                        }"
+                        *ngFor="
+                          let pinnedSection of this.editLanguage.pinnedSections
+                            | sort : 'order'
+                        "
+                        (click)="
+                          setActiveLink(
+                            pinnedSection.name,
+                            pinnedSection.section
+                          )
+                        "
+                      >
+                        <div
+                          [ngClass]="{
+                            active: activeLink === pinnedSection.name
+                          }"
+                        >
+                          <i
+                            class="ph ph-check"
+                            *ngIf="isSubSectionComplete(pinnedSection.name)"
+                          ></i>
+                          <span>{{ pinnedSection.title }}</span>
+                        </div>
+
+                        <i
+                          class="ph-push-pin"
+                          [ngClass]="{
+                            ph: !isPinnedSection(pinnedSection.name),
+                            'ph-fill': isPinnedSection(pinnedSection.name),
+
+                          }"
+                          (click)="
+                            handlePinSection(
+                              pinnedSection.order,
+                              pinnedSection.name,
+                              pinnedSection.section,
+                              pinnedSection.title
+                            )
+                          "
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- General Info Section -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#generalInfoContentAccordion"
+                      aria-expanded="true"
+                      aria-controls="generalInfoContentAccordion"
+                      [ngClass]="{
+                        active:
+                          activeSection === LANGUAGE_SECTIONS.generalInfo.name
+                      }"
+                      id="generalInfoAccordion"
+                      (click)="
+                        LANGUAGE_SECTIONS.generalInfo.show =
+                          !LANGUAGE_SECTIONS.generalInfo.show
+                      "
+                    >
+                      <i
+                        class="ph"
+                        [ngClass]="{
+                          'ph-caret-down': LANGUAGE_SECTIONS.generalInfo.show,
+                          'ph-caret-right': !LANGUAGE_SECTIONS.generalInfo.show
+                        }"
+                      ></i>
+                      <span>{{ LANGUAGE_SECTIONS.generalInfo.title }}</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  id="generalInfoContentAccordion"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#generalInfoAccordion"
+                >
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        [ngClass]="{
+                          active: activeLink === subSection.name,
+                          pinned:
+                            isPinnedSection(subSection.name) &&
+                            activeLink !== subSection.name
+                        }"
+                        (click)="
+                          setActiveLink(subSection.name, subSection.section)
+                        "
+                        (mouseenter)="hoveredSubSection = subSection.name"
+                        (mouseleave)="hoveredSubSection = null"
+                        *ngFor="
+                          let subSection of getSubsections(
+                            LANGUAGE_SECTIONS.generalInfo.name
+                          )
+                        "
+                      >
+                        <div
+                          [ngClass]="{
+                            incomplete: !isSubSectionComplete(subSection.name)
+                          }"
+                        >
+                          <i
+                            class="ph ph-check"
+                            *ngIf="isSubSectionComplete(subSection.name)"
+                          ></i>
+                          <span>{{ subSection.title }}</span>
+                        </div>
+
+                        <i
+                          class="ph-push-pin"
+                          [ngClass]="{
+                            'ph hovered': !isPinnedSection(subSection.name) && hoveredSubSection === subSection.name,
+                            'ph-fill': isPinnedSection(subSection.name),
+
+                          }"
+                          (click)="
+                            handlePinSection(
+                              subSection.order,
+                              subSection.name,
+                              subSection.section,
+                              subSection.title
+                            )
+                          "
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.General Info Section -->
+
+                <!-- Phonology Info Section -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#phonologyInfoContentAccordion"
+                      aria-expanded="false"
+                      aria-controls="phonologyInfoContentAccordion"
+                      (click)="
+                        LANGUAGE_SECTIONS.phonology.show =
+                          !LANGUAGE_SECTIONS.phonology.show
+                      "
+                    >
+                      <i
+                        class="ph"
+                        [ngClass]="{
+                          'ph-caret-down': LANGUAGE_SECTIONS.phonology.show,
+                          'ph-caret-right': !LANGUAGE_SECTIONS.phonology.show
+                        }"
+                      ></i>
+                      <span>{{ LANGUAGE_SECTIONS.phonology.title }}</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  id="phonologyInfoContentAccordion"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#phonologyInfoAccordion"
+                >
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        [ngClass]="{
+                          active: activeLink === subSection.name,
+                          pinned:
+                            isPinnedSection(subSection.name) &&
+                            activeLink !== subSection.name
+                        }"
+                        (click)="
+                          setActiveLink(subSection.name, subSection.section)
+                        "
+                        (mouseenter)="hoveredSubSection = subSection.name"
+                        (mouseleave)="hoveredSubSection = null"
+                        *ngFor="
+                          let subSection of getSubsections(
+                            LANGUAGE_SECTIONS.phonology.name
+                          )
+                        "
+                      >
+                        <div
+                          [ngClass]="{
+                            incomplete: !isSubSectionComplete(subSection.name)
+                          }"
+                        >
+                          <i
+                            class="ph ph-check"
+                            *ngIf="isSubSectionComplete(subSection.name)"
+                          ></i>
+                          <span>{{ subSection.title }}</span>
+                        </div>
+                        <i
+                          class="ph-push-pin"
+                          [ngClass]="{
+                            'ph hovered':
+                              !isPinnedSection(subSection.name) &&
+                              hoveredSubSection === subSection.name,
+                            'ph-fill': isPinnedSection(subSection.name)
+                          }"
+                          (click)="
+                            handlePinSection(
+                              subSection.order,
+                              subSection.name,
+                              subSection.section,
+                              subSection.title
+                            )
+                          "
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.Phonology Info Section -->
+
+                <!-- Syntax Info Section -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#syntaxInfoContentAccordion"
+                      aria-expanded="false"
+                      aria-controls="syntaxInfoContentAccordion"
+                      (click)="
+                        LANGUAGE_SECTIONS.syntax.show =
+                          !LANGUAGE_SECTIONS.syntax.show
+                      "
+                    >
+                      <i
+                        class="ph"
+                        [ngClass]="{
+                          'ph-caret-down': LANGUAGE_SECTIONS.syntax.show,
+                          'ph-caret-right': !LANGUAGE_SECTIONS.syntax.show
+                        }"
+                      ></i>
+                      <span>{{ LANGUAGE_SECTIONS.syntax.title }}</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  id="syntaxInfoContentAccordion"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#syntaxInfoAccordion"
+                >
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        [ngClass]="{
+                          active: activeLink === subSection.name,
+                          pinned:
+                            isPinnedSection(subSection.name) &&
+                            activeLink !== subSection.name
+                        }"
+                        (click)="
+                          setActiveLink(subSection.name, subSection.section)
+                        "
+                        (mouseenter)="hoveredSubSection = subSection.name"
+                        (mouseleave)="hoveredSubSection = null"
+                        *ngFor="
+                          let subSection of getSubsections(
+                            LANGUAGE_SECTIONS.syntax.name
+                          )
+                        "
+                      >
+                        <div
+                          [ngClass]="{
+                            incomplete: !isSubSectionComplete(subSection.name)
+                          }"
+                        >
+                          <i
+                            class="ph ph-check"
+                            *ngIf="isSubSectionComplete(subSection.name)"
+                          ></i>
+                          <span>{{ subSection.title }}</span>
+                        </div>
+                        <i
+                          class="ph-push-pin"
+                          [ngClass]="{
+                            'ph hovered':
+                              !isPinnedSection(subSection.name) &&
+                              hoveredSubSection === subSection.name,
+                            'ph-fill': isPinnedSection(subSection.name)
+                          }"
+                          (click)="
+                            handlePinSection(
+                              subSection.order,
+                              subSection.name,
+                              subSection.section,
+                              subSection.title
+                            )
+                          "
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.Syntax Info Section -->
+
+                <!-- Words & Phrases Info Section -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#wordsPhrasesInfoContentAccordion"
+                      aria-expanded="false"
+                      aria-controls="wordsPhrasesInfoContentAccordion"
+                      (click)="
+                        LANGUAGE_SECTIONS.wordsPhrases.show =
+                          !LANGUAGE_SECTIONS.wordsPhrases.show
+                      "
+                      id="wordsAndPhrasesAccordion"
+                    >
+                      <i
+                        class="ph"
+                        [ngClass]="{
+                          'ph-caret-down': LANGUAGE_SECTIONS.wordsPhrases.show,
+                          'ph-caret-right': !LANGUAGE_SECTIONS.wordsPhrases.show
+                        }"
+                      ></i>
+                      <span>{{ LANGUAGE_SECTIONS.wordsPhrases.title }}</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  id="wordsPhrasesInfoContentAccordion"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#wordsPhrasesInfoAccordion"
+                >
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        [ngClass]="{
+                          active: activeLink === subSection.name,
+                          pinned:
+                            isPinnedSection(subSection.name) &&
+                            activeLink !== subSection.name
+                        }"
+                        (click)="
+                          setActiveLink(subSection.name, subSection.section)
+                        "
+                        (mouseenter)="hoveredSubSection = subSection.name"
+                        (mouseleave)="hoveredSubSection = null"
+                        *ngFor="
+                          let subSection of getSubsections(
+                            LANGUAGE_SECTIONS.wordsPhrases.name
+                          )
+                        "
+                      >
+                        <div
+                          [ngClass]="{
+                            incomplete: !isSubSectionComplete(subSection.name)
+                          }"
+                        >
+                          <i
+                            class="ph ph-check"
+                            *ngIf="isSubSectionComplete(subSection.name)"
+                          ></i>
+                          <span>{{ subSection.title }}</span>
+                        </div>
+                        <i
+                          class="ph-push-pin"
+                          [ngClass]="{
+                            'ph hovered':
+                              !isPinnedSection(subSection.name) &&
+                              hoveredSubSection === subSection.name,
+                            'ph-fill': isPinnedSection(subSection.name)
+                          }"
+                          (click)="
+                            handlePinSection(
+                              subSection.order,
+                              subSection.name,
+                              subSection.section,
+                              subSection.title
+                            )
+                          "
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.Words & Phrases Info Section -->
+
+                <!--            TODO: Enable this code with FLU-428-->
+                <!-- Miscellaneous Info Section -->
+                <!--                <div class="accordion-item">-->
+                <!--                  <div class="accordion-header">-->
+                <!--                    <button-->
+                <!--                      class="accordion-button"-->
+                <!--                      type="button"-->
+                <!--                      data-bs-toggle="collapse"-->
+                <!--                      data-bs-target="#miscInfoContentAccordion"-->
+                <!--                      aria-expanded="false"-->
+                <!--                      aria-controls="miscInfoContentAccordion"-->
+                <!--                      (click)="-->
+                <!--                        LANGUAGE_SECTIONS.misc.show =-->
+                <!--                          !LANGUAGE_SECTIONS.misc.show-->
+                <!--                      "-->
+                <!--                    >-->
+                <!--                      <i-->
+                <!--                        class="ph"-->
+                <!--                        [ngClass]="{-->
+                <!--                          'ph-caret-down': LANGUAGE_SECTIONS.misc.show,-->
+                <!--                          'ph-caret-right': !LANGUAGE_SECTIONS.misc.show-->
+                <!--                        }"-->
+                <!--                      ></i>-->
+                <!--                      <span>{{ LANGUAGE_SECTIONS.misc.title }}</span>-->
+                <!--                    </button>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+                <!--                <div-->
+                <!--                  id="miscInfoContentAccordion"-->
+                <!--                  class="accordion-collapse collapse"-->
+                <!--                  data-bs-parent="#miscInfoAccordion"-->
+                <!--                >-->
+                <!--                  <div class="accordion-body">-->
+                <!--                    <ul class="list-group">-->
+                <!--                      <li-->
+                <!--                        class="list-group-item"-->
+                <!--                        [ngClass]="{-->
+                <!--                          active: activeLink === subSection.name,-->
+                <!--                          pinned:-->
+                <!--                            isPinnedSection(subSection.name) &&-->
+                <!--                            activeLink !== subSection.name-->
+                <!--                        }"-->
+                <!--                        (click)="-->
+                <!--                          setActiveLink(subSection.name, subSection.section)-->
+                <!--                        "-->
+                <!--                        (mouseenter)="hoveredSubSection = subSection.name"-->
+                <!--                        (mouseleave)="hoveredSubSection = null"-->
+                <!--                        *ngFor="-->
+                <!--                          let subSection of getSubsections(-->
+                <!--                            LANGUAGE_SECTIONS.misc.name-->
+                <!--                          )-->
+                <!--                        "-->
+                <!--                      >-->
+                <!--                        <div-->
+                <!--                          [ngClass]="{-->
+                <!--                            incomplete: !isSubSectionComplete(subSection.name)-->
+                <!--                          }"-->
+                <!--                        >-->
+                <!--                          <i-->
+                <!--                            class="ph ph-check"-->
+                <!--                            *ngIf="isSubSectionComplete(subSection.name)"-->
+                <!--                          ></i>-->
+                <!--                          <span>{{ subSection.title }}</span>-->
+                <!--                        </div>-->
+                <!--                        <i-->
+                <!--                          class="ph-push-pin"-->
+                <!--                          [ngClass]="{-->
+                <!--                            'ph hovered':-->
+                <!--                              !isPinnedSection(subSection.name) &&-->
+                <!--                              hoveredSubSection === subSection.name,-->
+                <!--                            'ph-fill': isPinnedSection(subSection.name)-->
+                <!--                          }"-->
+                <!--                          (click)="-->
+                <!--                            handlePinSection(-->
+                <!--                              subSection.order,-->
+                <!--                              subSection.name,-->
+                <!--                              subSection.section,-->
+                <!--                              subSection.title-->
+                <!--                            )-->
+                <!--                          "-->
+                <!--                        ></i>-->
+                <!--                      </li>-->
+                <!--                    </ul>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+              </div>
+
+              <!-- Export Language, Dictionary and Phrase book PDF -->
+
+              <div class="language-actions-container">
+                @if (language.story) {
+                <button
+                  class="btn btn-secondary-gray btn-xs w-100"
+                  id="worldbuildingButton"
+                  (click)="switchView()"
+                >
+                  <i class="ph-fill ph-book"></i>
+                  <span>Worldbuilding & stories</span>
+                </button>
+                }
+              </div>
+            </div>
+          </div>
+          <!-- Language Views -->
+          <div class="language-edit-content-container">
+            <div>
+              <!--
+                /********
+                GENERAL INFO
+                *********/
+                -->
+
+              <!-- general info view -->
+              @if (activeLink === SUB_SECTIONS.mainInformation.name) {
+              <div>
+                <app-general-info
+                  [language]="language"
+                  [isSaving]="saving === SUB_SECTIONS.mainInformation.name"
+                  (submitEvent)="updateLanguageGeneralInfo($event)"
+                ></app-general-info>
+              </div>
+              }
+              <!-- /.general info view -->
+
+              <!-- introduction view -->
+              @if (activeLink === SUB_SECTIONS.introduction.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.introduction.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.introduction.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateIntroduction()"
+                      [disabled]="
+                        this.saving === SUB_SECTIONS.introduction.name
+                      "
+                    >
+                      @if (this.saving !== SUB_SECTIONS.introduction.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Construction  Header-->
+                <p class="language-view-description">
+                  View an example introduction paragraph that explains
+                  constructed languages
+                  <span
+                    class="text-primary cursor-pointer fw-bolder"
+                    data-bs-toggle="modal"
+                    data-bs-target="#sampleIntroModalCreation"
+                  >
+                    here</span
+                  >
+                  as an example.
+                </p>
+
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.introduction"
+                    [name]="'languageIntroduction'"
+                    [placeholderInput]="PLACEHOLDER_INTRO"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+
+                <!-- Introduction Sample Modal for CREATION-->
+                <div
+                  class="modal fade modal-lg"
+                  id="sampleIntroModalCreation"
+                  tabindex="-1"
+                  aria-labelledby="sampleIntroModal"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                          Sample Introduction
+                        </h1>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>
+                          A constructed language, or conlang, is a language that
+                          is invented by an individual or individuals for
+                          communicating. Reasons for inventing a language can
+                          include a hobby, a private language to communicate
+                          with friends or a language needed for a fiction
+                          narrative. It is very often that the creators(s) are
+                          the only ones with working knowledge of the language.
+                        </p>
+                        <p><strong>Who can create conlangs?</strong></p>
+                        <p>
+                          Anyone interested enough and willing to take the time
+                          to create a language of their own can get started on
+                          their way to becoming a conlanger (a person that
+                          creates conlangs, of course)! While it might seem as
+                          easy as making new phrases and writing them down,
+                          creating a well-developed conlang with a true
+                          structure and vast bag of words takes plenty of time
+                          and patience, as well as thoroughly thought out rules.
+                        </p>
+                        <p>
+                          While creating a language, you have to start from the
+                          bare bones minimum and work your way up to something
+                          complex and sophisticated. When creating a language,
+                          you have to start at the sounds allowed in a language
+                          (down to is a ‘p’ allowed in the language) and work
+                          your way up to word-order of sentences and how
+                          negation will work.
+                        </p>
+                        <p>
+                          With that being said, this book will attempt to cover
+                          all aspects of the {{ language.name }}
+                          Language. Starting from the creation and the
+                          development of the language to the grammar rules and
+                          interesting facts of the language.
+                        </p>
+                        <p>
+                          This guide assumes the reader has at least a basic
+                          level understanding of linguistics and linguistic
+                          terms. In order to properly digest the information
+                          given in this book, terms and concepts associated with
+                          syntax, morphology, phonetics, phonology, and grammar
+                          should be understood. A good place to start would be
+                          with the book Course in General Linguistics by
+                          Ferdinand de Saussure.
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          (click)="addCreationIntro()"
+                          data-bs-dismiss="modal"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.Introduction Sample Modal for CREATION-->
+              </div>
+              }
+              <!-- /.introduction view -->
+
+              <!-- Language flag view -->
+              @if (activeLink === SUB_SECTIONS.languageFlag.name) {
+              <div>
+                <app-language-flag [language]="language"></app-language-flag>
+              </div>
+              }
+              <!-- /.Language flag view -->
+
+              <!-- contributors view -->
+              @if (activeLink === SUB_SECTIONS.contributors.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.contributors.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.contributors.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="language.collaborators.length === 0">
+                  <div class="centered-image-wrapper">
+                    <img
+                      ngSrc="assets/images/illustrations/collaboration.svg"
+                      height="220"
+                      alt="Collaboration"
+                      width="807"
+                    />
+                  </div>
+                  <div class="text-center mt-2">
+                    <span>
+                      It looks like you don't have anyone that has contributed
+                      to your project. You can start by adding a contributor.
+                    </span>
+                  </div>
+
+                  <div class="dis-flex flex-col align-items-center mt-3">
+                    <button
+                      type="button"
+                      class="btn btn-outline-primary"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseAddCollaborator"
+                    >
+                      Add Contributor
+                    </button>
+                  </div>
+                  <div
+                    class="collapse add-collaborator"
+                    id="collapseAddCollaborator"
+                  >
+                    <form (ngSubmit)="addCollaborator(collaborator)">
+                      <!-- Collaborator name -->
+                      <div class="collaborator-input-row">
+                        <div class="form-group">
+                          <input
+                            [(ngModel)]="collaborator"
+                            class="form-control"
+                            name="collaborator"
+                            id="add_first_collaborator"
+                            type="text"
+                            placeholder="Enter contributor's name"
+                            autocomplete="off"
+                          />
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                          <i class="ph ph-plus"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div *ngIf="language.collaborators.length > 0">
+                  <p class="collaborator-header">Collaborators</p>
+                  <div
+                    *ngFor="
+                      let collaborator of language.collaborators;
+                      let i = index
+                    "
+                  >
+                    <div class="collaborator-name">
+                      <i class="ph ph-user text-info-emphasis"></i>
+                      {{ collaborator }}
+                      <i
+                        class="ph ph-trash text-danger cursor-pointer"
+                        (click)="removeCollaborator(collaborator, i)"
+                      ></i>
+                    </div>
+                  </div>
+                  <form (ngSubmit)="addCollaborator(collaborator)" class="mt-3">
+                    <!-- Collaborator name -->
+                    <label for="add_collaborator">
+                      Contributor Full Name
+                    </label>
+                    <div class="collaborator-input-row w-600px">
+                      <div class="form-group">
+                        <input
+                          [(ngModel)]="collaborator"
+                          class="form-control"
+                          name="collaborator"
+                          id="add_collaborator"
+                          type="text"
+                          placeholder="Enter contributor's name"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <button type="submit" class="btn btn-sm btn-primary">
+                        <i class="ph ph-plus"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              }
+              <!-- /.contributors view -->
+
+              <!--
+                /********
+                PHONOLOGY
+                *********/
+                -->
+
+              <!-- consonants view -->
+              @if (activeLink === SUB_SECTIONS.consonants.name) {
+              <div>
+                <app-consonants
+                  [language]="language"
+                  [consonants]="consonants"
+                  [isSaving]="saving === SUB_SECTIONS.consonants.name"
+                  (submitEvent)="updateConsonants($event)"
+                ></app-consonants>
+              </div>
+              }
+              <!-- /.consonants view -->
+
+              <!-- vowels view -->
+              @if (activeLink === SUB_SECTIONS.vowels.name) {
+              <div>
+                <app-vowels
+                  [language]="language"
+                  [vowels]="vowels"
+                  [isSaving]="saving === SUB_SECTIONS.vowels.name"
+                  (submitEvent)="updateVowels($event)"
+                ></app-vowels>
+              </div>
+              }
+              <!-- /.vowels view -->
+
+              <!-- diphthongs view -->
+              @if (activeLink === SUB_SECTIONS.diphthongs.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.diphthongs.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.diphthongs.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateDiphthongs(editLanguage.diphthongs)"
+                      [disabled]="this.saving === SUB_SECTIONS.diphthongs.name"
+                    >
+                      @if (this.saving !== SUB_SECTIONS.diphthongs.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Diphthongs form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.diphthongs"
+                    [name]="'diphthongs'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Diphthongs form Input-->
+              </div>
+              }
+              <!-- /.diphthongs view -->
+
+              <!-- alphabet view -->
+              @if (activeLink === SUB_SECTIONS.alphabet.name) {
+              <div>
+                <app-alphabet
+                  [vowels]="vowelArray"
+                  [consonants]="consonantArray"
+                  [alphabet]="alphabet"
+                  [name]="language.name"
+                  [language]="language"
+                  [isSaving]="saving === SUB_SECTIONS.alphabet.name"
+                  (submitEvent)="updateAlphabet($event)"
+                ></app-alphabet>
+              </div>
+              }
+              <!-- /.alphabet view -->
+
+              <!-- Stress view -->
+              @if (activeLink === SUB_SECTIONS.stress.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.stress.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.stress.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateStress()"
+                      [disabled]="this.saving === SUB_SECTIONS.stress.name"
+                    >
+                      @if (this.saving !== SUB_SECTIONS.stress.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+                <!-- Stress form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.stress"
+                    [name]="'stress'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Stress form Input-->
+              </div>
+              }
+              <!-- /.Stress view -->
+
+              <!-- Phonological constraints view -->
+              @if (activeLink === SUB_SECTIONS.phonotactics.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.phonotactics.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.phonotactics.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateConstraints()"
+                      [disabled]="
+                        this.saving === SUB_SECTIONS.phonotactics.name
+                      "
+                    >
+                      @if (this.saving !== SUB_SECTIONS.phonotactics.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Phonological constraints form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.phonologicalConstraints"
+                    [name]="'phonologicalConstraints'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Phonological constraints form Input-->
+              </div>
+              }
+              <!-- /.Phonological constraints view -->
+
+              <!-- Vowel Harmony view -->
+              @if (activeLink === SUB_SECTIONS.vowelHarmony.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.vowelHarmony.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.vowelHarmony.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateVowelHarmony()"
+                      [disabled]="
+                        this.saving === SUB_SECTIONS.vowelHarmony.name
+                      "
+                    >
+                      @if (this.saving !== SUB_SECTIONS.vowelHarmony.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Vowel Harmony form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.vowelHarmony"
+                    [name]="'vowelHarmony'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Vowel Harmony form Input-->
+              </div>
+              }
+              <!-- /.Vowel Harmony view -->
+
+              <!--
+                /********
+                  SYNTAX
+                *********/
+                -->
+
+              <!-- Honorifics view -->
+              @if (activeLink === SUB_SECTIONS.honorifics.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.honorifics.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.honorifics.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateHonorifics()"
+                      [disabled]="this.saving === SUB_SECTIONS.honorifics.name"
+                    >
+                      @if (this.saving !== SUB_SECTIONS.honorifics.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <p class="language-view-description">
+                  Will {{ language.name }} have honorifics?
+                  <i
+                    class="ph icon-sm icon-align-bottom ph-info"
+                    tooltip="Selecting 'No' below will erase any data you have entered in the
+                    honorifics section for {{ language.name }}."
+                    placement="top"
+                  >
+                  </i>
+                </p>
+                <div class="form-check mt-2">
+                  <input
+                    (click)="toggleHonorificsOption(false)"
+                    [checked]="
+                      !honorificsOption &&
+                      editLanguage.honorifics === 'NoHonorificsData'
+                    "
+                    class="form-check-input"
+                    type="radio"
+                    name="noHonorifics"
+                    id="noHonorifics"
+                  />
+                  <label class="form-check-label" for="noHonorifics">
+                    No
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    (click)="toggleHonorificsOption(true)"
+                    [checked]="
+                      honorificsOption ||
+                      (editLanguage.honorifics !== 'NoHonorificsData' &&
+                        editLanguage.honorifics !== null)
+                    "
+                    class="form-check-input"
+                    type="radio"
+                    name="yesHonorifics"
+                    id="yesHonorifics"
+                  />
+                  <label class="form-check-label" for="yesHonorifics">
+                    Yes
+                  </label>
+                </div>
+
+                <!-- Honorifics Explanation -->
+                <div>
+                  <!-- Honorifics form Input-->
+                  <form class="mt-3">
+                    <div *ngIf="honorificsShow" class="form-group">
+                      <p>Explain {{ language.name }}'s honorifics system:</p>
+                      <app-ipa-quill-editor
+                        [(ngModel)]="honorificInput"
+                        [name]="'honorificInput'"
+                        [editorMinHeight]="100"
+                        [editorHeight]="300"
+                      ></app-ipa-quill-editor>
+                    </div>
+                  </form>
+                  <!-- /.Honorifics form Input-->
+                </div>
+                <!-- /.Honorifics Explanation -->
+              </div>
+              }
+              <!-- /.Honorifics view -->
+
+              <!-- Verbs view -->
+              @if (activeLink === SUB_SECTIONS.verbs.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.verbs.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.verbs.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateConjugation()"
+                      [disabled]="this.saving === SUB_SECTIONS.verbs.name"
+                    >
+                      @if (this.saving !== SUB_SECTIONS.verbs.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Verbs form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.conjugation"
+                    [name]="'conjugation'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Verbs form Input-->
+              </div>
+              }
+              <!-- /.Verbs view -->
+
+              <!-- Sentence Structure view -->
+              @if (activeLink === SUB_SECTIONS.sentenceStructure.name) {
+              <div>
+                <app-sentence-structure
+                  [language]="language"
+                  [isSaving]="saving === SUB_SECTIONS.sentenceStructure.name"
+                  (submitEvent)="updateSyntax($event)"
+                ></app-sentence-structure>
+              </div>
+              }
+              <!-- /.Sentence Structure view -->
+
+              <!-- Negation view -->
+              @if (activeLink === SUB_SECTIONS.negation.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.negation.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.negation.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateNegation()"
+                      [disabled]="this.saving === SUB_SECTIONS.negation.name"
+                    >
+                      @if (this.saving !== SUB_SECTIONS.negation.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Negation form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.negation"
+                    [name]="'negation'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Negation form Input-->
+              </div>
+              }
+              <!-- /.Negation view -->
+
+              <!-- Question Forming view -->
+              @if (activeLink === SUB_SECTIONS.questionForming.name) {
+              <div>
+                <div class="language-section-header">
+                  <div>
+                    <h4 class="language-view-title">
+                      {{ SUB_SECTIONS.questionForming.title }}
+                    </h4>
+                    <div class="language-view-description">
+                      {{
+                        formatDynamicString(
+                          SUB_SECTIONS.questionForming.description,
+                          language.name
+                        )
+                      }}
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      (click)="updateQuestionForming()"
+                      [disabled]="
+                        this.saving === SUB_SECTIONS.questionForming.name
+                      "
+                    >
+                      @if (this.saving !== SUB_SECTIONS.questionForming.name) {
+                      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                      ></span>
+                      Saving... }
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Question Forming form Input-->
+                <div class="form-group">
+                  <app-ipa-quill-editor
+                    [(ngModel)]="editLanguage.questionFormingInfo"
+                    [name]="'questionFormingInfo'"
+                    [editorMinHeight]="100"
+                    [editorHeight]="300"
+                  ></app-ipa-quill-editor>
+                </div>
+                <!-- /.Question Forming form Input-->
+              </div>
+              }
+              <!-- /.Question Forming view -->
+
+              <!--
+               /********
+               WORDS & PHRASES
+               *********/
+               -->
+
+              <!-- Vocabulary view -->
+              @if (activeLink === SUB_SECTIONS.vocabulary.name) {
+              <div>
+                <app-vocab
+                  [language]="language"
+                  [limits]="limits"
+                  [vocab]="language.vocab"
+                  [planType]="planType"
+                  (submitEvent)="updateVocab($event)"
+                ></app-vocab>
+              </div>
+              }
+              <!-- /.Vocabulary view -->
+
+              <!-- Common Phrases view -->
+              @if (activeLink === SUB_SECTIONS.phrases.name) {
+              <div>
+                <app-phrases
+                  [language]="language"
+                  [limits]="limits"
+                  [commonPhrases]="language.phrases"
+                  [planType]="planType"
+                  (submitEvent)="updateWordsAndPhrases($event)"
+                ></app-phrases>
+              </div>
+              }
+
+              <!-- /.Common Phrases view -->
+
+              <!--
+                /********
+                MISCELLANEOUS
+                *********/
+                -->
+
+              <!--            TODO: Enable this code with FLU-428-->
+              <!-- Numeral System view -->
+              <!--              <div *ngIf="activeLink === SUB_SECTIONS.numberSystem.name">-->
+              <!--                <app-number-system-->
+              <!--                  [language]="language"-->
+              <!--                  [numerals]="language.numerals"-->
+              <!--                  (submitEvent)="updateNumeralSystem($event)"-->
+              <!--                ></app-number-system>-->
+              <!--              </div>-->
+              <!-- /.Numeral System view -->
+
+              <!--
+               /********
+               TOOLS
+               *********/
+               -->
+              <!-- Numeral System view -->
+              <div *ngIf="activeLink === 'rwg'">
+                <app-word-generator [language]="language"></app-word-generator>
+              </div>
+              <!-- /.Numeral System view -->
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</main>

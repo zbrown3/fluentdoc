@@ -1,0 +1,29 @@
+@import "../../../scss/functions/common.scss";
+@import "../../../scss/mixins/common.scss";
+@import "../../../scss/variables/spacing.scss";
+
+.empty-search {
+  @include displayFlex(column, center, center);
+
+  width: 100%;
+  height: 100%;
+  gap: $spacing-xl;
+
+  &-container {
+    @include displayFlex(row, center, center);
+
+    width: 100%;
+    height: 100%;
+    margin-bottom: 30px;
+  }
+
+  img {
+    width: toRem(266px);
+    height: toRem(260px);
+    aspect-ratio: 133/130;
+  }
+
+  h4 {
+    text-align: center;
+  }
+}

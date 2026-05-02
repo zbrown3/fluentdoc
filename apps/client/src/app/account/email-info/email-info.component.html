@@ -1,0 +1,17 @@
+<form (ngSubmit)="update()">
+  <div class="tab-content-wrapper-500w">
+    <div class="tab-content-header"><h5>Update Email</h5></div>
+    <p>Coming Soon</p>
+
+    <p class="tab-content-description">Current email: <b>{{user.email}}</b></p>
+
+    <!-- email name -->
+    <div class="form-group">
+      <label for="email">
+        Email
+      </label>
+      <input  [(ngModel)]="email" name="email" id="email"  type="text" placeholder="New email address" autocomplete="off">
+    </div>
+    <button type="submit" class="btn btn-sm btn-primary">Update Email</button>
+  </div>
+</form>

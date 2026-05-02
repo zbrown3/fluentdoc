@@ -1,0 +1,33 @@
+<!-- Notification settings -->
+<form>
+  <div class="tab-content-wrapper-500w">
+    <div class="tab-content-header"><h5>Notification Settings</h5></div>
+    <p class="tab-content-description">Set your email notifications</p>
+
+    <!-- Updates -->
+    <div class="account-row">
+      <div>
+        <p class="account-row-header">Application Updates</p>
+        <p class="account-row-description">We'll notify you of application updates, new features, and upcoming projects.
+          Select this notification to stay in the loop!</p>
+      </div>
+      <input [(ngModel)]="notifications.updates" name="updates" class="form-check-input" type="checkbox" value="" id="updates"
+             (change)="updateNotifications()">
+    </div>
+    <!-- /.Updates -->
+
+    <!-- Feedback -->
+    <div class="account-row">
+      <div>
+        <p class="account-row-header">Feedback</p>
+        <p class="account-row-description">We'll email you to request your valuable feedback through short surveys or
+          comments on upcoming features. Your input helps us improve and provide more of what you love!</p>
+      </div>
+      <input [(ngModel)]="notifications.feedback" name="feedback" class="form-check-input" type="checkbox" value="" id="feedback"
+             (change)="updateNotifications()">
+    </div>
+    <!-- /.Feedback -->
+
+  </div>
+</form>
+<!-- /.Notification Settings -->

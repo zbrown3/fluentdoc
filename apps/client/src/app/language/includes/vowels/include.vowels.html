@@ -1,0 +1,61 @@
+<div class="language-section-header">
+  <div>
+    <h4>{{LANGUAGE_SUBSECTIONS.vowels.title}}</h4>
+    <p>
+      {{formatDynamicString(LANGUAGE_SUBSECTIONS.vowels.description,
+      language.name)}}
+    </p>
+  </div>
+  <div>
+    <button
+      class="btn btn-primary save-btn"
+      (click)="update()"
+      [disabled]="isSaving"
+    >
+      @if (!isSaving) {
+      <i class="ph ph-floppy-disk"></i> Save changes } @else {
+      <span class="spinner-border spinner-border-sm me-2"></span> Saving... }
+    </button>
+  </div>
+</div>
+
+<div class="mb-5">
+  <p>
+    Include Vowels Description (Optional)
+    <i
+      class="ph icon-sm icon-align-bottom ph-info"
+      tooltip="You can include a description of why you chose the vowels
+      and elaborate on their usage."
+      placement="right"
+    ></i>
+    @if (showDescription) {
+    <small class="hide-description" (click)="showDescription = false">
+      hide description</small
+    >
+    } @if (!showDescription) {
+    <small class="hide-description" (click)="showDescription = true">
+      show description</small
+    >
+    }
+  </p>
+
+  @if (showDescription) {
+  <div class="form-group">
+    <app-ipa-quill-editor
+      [(ngModel)]="language.vowelsDescription"
+      [name]="'vowelsDescription'"
+      [editorMinHeight]="100"
+      [editorHeight]="100"
+    ></app-ipa-quill-editor>
+    <hr />
+  </div>
+  }
+</div>
+
+<app-vowel-chart
+  [(selected)]="selectedVowels"
+  (selectedChange)="onSelectedChange($event)"
+  (listen)="onListen($event)"
+  [nowPlaying]="currentAudioStream"
+>
+</app-vowel-chart>
