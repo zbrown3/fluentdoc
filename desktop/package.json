@@ -1,0 +1,14 @@
+{
+  "name": "fluentdoc-desktop",
+  "version": "0.0.1",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "node start.js",
+    "electron": "electron .",
+    "bundle-jre": "node ../scripts/download-desktop-jre.mjs"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1"
+  }
+}

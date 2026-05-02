@@ -20,6 +20,8 @@ coverage/
 .sass-cache/
 
 # --- Desktop (Electron) ---
+# Downloaded Temurin JRE for shipping with the app (see npm run bundle-jre --prefix desktop)
+desktop/runtime/jre/
 # Packaged apps & installers (electron-builder, electron-forge, etc.)
 out/
 release/
