@@ -1,14 +1,51 @@
 {
   "name": "fluentdoc-desktop",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "main": "main.js",
   "scripts": {
     "start": "node start.js",
     "electron": "electron .",
-    "bundle-jre": "node ../scripts/download-desktop-jre.mjs"
+    "bundle-jre": "node ../scripts/download-desktop-jre.mjs",
+    "dist": "electron-builder --publish never",
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:linux": "electron-builder --linux --publish never"
   },
   "devDependencies": {
-    "electron": "^33.2.1"
+    "electron": "^33.2.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.fluentdoc.app",
+    "productName": "FluentDoc",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "**/*",
+      "../apps/client/dist/**/*",
+      "../services/api/target/*.jar"
+    ],
+    "extraResources": [
+      {
+        "from": "../services/api/target",
+        "to": "service",
+        "filter": ["*.jar"]
+      },
+      {
+        "from": "runtime/jre",
+        "to": "runtime/jre"
+      }
+    ],
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
