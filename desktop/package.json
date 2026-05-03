@@ -2,6 +2,8 @@
   "name": "fluentdoc-desktop",
   "version": "0.1.0",
   "private": true,
+  "description": "FluentDoc desktop application (Electron)",
+  "author": "Patrick Gaston",
   "main": "main.js",
   "scripts": {
     "start": "node start.js",
@@ -17,6 +19,7 @@
     "electron-builder": "^24.13.3"
   },
   "build": {
+    "publish": null,
     "appId": "com.fluentdoc.app",
     "productName": "FluentDoc",
     "directories": {
