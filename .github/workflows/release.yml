@@ -68,11 +68,32 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # electron-builder leaves full unpacked trees under desktop/release/; uploading
+      # those as release assets hits GitHub secondary rate limits. Ship installers only.
+      - name: Stage installer artifacts only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-installers
+          shopt -s nullglob
+          for f in \
+            desktop/release/*.dmg \
+            desktop/release/*.exe \
+            desktop/release/*.AppImage \
+            desktop/release/*.zip; do
+            if [ -f "$f" ]; then cp -v "$f" release-installers/; fi
+          done
+          for f in desktop/release/*.blockmap desktop/release/latest*.yml; do
+            if [ -f "$f" ]; then cp -v "$f" release-installers/; fi
+          done
+          ls -la release-installers
+          test "$(find release-installers -type f | wc -l)" -ge 1
+
       - name: Upload packaged artifacts
         uses: actions/upload-artifact@v4
         with:
           name: fluentdoc-${{ matrix.os }}
-          path: desktop/release/
+          path: release-installers/
           if-no-files-found: error
 
   release:
@@ -87,13 +108,23 @@ jobs:
           pattern: fluentdoc-*
           merge-multiple: true
 
+      - name: Collect installers for release upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-flat
+          find release-assets -type f \( \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.AppImage' -o -name '*.zip' \
+            -o -name '*.blockmap' -o -name 'latest*.yml' \
+            \) -exec cp -t release-flat {} +
+          ls -la release-flat
+          test "$(find release-flat -type f | wc -l)" -ge 1
+
       - name: Create release and upload assets
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
-          files: |
-            release-assets/*
-            release-assets/**/*
+          files: release-flat/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
