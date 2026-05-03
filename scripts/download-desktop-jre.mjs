@@ -29,6 +29,20 @@ function adoptiumTarget() {
   throw new Error(`Unsupported host for automatic JRE download: ${p} ${a}`);
 }
 
+function extractArchive(archivePath, extractDir, archive) {
+  if (archive === 'tar.gz') {
+    execFileSync('tar', ['-xzf', archivePath, '-C', extractDir], { stdio: 'inherit' });
+    return;
+  }
+  if (process.platform === 'win32') {
+    // Windows tar often breaks on paths like C:\... ("Cannot connect to C: resolve failed").
+    const cmd = `Expand-Archive -LiteralPath ${JSON.stringify(archivePath)} -DestinationPath ${JSON.stringify(extractDir)} -Force`;
+    execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', cmd], { stdio: 'inherit' });
+    return;
+  }
+  execFileSync('tar', ['-xf', archivePath, '-C', extractDir], { stdio: 'inherit' });
+}
+
 function findJavaHome(root, depth = 0) {
   const javaName = process.platform === 'win32' ? 'java.exe' : 'java';
   const binJava = path.join(root, 'bin', javaName);
@@ -78,11 +92,7 @@ async function main() {
   await pipeline(res.body, createWriteStream(archivePath));
 
   mkdirSync(extractDir, { recursive: true });
-  if (archive === 'tar.gz') {
-    execFileSync('tar', ['-xzf', archivePath, '-C', extractDir], { stdio: 'inherit' });
-  } else {
-    execFileSync('tar', ['-xf', archivePath, '-C', extractDir], { stdio: 'inherit' });
-  }
+  extractArchive(archivePath, extractDir, archive);
 
   const javaHome = findJavaHome(extractDir);
   if (!javaHome) {
