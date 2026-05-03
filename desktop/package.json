@@ -24,14 +24,17 @@
     },
     "files": [
       "**/*",
-      "../apps/client/dist/**/*",
-      "../services/api/target/*.jar"
+      "!runtime/**"
     ],
     "extraResources": [
       {
         "from": "../services/api/target",
         "to": "service",
-        "filter": ["*.jar"]
+        "filter": ["app.jar"]
+      },
+      {
+        "from": "../apps/client/dist/fluentdoc-client/browser",
+        "to": "web"
       },
       {
         "from": "runtime/jre",

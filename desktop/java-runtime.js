@@ -19,15 +19,15 @@ function resolveJavaForBackend(desktopDir) {
   }
 
   if (app.isPackaged) {
-    const packaged = path.join(process.resourcesPath, 'jre', 'bin', javaName);
+    const packaged = path.join(process.resourcesPath, 'runtime', 'jre', 'bin', javaName);
     if (fs.existsSync(packaged)) {
       return {
         java: packaged,
-        javaHome: path.join(process.resourcesPath, 'jre'),
+        javaHome: path.join(process.resourcesPath, 'runtime', 'jre'),
       };
     }
     throw new Error(
-      'Bundled JRE not found under resources/jre. Package the JRE from desktop/runtime/jre (see electron-builder extraResources).'
+      'Bundled JRE not found under resources/runtime/jre. Run npm run bundle-jre in desktop before packaging.'
     );
   }
 

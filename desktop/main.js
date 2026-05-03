@@ -10,7 +10,22 @@ const BACKEND_HOST = '127.0.0.1';
 const BACKEND_PORT = 8080;
 const HEALTH_PATH = '/actuator/health';
 
-const jarPath = path.join(__dirname, '..', 'services', 'api', 'target', 'app.jar');
+function resolveJarPath(desktopDir) {
+  if (app.isPackaged) {
+    return path.join(process.resourcesPath, 'service', 'app.jar');
+  }
+  return path.join(desktopDir, '..', 'services', 'api', 'target', 'app.jar');
+}
+
+function resolveIndexHtmlPath(desktopDir) {
+  if (app.isPackaged) {
+    const p = path.join(process.resourcesPath, 'web', 'index.html');
+    return fs.existsSync(p) ? p : null;
+  }
+  return findAngularIndexHtml(desktopDir);
+}
+
+let jarPath = '';
 
 let backendProcess = null;
 let indexHtml = '';
@@ -95,14 +110,16 @@ async function createWindow() {
 
 app.whenReady().then(async () => {
   try {
-    indexHtml = findAngularIndexHtml(__dirname);
+    jarPath = resolveJarPath(__dirname);
+    indexHtml = resolveIndexHtmlPath(__dirname);
     if (!indexHtml) {
-      throw new Error(
-        `Angular build not found at:\n  ${primaryAngularIndexPath(__dirname)}\n\n` +
+      const hint = app.isPackaged
+        ? `Packaged UI missing at resources/web/index.html.`
+        : `Angular build not found at:\n  ${primaryAngularIndexPath(__dirname)}\n\n` +
           `From the desktop folder run: npm start\n` +
           `(that builds the client if needed), or:\n` +
-          `  cd apps/client && npm run build:desktop`
-      );
+          `  cd apps/client && npm run build:desktop`;
+      throw new Error(hint);
     }
     startBackend();
     await waitForBackend(120000);
