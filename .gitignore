@@ -48,6 +48,8 @@ app-build/
 # --- Java / Spring Boot ---
 target/
 build/
+!desktop/build/
+!desktop/build/**
 .gradle/
 *.class
 *.jar

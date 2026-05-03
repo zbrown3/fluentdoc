@@ -68,26 +68,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # electron-builder leaves full unpacked trees under desktop/release/; uploading
-      # those as release assets hits GitHub secondary rate limits. Ship installers only.
-      - name: Stage installer artifacts only
+      # Ship only the native installer for this OS (dmg / exe / AppImage). Unpacked
+      # app dirs under desktop/release/ must never become release assets.
+      - name: Stage single installer for this runner
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p release-installers
           shopt -s nullglob
-          for f in \
-            desktop/release/*.dmg \
-            desktop/release/*.exe \
-            desktop/release/*.AppImage \
-            desktop/release/*.zip; do
-            if [ -f "$f" ]; then cp -v "$f" release-installers/; fi
-          done
-          for f in desktop/release/*.blockmap desktop/release/latest*.yml; do
-            if [ -f "$f" ]; then cp -v "$f" release-installers/; fi
+          count=0
+          for f in desktop/release/*.dmg desktop/release/*.exe desktop/release/*.AppImage; do
+            if [ -f "$f" ]; then
+              cp -v "$f" release-installers/
+              count=$((count + 1))
+            fi
           done
           ls -la release-installers
-          test "$(find release-installers -type f | wc -l)" -ge 1
+          if [ "$count" -ne 1 ]; then
+            echo "::error::Expected exactly one of .dmg / .exe / .AppImage in desktop/release/, found $count"
+            ls -la desktop/release || true
+            exit 1
+          fi
 
       - name: Upload packaged artifacts
         uses: actions/upload-artifact@v4
@@ -108,17 +109,21 @@ jobs:
           pattern: fluentdoc-*
           merge-multiple: true
 
-      - name: Collect installers for release upload
+      - name: Collect installers for release upload (dmg, exe, AppImage only)
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p release-flat
           find release-assets -type f \( \
-            -name '*.dmg' -o -name '*.exe' -o -name '*.AppImage' -o -name '*.zip' \
-            -o -name '*.blockmap' -o -name 'latest*.yml' \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.AppImage' \
             \) -exec cp -t release-flat {} +
           ls -la release-flat
-          test "$(find release-flat -type f | wc -l)" -ge 1
+          n=$(find release-flat -type f | wc -l)
+          if [ "$n" -ne 3 ]; then
+            echo "::error::Expected exactly 3 release installers (macOS .dmg, Windows .exe, Linux .AppImage); found $n"
+            find release-assets -type f | head -80 || true
+            exit 1
+          fi
 
       - name: Create release and upload assets
         uses: softprops/action-gh-release@v2
