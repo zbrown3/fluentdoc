@@ -17,11 +17,30 @@ function resolveJarPath(desktopDir) {
     return path.join(desktopDir, '..', 'services', 'api', 'target', 'app.jar');
 }
 
-function resolveSqliteNativePath(desktopDir) {
+/** Parent of aarch64/ and x86_64/ dylib dirs (macOS packaging / notarization). */
+function resolveSqliteNativeRoot(desktopDir) {
     if (app.isPackaged) {
         return path.join(process.resourcesPath, 'runtime', 'native', 'sqlite');
     }
     return path.join(desktopDir, 'runtime', 'native', 'sqlite');
+}
+
+function sqliteJvmArgsForDarwin(desktopDir) {
+    if (process.platform !== 'darwin') return [];
+
+    const archDir = process.arch === 'arm64' ? 'aarch64' : 'x86_64';
+    const nativeDir = path.join(resolveSqliteNativeRoot(desktopDir), archDir);
+    const dylib = path.join(nativeDir, 'libsqlitejdbc.dylib');
+
+    if (!fs.existsSync(dylib)) {
+        return [];
+    }
+
+    return [
+        `-Djava.library.path=${nativeDir}`,
+        `-Dorg.sqlite.lib.path=${nativeDir}`,
+        '-Dorg.sqlite.lib.name=libsqlitejdbc.dylib',
+    ];
 }
 
 function resolveIndexHtmlPath(desktopDir) {
@@ -77,13 +96,9 @@ function startBackend() {
         env.JAVA_HOME = javaHome;
         env.PATH = `${path.join(javaHome, 'bin')}${path.delimiter}${env.PATH || ''}`;
     }
-    const sqliteNativePath = resolveSqliteNativePath(__dirname);
+    const jvmArgs = [...sqliteJvmArgsForDarwin(__dirname), '-jar', jarPath];
 
-    backendProcess = spawn(java, [
-        `-Djava.library.path=${sqliteNativePath}`,
-        '-jar',
-        jarPath
-    ], {
+    backendProcess = spawn(java, jvmArgs, {
         env,
         stdio: ['ignore', 'pipe', 'pipe'],
     });

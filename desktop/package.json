@@ -9,6 +9,8 @@
     "start": "node start.js",
     "electron": "electron .",
     "bundle-jre": "node ../scripts/download-desktop-jre.mjs",
+    "prepare-desktop-runtime": "node ../scripts/extract-sqlite-native.mjs && node ../scripts/strip-sqlite-from-app-jar.mjs",
+    "predist": "npm run prepare-desktop-runtime",
     "dist": "electron-builder --publish never",
     "dist:mac": "electron-builder --mac --publish never",
     "dist:win": "electron-builder --win --publish never",
@@ -33,7 +35,7 @@
     ],
     "extraResources": [
       {
-        "from": "../services/api/target",
+        "from": "runtime/service",
         "to": "service",
         "filter": ["app.jar"]
       },

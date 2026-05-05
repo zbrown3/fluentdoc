@@ -1,72 +1,74 @@
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
+/**
+ * Extracts sqlite-jdbc macOS dylibs from services/api/target/app.jar into:
+ *   desktop/runtime/native/sqlite/aarch64/libsqlitejdbc.dylib
+ *   desktop/runtime/native/sqlite/x86_64/libsqlitejdbc.dylib
+ *
+ * Requires JDK `jar` on PATH or JAVA_HOME. Run after `./mvnw package` in services/api.
+ */
 import { execFileSync } from 'child_process';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'fs';
+import os from 'os';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const ROOT = process.cwd();
-const TARGET_DIR = path.join(ROOT, 'services', 'api', 'target');
-const OUT = path.join(ROOT, 'desktop', 'runtime', 'native', 'sqlite');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.join(__dirname, '..');
+const appJar = path.join(repoRoot, 'services', 'api', 'target', 'app.jar');
+const outRoot = path.join(repoRoot, 'desktop', 'runtime', 'native', 'sqlite');
 
-const jars = fs
-    .readdirSync(TARGET_DIR)
-    .filter((file) =>
-        file.endsWith('.jar') &&
-        !file.endsWith('-sources.jar') &&
-        !file.endsWith('-javadoc.jar')
-    );
-
-if (jars.length === 0) {
-    throw new Error(`No Spring Boot JAR found in ${TARGET_DIR}`);
+function jarBin() {
+  const home = process.env.JAVA_HOME;
+  if (home) {
+    const j = path.join(home, 'bin', process.platform === 'win32' ? 'jar.exe' : 'jar');
+    if (existsSync(j)) return j;
+  }
+  return process.platform === 'win32' ? 'jar.exe' : 'jar';
 }
 
-const jarPath = path.join(TARGET_DIR, jars[0]);
-const workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fluentdoc-sqlite-'));
-
-fs.mkdirSync(OUT, { recursive: true });
-
-console.log(`Using JAR: ${jarPath}`);
-console.log(`Working directory: ${workDir}`);
-
-execFileSync('jar', ['xf', jarPath], {
-    cwd: workDir,
-    stdio: 'inherit',
-});
-
-const libDir = path.join(workDir, 'BOOT-INF', 'lib');
-
-if (!fs.existsSync(libDir)) {
-    throw new Error(`BOOT-INF/lib not found. Is this a Spring Boot executable JAR? Checked: ${jarPath}`);
+function findSqliteJdbcJarEntry() {
+  const out = execFileSync(jarBin(), ['tf', appJar], { encoding: 'utf8' });
+  const line = out
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .find((l) => /^BOOT-INF\/lib\/sqlite-jdbc-[^/]+\.jar$/.test(l));
+  if (!line) throw new Error('sqlite-jdbc-*.jar not found inside app.jar (BOOT-INF/lib)');
+  return line;
 }
 
-const sqliteJar = fs
-    .readdirSync(libDir)
-    .find((file) => file.startsWith('sqlite-jdbc-') && file.endsWith('.jar'));
+function main() {
+  if (!existsSync(appJar)) {
+    throw new Error(`Missing ${appJar}; run: cd services/api && ./mvnw package`);
+  }
 
-if (!sqliteJar) {
-    throw new Error(`sqlite-jdbc JAR not found in ${libDir}`);
-}
+  const jdbcEntry = findSqliteJdbcJarEntry();
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'fluentdoc-sqlite-extract-'));
+  try {
+    execFileSync(jarBin(), ['xf', appJar, jdbcEntry], { cwd: tmp, stdio: 'inherit' });
+    const sjLocal = path.join(tmp, ...jdbcEntry.split('/'));
+    if (!existsSync(sjLocal)) {
+      throw new Error(`Expected extracted file at ${sjLocal}`);
+    }
+    execFileSync(jarBin(), ['xf', sjLocal], { cwd: tmp, stdio: 'inherit' });
 
-const sqliteJarPath = path.join(libDir, sqliteJar);
+    const aarch64Src = path.join(tmp, 'org', 'sqlite', 'native', 'Mac', 'aarch64', 'libsqlitejdbc.dylib');
+    const x64Src = path.join(tmp, 'org', 'sqlite', 'native', 'Mac', 'x86_64', 'libsqlitejdbc.dylib');
 
-execFileSync('jar', ['xf', sqliteJarPath], {
-    cwd: workDir,
-    stdio: 'inherit',
-});
+    mkdirSync(path.join(outRoot, 'aarch64'), { recursive: true });
+    mkdirSync(path.join(outRoot, 'x86_64'), { recursive: true });
 
-const archs = [
-    { src: path.join(workDir, 'org', 'sqlite', 'native', 'Mac', 'aarch64', 'libsqlitejdbc.dylib'), dest: 'libsqlitejdbc-aarch64.dylib' },
-    { src: path.join(workDir, 'org', 'sqlite', 'native', 'Mac', 'x86_64', 'libsqlitejdbc.dylib'), dest: 'libsqlitejdbc-x86_64.dylib' },
-];
-
-for (const arch of archs) {
-    if (!fs.existsSync(arch.src)) {
-        throw new Error(`Missing SQLite native library: ${arch.src}`);
+    if (!existsSync(aarch64Src)) {
+      throw new Error(`Missing ${aarch64Src} inside sqlite-jdbc jar`);
+    }
+    if (!existsSync(x64Src)) {
+      throw new Error(`Missing ${x64Src} inside sqlite-jdbc jar`);
     }
 
-    const dest = path.join(OUT, arch.dest);
-    fs.copyFileSync(arch.src, dest);
-    fs.chmodSync(dest, 0o755);
-    console.log(`Copied ${dest}`);
+    copyFileSync(aarch64Src, path.join(outRoot, 'aarch64', 'libsqlitejdbc.dylib'));
+    copyFileSync(x64Src, path.join(outRoot, 'x86_64', 'libsqlitejdbc.dylib'));
+    console.log('Extracted sqlite-jdbc macOS dylibs to:', outRoot);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
 }
 
-console.log('Extracted SQLite native libraries successfully.');
+main();
