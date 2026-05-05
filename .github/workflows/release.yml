@@ -58,6 +58,11 @@ jobs:
       - name: Bundle Temurin JRE for this runner
         run: node scripts/download-desktop-jre.mjs
 
+      - name: Fix bundled JRE permissions for mac signing
+        if: runner.os == 'macOS'
+        run: |
+          chmod -R u+rwX desktop/runtime/jre
+
       - name: Install desktop dependencies
         working-directory: desktop
         run: npm ci
