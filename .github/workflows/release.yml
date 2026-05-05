@@ -16,6 +16,8 @@ jobs:
   build:
     name: Package (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    # macOS includes codesign + notarytool --wait; Apple can take 15–60+ minutes after "upload succeeded".
+    timeout-minutes: 240
 
     strategy:
       fail-fast: false
@@ -86,9 +88,12 @@ jobs:
 
       - name: Build Electron installers
         working-directory: desktop
-        run: npm run dist
+        run: |
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            echo "macOS: electron-builder will sign the app, then notarytool will upload and wait on Apple's servers (--wait). Long silence after zip/upload is normal."
+          fi
+          npm run dist
         env:
-          DEBUG: electron-builder,electron-notarize*
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
