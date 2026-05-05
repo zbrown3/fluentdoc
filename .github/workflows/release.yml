@@ -55,6 +55,10 @@ jobs:
         working-directory: services/api
         run: ./mvnw --batch-mode clean package -DskipTests
 
+      - name: Extract sqlite native libs
+        if: runner.os == 'macOS'
+        run: node scripts/extract-sqlite-native.mjs
+
       - name: Bundle Temurin JRE for this runner
         run: node scripts/download-desktop-jre.mjs
 

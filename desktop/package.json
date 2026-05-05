@@ -44,6 +44,10 @@
       {
         "from": "runtime/jre",
         "to": "runtime/jre"
+      },
+      {
+        "from": "runtime/native/sqlite",
+        "to": "runtime/native/sqlite"
       }
     ],
     "mac": {
