@@ -219,6 +219,7 @@ jobs:
             --output-format json)"
           submission_id="$(printf '%s' "$submit_json" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')"
           echo "Notary submission id: $submission_id"
+          echo "Compare this id to what you see locally when checking status."
 
           # Poll status with retries to survive transient runner network drops (NSURLError -1009).
           attempts=0
@@ -233,24 +234,39 @@ jobs:
             fi
 
             set +e
+            # Keep stderr out of stdout so JSON parsing stays reliable.
+            info_stderr="$(mktemp)"
             info_json="$(xcrun notarytool info "$submission_id" \
               --apple-id "$APPLE_ID" \
               --password "$APPLE_APP_SPECIFIC_PASSWORD" \
               --team-id "$APPLE_TEAM_ID" \
-              --output-format json 2>&1)"
+              --output-format json 2>"$info_stderr")"
             info_exit=$?
             set -e
 
-            if [ "$info_exit" -ne 0 ]; then
-              echo "notarytool info attempt $attempts failed; retrying in ${sleep_seconds}s"
-              echo "$info_json"
+            if [ "$info_exit" -ne 0 ] || [ -z "$info_json" ]; then
+              echo "notarytool info attempt $attempts failed (exit $info_exit); retrying in ${sleep_seconds}s"
+              if [ -s "$info_stderr" ]; then
+                echo "--- notarytool stderr ---"
+                cat "$info_stderr"
+                echo "--- end stderr ---"
+              fi
+              rm -f "$info_stderr"
               sleep "$sleep_seconds"
               continue
             fi
+            rm -f "$info_stderr"
 
-            status="$(printf '%s' "$info_json" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin).get("status",""))')"
-            echo "Notary status: $status"
+            status="$(printf '%s' "$info_json" | /usr/bin/python3 -c '
+import json,sys
+data=json.load(sys.stdin)
+s=data.get("status") or data.get("Status") or ""
+print(str(s).strip())
+')"
+            echo "Notary status: ${status:-<empty>}"
             if [ "$status" = "Accepted" ]; then
+              echo "Raw notarytool info payload:"
+              printf '%s\n' "$info_json"
               break
             fi
             if [ "$status" = "Invalid" ] || [ "$status" = "Rejected" ]; then
