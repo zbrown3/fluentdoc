@@ -13,16 +13,14 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build_non_macos:
     name: Package (${{ matrix.os }})
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ${{ matrix.os }}
-    # macOS includes codesign + notarytool --wait; Apple can take 15–60+ minutes after "upload succeeded".
-    timeout-minutes: 240
-
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [ windows-latest, ubuntu-latest ]
 
     defaults:
       run:
@@ -57,62 +55,18 @@ jobs:
         working-directory: services/api
         run: ./mvnw --batch-mode clean package -DskipTests
 
-      - name: Extract sqlite native libs
-        if: runner.os == 'macOS'
-        run: node scripts/extract-sqlite-native.mjs
-
       - name: Bundle Temurin JRE for this runner
         run: node scripts/download-desktop-jre.mjs
-
-      - name: Fix bundled JRE permissions for mac signing
-        if: runner.os == 'macOS'
-        run: |
-          chmod -R u+rwX desktop/runtime/jre
 
       - name: Install desktop dependencies
         working-directory: desktop
         run: npm ci
 
-      - name: Import Apple certificate
-        if: runner.os == 'macOS'
-        env:
-          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-        run: |
-          set -euo pipefail
-          CERTIFICATE_PATH="$RUNNER_TEMP/signing_certificate.p12"
-          KEYCHAIN_PATH="$RUNNER_TEMP/fluentdoc-signing.keychain-db"
-          KEYCHAIN_PASSWORD=""
-
-          # Avoid newline corruption when decoding the secret (common hang/debugging footgun).
-          echo -n "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
-
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          # Without this, the keychain can re-lock during long codesign/notarize and hang forever on CI.
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-
-          security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" \
-            -A -t cert -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychains -d user -s "$KEYCHAIN_PATH"
-          security default-keychain -s "$KEYCHAIN_PATH"
-
-          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-
       - name: Build Electron installers
         working-directory: desktop
-        run: |
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            echo "macOS: electron-builder will sign the app, then notarytool will upload and wait on Apple's servers (--wait). Long silence after zip/upload is normal."
-            security unlock-keychain -p "" "$RUNNER_TEMP/fluentdoc-signing.keychain-db"
-          fi
-          npm run dist
+        run: npm run dist
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       # Ship only the native installer for this OS (dmg / exe / AppImage). Unpacked
       # app dirs under desktop/release/ must never become release assets.
@@ -143,17 +97,159 @@ jobs:
           path: release-installers/
           if-no-files-found: error
 
-  release:
-    name: Publish GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
+  build_macos_unsigned:
+    name: Package (macOS unsigned notarization input)
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: macos-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
     steps:
-      - name: Download all build artifacts
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: services/api/pom.xml
+
+      - name: Install Angular client dependencies
+        working-directory: apps/client
+        run: npm ci
+
+      - name: Build Angular (desktop)
+        working-directory: apps/client
+        run: npm run build:desktop
+
+      - name: Build Spring Boot API
+        working-directory: services/api
+        run: ./mvnw --batch-mode clean package -DskipTests
+
+      - name: Extract sqlite native libs
+        run: node scripts/extract-sqlite-native.mjs
+
+      - name: Bundle Temurin JRE for this runner
+        run: node scripts/download-desktop-jre.mjs
+
+      - name: Fix bundled JRE permissions for mac signing
+        run: |
+          chmod -R u+rwX desktop/runtime/jre
+
+      - name: Install desktop dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Import Apple certificate
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          CERTIFICATE_PATH="$RUNNER_TEMP/signing_certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/fluentdoc-signing.keychain-db"
+          KEYCHAIN_PASSWORD=""
+
+          echo -n "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+          security default-keychain -s "$KEYCHAIN_PATH"
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+      - name: Build macOS installer (sign only, no notarize)
+        working-directory: desktop
+        run: |
+          security unlock-keychain -p "" "$RUNNER_TEMP/fluentdoc-signing.keychain-db"
+          npm run dist:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stage macOS dmg
+        run: |
+          set -euo pipefail
+          mkdir -p release-installers
+          cp -v desktop/release/*.dmg release-installers/
+          ls -la release-installers
+
+      - name: Upload unsigned macOS dmg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluentdoc-macos-unsigned
+          path: release-installers/
+          if-no-files-found: error
+
+  notarize_macos:
+    name: Notarize macOS installer
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build_macos_unsigned
+    runs-on: macos-latest
+    timeout-minutes: 240
+    steps:
+      - name: Download unsigned macOS artifact
         uses: actions/download-artifact@v4
         with:
-          path: release-assets
-          pattern: fluentdoc-*
-          merge-multiple: true
+          name: fluentdoc-macos-unsigned
+          path: notarize-input
+
+      - name: Submit dmg to Apple notary service and wait
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          dmg="$(echo notarize-input/*.dmg)"
+          xcrun notarytool submit "$dmg" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait
+          xcrun stapler staple "$dmg"
+          xcrun stapler validate "$dmg"
+
+      - name: Upload notarized macOS dmg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluentdoc-macos-latest
+          path: notarize-input/*.dmg
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build_non_macos, notarize_macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-windows-latest
+          path: release-assets/windows
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-ubuntu-latest
+          path: release-assets/linux
+
+      - name: Download notarized macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-macos-latest
+          path: release-assets/macos
 
       - name: Collect installers for release upload (dmg, exe, AppImage only)
         shell: bash
