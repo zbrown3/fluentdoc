@@ -1,6 +1,6 @@
 {
   "name": "fluentdoc-desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "FluentDoc desktop application (Electron)",
   "author": "Patrick Gaston",
@@ -11,6 +11,7 @@
     "bundle-jre": "node ../scripts/download-desktop-jre.mjs",
     "prepare-desktop-runtime": "node ../scripts/extract-sqlite-native.mjs && node ../scripts/strip-sqlite-from-app-jar.mjs",
     "predist": "npm run prepare-desktop-runtime",
+    "predist:mac": "npm run prepare-desktop-runtime",
     "dist": "electron-builder --publish never",
     "dist:mac": "electron-builder --mac --publish never",
     "dist:win": "electron-builder --win --publish never",
@@ -31,7 +32,8 @@
     "icon": "build/icon.png",
     "files": [
       "**/*",
-      "!runtime/**"
+      "!runtime/**",
+      "!release/**"
     ],
     "extraResources": [
       {
