@@ -258,12 +258,7 @@ jobs:
             fi
             rm -f "$info_stderr"
 
-            status="$(printf '%s' "$info_json" | /usr/bin/python3 -c '
-            import json,sys
-            data=json.load(sys.stdin)
-            s=data.get("status") or data.get("Status") or ""
-            print(str(s).strip())
-            ')"
+            status="$(printf '%s' "$info_json" | /usr/bin/python3 -c 'import json,sys; d=json.load(sys.stdin); s=d.get("status") or d.get("Status") or ""; print(str(s).strip())')"
             echo "Notary status: ${status:-<empty>}"
             if [ "$status" = "Accepted" ]; then
               echo "Raw notarytool info payload:"
