@@ -1,5 +1,7 @@
 name: Build and Release FluentDoc
 
+# Triggers ONLY on annotated/lightweight tags matching `v*` (e.g. v0.1.0).
+# Branch pushes, PRs, and forks never run this workflow unless you extend `on:` below.
 on:
   push:
     tags:
@@ -15,7 +17,7 @@ permissions:
 jobs:
   build_non_macos:
     name: Package (${{ matrix.os }})
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -99,7 +101,7 @@ jobs:
 
   build_macos_unsigned:
     name: Package (macOS unsigned notarization input)
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     runs-on: macos-latest
     timeout-minutes: 240
     defaults:
@@ -193,7 +195,7 @@ jobs:
 
   notarize_macos:
     name: Notarize macOS installer
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     needs: build_macos_unsigned
     runs-on: macos-latest
     timeout-minutes: 240
@@ -219,7 +221,6 @@ jobs:
             --output-format json)"
           submission_id="$(printf '%s' "$submit_json" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')"
           echo "Notary submission id: $submission_id"
-          echo "Compare this id to what you see locally when checking status."
 
           # Poll status with retries to survive transient runner network drops (NSURLError -1009).
           attempts=0
@@ -293,7 +294,7 @@ print(str(s).strip())
 
   release:
     name: Publish GitHub Release
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     needs: [build_non_macos, notarize_macos]
     runs-on: ubuntu-latest
     steps:
