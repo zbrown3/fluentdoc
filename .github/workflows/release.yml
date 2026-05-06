@@ -222,8 +222,9 @@ jobs:
 
           # Poll status with retries to survive transient runner network drops (NSURLError -1009).
           attempts=0
-          max_attempts=120
-          sleep_seconds=15
+          # Apple notary queue can exceed 30 minutes; allow up to 3 hours.
+          max_attempts=180
+          sleep_seconds=60
           while true; do
             attempts=$((attempts + 1))
             if [ "$attempts" -gt "$max_attempts" ]; then
