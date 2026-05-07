@@ -72,11 +72,13 @@ function main() {
         }
 
         // Replace only the nested sqlite-jdbc jar inside the copied Spring Boot jar.
-        // -0 stores the nested jar without compression, which Spring Boot needs.
-        execFileSync('zip', ['-q', '-0', outJar, `BOOT-INF/lib/${sqliteJarName}`], {
-            cwd: work,
-            stdio: 'inherit',
-        });
+        // Use JDK `jar` (not the `zip` CLI) so Windows CI runners work without extra tooling.
+        const nestedEntry = path.posix.join('BOOT-INF', 'lib', sqliteJarName);
+        execFileSync(
+            jarBin(),
+            ['--update', '--no-compress', '--file', outJar, '-C', work, nestedEntry],
+            {stdio: 'inherit'},
+        );
 
         console.log('Wrote stripped app.jar:', outJar);
     } finally {
