@@ -73,7 +73,7 @@
       "target": "nsis"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "deb"
     },
     "dmg": {
       "writeUpdateInfo": false
