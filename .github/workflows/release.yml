@@ -79,7 +79,7 @@ jobs:
           mkdir -p release-installers
           shopt -s nullglob
           count=0
-          for f in desktop/release/*.dmg desktop/release/*.exe desktop/release/*.AppImage; do
+          for f in desktop/release/*.dmg desktop/release/*.exe desktop/release/*.deb; do
             if [ -f "$f" ]; then
               cp -v "$f" release-installers/
               count=$((count + 1))
@@ -317,7 +317,7 @@ jobs:
           set -euo pipefail
           mkdir -p release-flat
           find release-assets -type f \( \
-            -name '*.dmg' -o -name '*.exe' -o -name '*.AppImage' \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.deb' \
             \) -exec cp -t release-flat {} +
           ls -la release-flat
           n=$(find release-flat -type f | wc -l)
