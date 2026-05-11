@@ -99,6 +99,76 @@ jobs:
           path: release-installers/
           if-no-files-found: error
 
+  build_rpm:
+    name: Package (RPM / Fedora)
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Install system dependencies
+        run: dnf install -y rpm-build git curl tar
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: services/api/pom.xml
+
+      - name: Install Angular client dependencies
+        working-directory: apps/client
+        run: npm ci
+
+      - name: Build Angular (desktop)
+        working-directory: apps/client
+        run: npm run build:desktop
+
+      - name: Build Spring Boot API
+        working-directory: services/api
+        run: ./mvnw --batch-mode clean package -DskipTests
+
+      - name: Bundle Temurin JRE for this runner
+        run: node scripts/download-desktop-jre.mjs
+
+      - name: Install desktop dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build RPM installer
+        working-directory: desktop
+        run: npm run dist:rpm
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stage RPM installer
+        run: |
+          set -euo pipefail
+          mkdir -p release-installers
+          cp -v desktop/release/*.rpm release-installers/
+          ls -la release-installers
+
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluentdoc-rpm
+          path: release-installers/
+          if-no-files-found: error
+
   build_macos_unsigned:
     name: Package (macOS unsigned notarization input)
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
@@ -290,7 +360,7 @@ jobs:
   release:
     name: Publish GitHub Release
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
-    needs: [build_non_macos, notarize_macos]
+    needs: [build_non_macos, build_rpm, notarize_macos]
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows artifact
@@ -305,24 +375,30 @@ jobs:
           name: fluentdoc-ubuntu-latest
           path: release-assets/linux
 
+      - name: Download RPM artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-rpm
+          path: release-assets/rpm
+
       - name: Download notarized macOS artifact
         uses: actions/download-artifact@v4
         with:
           name: fluentdoc-macos-latest
           path: release-assets/macos
 
-      - name: Collect installers for release upload (dmg, exe, AppImage only)
+      - name: Collect installers for release upload
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p release-flat
           find release-assets -type f \( \
-            -name '*.dmg' -o -name '*.exe' -o -name '*.deb' \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.deb' -o -name '*.rpm' \
             \) -exec cp -t release-flat {} +
           ls -la release-flat
           n=$(find release-flat -type f | wc -l)
-          if [ "$n" -ne 3 ]; then
-            echo "::error::Expected exactly 3 release installers (macOS .dmg, Windows .exe, Linux .AppImage); found $n"
+          if [ "$n" -ne 4 ]; then
+            echo "::error::Expected exactly 4 release installers (macOS .dmg, Windows .exe, Linux .deb, Linux .rpm); found $n"
             find release-assets -type f | head -80 || true
             exit 1
           fi
