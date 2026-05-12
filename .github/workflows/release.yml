@@ -149,6 +149,9 @@ jobs:
         working-directory: desktop
         run: npm ci
 
+      - name: Check app-builder dependencies
+        run: ldd desktop/node_modules/app-builder-bin/linux/x64/app-builder || true
+
       - name: Build RPM installer
         working-directory: desktop
         run: npm run dist:rpm
