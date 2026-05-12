@@ -112,7 +112,7 @@ jobs:
 
     steps:
       - name: Install system dependencies
-        run: dnf install -y rpm-build git curl tar
+        run: dnf install -y rpm-build git curl tar libxcrypt-compat
 
       - name: Checkout
         uses: actions/checkout@v4
