@@ -112,7 +112,7 @@ jobs:
 
     steps:
       - name: Install system dependencies
-        run: dnf install -y rpm-build git curl tar libxcrypt-compat
+        run: dnf install -y rpm-build git curl tar libxcrypt-compat ruby ruby-devel gcc make redhat-rpm-config
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -129,6 +129,9 @@ jobs:
           java-version: '17'
           cache: maven
           cache-dependency-path: services/api/pom.xml
+
+      - name: Install fpm
+        run: gem install fpm --no-document
 
       - name: Install Angular client dependencies
         working-directory: apps/client
@@ -149,15 +152,52 @@ jobs:
         working-directory: desktop
         run: npm ci
 
-      - name: Check app-builder dependencies
-        run: ldd desktop/node_modules/app-builder-bin/linux/x64/app-builder || true
-
-      - name: Build RPM installer
+      - name: Prepare desktop runtime
         working-directory: desktop
-        run: npm run dist:rpm
+        run: npm run prepare-desktop-runtime
+
+      - name: Build unpacked app
+        working-directory: desktop
+        run: npx electron-builder --linux dir --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEBUG: electron-builder
+
+      - name: Create desktop entry
+        run: |
+          cat > /tmp/fluentdoc-desktop.desktop << 'EOF'
+          [Desktop Entry]
+          Name=FluentDoc
+          Exec=/opt/FluentDoc/fluentdoc-desktop %U
+          Icon=fluentdoc-desktop
+          Type=Application
+          Categories=Utility;Office;
+          Comment=FluentDoc desktop application
+          EOF
+
+      - name: Package as RPM
+        working-directory: desktop
+        run: |
+          set -euo pipefail
+          VERSION=$(node -e "console.log(require('./package.json').version)")
+          fpm -s dir -t rpm \
+            --name fluentdoc-desktop \
+            --version "$VERSION" \
+            --architecture x86_64 \
+            --description "FluentDoc desktop application (Electron)" \
+            --url "https://github.com/FluentDoc/fluentdoc" \
+            --maintainer "Patrick Gaston <patrick.e.gaston@gmail.com>" \
+            --vendor "Patrick Gaston <patrick.e.gaston@gmail.com>" \
+            --depends gtk3 \
+            --depends libnotify \
+            --depends nss \
+            --depends libXScrnSaver \
+            --depends libXtst \
+            --depends xdg-utils \
+            --depends at-spi2-core \
+            --package "release/fluentdoc-desktop-${VERSION}.x86_64.rpm" \
+            "release/linux-unpacked/=/opt/FluentDoc" \
+            "build/icon.png=/usr/share/icons/hicolor/512x512/apps/fluentdoc-desktop.png" \
+            "/tmp/fluentdoc-desktop.desktop=/usr/share/applications/fluentdoc-desktop.desktop"
 
       - name: Stage RPM installer
         run: |
