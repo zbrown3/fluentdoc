@@ -154,6 +154,7 @@ jobs:
         run: npm run dist:rpm
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEBUG: electron-builder
 
       - name: Stage RPM installer
         run: |
