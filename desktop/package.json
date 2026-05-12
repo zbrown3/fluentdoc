@@ -20,7 +20,8 @@
     "dist:mac": "electron-builder --mac --publish never",
     "dist:win": "electron-builder --win --publish never",
     "dist:linux": "electron-builder --linux --publish never",
-    "dist:rpm": "electron-builder --linux rpm --publish never"
+    "dist:rpm": "electron-builder --linux rpm --publish never",
+    "predist:rpm": "npm run prepare-desktop-runtime"
   },
   "devDependencies": {
     "electron": "^33.2.1",
