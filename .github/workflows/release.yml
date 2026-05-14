@@ -437,7 +437,6 @@ jobs:
           set -euo pipefail
           mkdir -p release-flat
           find release-assets -type f \( \
-            # -name '*.dmg' -o \
             -name '*.exe' -o -name '*.deb' -o -name '*.rpm' \
             \) -exec cp -t release-flat {} +
           ls -la release-flat
