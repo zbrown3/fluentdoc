@@ -213,198 +213,198 @@ jobs:
           path: release-installers/
           if-no-files-found: error
 
-# build_macos_unsigned:
-#   name: Package (macOS unsigned notarization input)
-#   if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
-#   runs-on: macos-latest
-#   timeout-minutes: 240
-#   defaults:
-#     run:
-#       shell: bash
-#   steps:
-#     - name: Checkout
-#       uses: actions/checkout@v4
-#
-#     - name: Set up Node.js
-#       uses: actions/setup-node@v4
-#       with:
-#         node-version: '20'
-#
-#     - name: Set up Java
-#       uses: actions/setup-java@v4
-#       with:
-#         distribution: temurin
-#         java-version: '17'
-#         cache: maven
-#         cache-dependency-path: services/api/pom.xml
-#
-#     - name: Install Angular client dependencies
-#       working-directory: apps/client
-#       run: npm ci
-#
-#     - name: Build Angular (desktop)
-#       working-directory: apps/client
-#       run: npm run build:desktop
-#
-#     - name: Build Spring Boot API
-#       working-directory: services/api
-#       run: ./mvnw --batch-mode clean package -DskipTests
-#
-#     - name: Extract sqlite native libs
-#       run: node scripts/extract-sqlite-native.mjs
-#
-#     - name: Bundle Temurin JRE for this runner
-#       run: node scripts/download-desktop-jre.mjs
-#
-#     - name: Fix bundled JRE permissions for mac signing
-#       run: |
-#         chmod -R u+rwX desktop/runtime/jre
-#
-#     - name: Install desktop dependencies
-#       working-directory: desktop
-#       run: npm ci
-#
-#     - name: Import Apple certificate
-#       env:
-#         APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
-#         APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-#       run: |
-#         set -euo pipefail
-#         CERTIFICATE_PATH="$RUNNER_TEMP/signing_certificate.p12"
-#         KEYCHAIN_PATH="$RUNNER_TEMP/fluentdoc-signing.keychain-db"
-#         KEYCHAIN_PASSWORD=""
-#
-#         echo -n "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
-#         security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-#         security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-#         security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-#         security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" \
-#           -A -t cert -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
-#         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-#         security list-keychains -d user -s "$KEYCHAIN_PATH"
-#         security default-keychain -s "$KEYCHAIN_PATH"
-#         security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-#
-#     - name: Build macOS installer (sign only, no notarize)
-#       working-directory: desktop
-#       run: |
-#         security unlock-keychain -p "" "$RUNNER_TEMP/fluentdoc-signing.keychain-db"
-#         npm run dist:mac
-#       env:
-#         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#
-#     - name: Stage macOS dmg
-#       run: |
-#         set -euo pipefail
-#         mkdir -p release-installers
-#         cp -v desktop/release/*.dmg release-installers/
-#         ls -la release-installers
-#
-#     - name: Upload unsigned macOS dmg artifact
-#       uses: actions/upload-artifact@v4
-#       with:
-#         name: fluentdoc-macos-unsigned
-#         path: release-installers/
-#         if-no-files-found: error
+  build_macos_unsigned:
+    name: Package (macOS unsigned notarization input)
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    runs-on: macos-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-# notarize_macos:
-#   name: Notarize macOS installer
-#   if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
-#   needs: build_macos_unsigned
-#   runs-on: macos-latest
-#   timeout-minutes: 240
-#   steps:
-#     - name: Download unsigned macOS artifact
-#       uses: actions/download-artifact@v4
-#       with:
-#         name: fluentdoc-macos-unsigned
-#         path: notarize-input
-#
-#     - name: Submit dmg to Apple notary service and wait
-#       env:
-#         APPLE_ID: ${{ secrets.APPLE_ID }}
-#         APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-#         APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-#       run: |
-#         set -euo pipefail
-#         dmg="$(echo notarize-input/*.dmg)"
-#         submit_json="$(xcrun notarytool submit "$dmg" \
-#           --apple-id "$APPLE_ID" \
-#           --password "$APPLE_APP_SPECIFIC_PASSWORD" \
-#           --team-id "$APPLE_TEAM_ID" \
-#           --output-format json)"
-#         submission_id="$(printf '%s' "$submit_json" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')"
-#         echo "Notary submission id: $submission_id"
-#
-#         # Poll status with retries to survive transient runner network drops (NSURLError -1009).
-#         attempts=0
-#         # Apple notary queue can exceed 30 minutes; allow up to 3 hours.
-#         max_attempts=180
-#         sleep_seconds=60
-#         while true; do
-#           attempts=$((attempts + 1))
-#           if [ "$attempts" -gt "$max_attempts" ]; then
-#             echo "::error::Timed out waiting for notarization status after $max_attempts attempts"
-#             exit 1
-#           fi
-#
-#           set +e
-#           # Keep stderr out of stdout so JSON parsing stays reliable.
-#           info_stderr="$(mktemp)"
-#           info_json="$(xcrun notarytool info "$submission_id" \
-#             --apple-id "$APPLE_ID" \
-#             --password "$APPLE_APP_SPECIFIC_PASSWORD" \
-#             --team-id "$APPLE_TEAM_ID" \
-#             --output-format json 2>"$info_stderr")"
-#           info_exit=$?
-#           set -e
-#
-#           if [ "$info_exit" -ne 0 ] || [ -z "$info_json" ]; then
-#             echo "notarytool info attempt $attempts failed (exit $info_exit); retrying in ${sleep_seconds}s"
-#             if [ -s "$info_stderr" ]; then
-#               echo "--- notarytool stderr ---"
-#               cat "$info_stderr"
-#               echo "--- end stderr ---"
-#             fi
-#             rm -f "$info_stderr"
-#             sleep "$sleep_seconds"
-#             continue
-#           fi
-#           rm -f "$info_stderr"
-#
-#           status="$(printf '%s' "$info_json" | /usr/bin/python3 -c 'import json,sys; d=json.load(sys.stdin); s=d.get("status") or d.get("Status") or ""; print(str(s).strip())')"
-#           echo "Notary status: ${status:-<empty>}"
-#           if [ "$status" = "Accepted" ]; then
-#             echo "Raw notarytool info payload:"
-#             printf '%s\n' "$info_json"
-#             break
-#           fi
-#           if [ "$status" = "Invalid" ] || [ "$status" = "Rejected" ]; then
-#             xcrun notarytool log "$submission_id" \
-#               --apple-id "$APPLE_ID" \
-#               --password "$APPLE_APP_SPECIFIC_PASSWORD" \
-#               --team-id "$APPLE_TEAM_ID" || true
-#             echo "::error::Notarization failed with status: $status"
-#             exit 1
-#           fi
-#
-#           sleep "$sleep_seconds"
-#         done
-#
-#         xcrun stapler staple "$dmg"
-#         xcrun stapler validate "$dmg"
-#
-#     - name: Upload notarized macOS dmg artifact
-#       uses: actions/upload-artifact@v4
-#       with:
-#         name: fluentdoc-macos-latest
-#         path: notarize-input/*.dmg
-#         if-no-files-found: error
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: services/api/pom.xml
+
+      - name: Install Angular client dependencies
+        working-directory: apps/client
+        run: npm ci
+
+      - name: Build Angular (desktop)
+        working-directory: apps/client
+        run: npm run build:desktop
+
+      - name: Build Spring Boot API
+        working-directory: services/api
+        run: ./mvnw --batch-mode clean package -DskipTests
+
+      - name: Extract sqlite native libs
+        run: node scripts/extract-sqlite-native.mjs
+
+      - name: Bundle Temurin JRE for this runner
+        run: node scripts/download-desktop-jre.mjs
+
+      - name: Fix bundled JRE permissions for mac signing
+        run: |
+          chmod -R u+rwX desktop/runtime/jre
+
+      - name: Install desktop dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Import Apple certificate
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          CERTIFICATE_PATH="$RUNNER_TEMP/signing_certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/fluentdoc-signing.keychain-db"
+          KEYCHAIN_PASSWORD=""
+
+          echo -n "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+          security default-keychain -s "$KEYCHAIN_PATH"
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+      - name: Build macOS installer (sign only, no notarize)
+        working-directory: desktop
+        run: |
+          security unlock-keychain -p "" "$RUNNER_TEMP/fluentdoc-signing.keychain-db"
+          npm run dist:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stage macOS dmg
+        run: |
+          set -euo pipefail
+          mkdir -p release-installers
+          cp -v desktop/release/*.dmg release-installers/
+          ls -la release-installers
+
+      - name: Upload unsigned macOS dmg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluentdoc-macos-unsigned
+          path: release-installers/
+          if-no-files-found: error
+
+  notarize_macos:
+    name: Notarize macOS installer
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    needs: build_macos_unsigned
+    runs-on: macos-latest
+    timeout-minutes: 240
+    steps:
+      - name: Download unsigned macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-macos-unsigned
+          path: notarize-input
+
+      - name: Submit dmg to Apple notary service and wait
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          dmg="$(echo notarize-input/*.dmg)"
+          submit_json="$(xcrun notarytool submit "$dmg" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --output-format json)"
+          submission_id="$(printf '%s' "$submit_json" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')"
+          echo "Notary submission id: $submission_id"
+
+          # Poll status with retries to survive transient runner network drops (NSURLError -1009).
+          attempts=0
+          # Apple notary queue can exceed 30 minutes; allow up to 3 hours.
+          max_attempts=180
+          sleep_seconds=60
+          while true; do
+            attempts=$((attempts + 1))
+            if [ "$attempts" -gt "$max_attempts" ]; then
+              echo "::error::Timed out waiting for notarization status after $max_attempts attempts"
+              exit 1
+            fi
+
+            set +e
+            # Keep stderr out of stdout so JSON parsing stays reliable.
+            info_stderr="$(mktemp)"
+            info_json="$(xcrun notarytool info "$submission_id" \
+              --apple-id "$APPLE_ID" \
+              --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+              --team-id "$APPLE_TEAM_ID" \
+              --output-format json 2>"$info_stderr")"
+            info_exit=$?
+            set -e
+
+            if [ "$info_exit" -ne 0 ] || [ -z "$info_json" ]; then
+              echo "notarytool info attempt $attempts failed (exit $info_exit); retrying in ${sleep_seconds}s"
+              if [ -s "$info_stderr" ]; then
+                echo "--- notarytool stderr ---"
+                cat "$info_stderr"
+                echo "--- end stderr ---"
+              fi
+              rm -f "$info_stderr"
+              sleep "$sleep_seconds"
+              continue
+            fi
+            rm -f "$info_stderr"
+
+            status="$(printf '%s' "$info_json" | /usr/bin/python3 -c 'import json,sys; d=json.load(sys.stdin); s=d.get("status") or d.get("Status") or ""; print(str(s).strip())')"
+            echo "Notary status: ${status:-<empty>}"
+            if [ "$status" = "Accepted" ]; then
+              echo "Raw notarytool info payload:"
+              printf '%s\n' "$info_json"
+              break
+            fi
+            if [ "$status" = "Invalid" ] || [ "$status" = "Rejected" ]; then
+              xcrun notarytool log "$submission_id" \
+                --apple-id "$APPLE_ID" \
+                --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+                --team-id "$APPLE_TEAM_ID" || true
+              echo "::error::Notarization failed with status: $status"
+              exit 1
+            fi
+
+            sleep "$sleep_seconds"
+          done
+
+          xcrun stapler staple "$dmg"
+          xcrun stapler validate "$dmg"
+
+      - name: Upload notarized macOS dmg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluentdoc-macos-latest
+          path: notarize-input/*.dmg
+          if-no-files-found: error
 
   release:
     name: Publish GitHub Release
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
-    needs: [build_non_macos, build_rpm]  # notarize_macos commented out
+    needs: [build_non_macos, build_rpm, notarize_macos]
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows artifact
@@ -425,11 +425,11 @@ jobs:
           name: fluentdoc-rpm
           path: release-assets/rpm
 
-      # - name: Download notarized macOS artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: fluentdoc-macos-latest
-      #     path: release-assets/macos
+      - name: Download notarized macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: fluentdoc-macos-latest
+          path: release-assets/macos
 
       - name: Collect installers for release upload
         shell: bash
@@ -437,12 +437,12 @@ jobs:
           set -euo pipefail
           mkdir -p release-flat
           find release-assets -type f \( \
-            -name '*.exe' -o -name '*.deb' -o -name '*.rpm' \
+            -name '*.dmg' -o -name '*.exe' -o -name '*.deb' -o -name '*.rpm' \
             \) -exec cp -t release-flat {} +
           ls -la release-flat
           n=$(find release-flat -type f | wc -l)
-          if [ "$n" -ne 3 ]; then
-            echo "::error::Expected exactly 3 release installers (Windows .exe, Linux .deb, Linux .rpm); found $n"
+          if [ "$n" -ne 4 ]; then
+            echo "::error::Expected exactly 4 release installers (macOS .dmg, Windows .exe, Linux .deb, Linux .rpm); found $n"
             find release-assets -type f | head -80 || true
             exit 1
           fi
