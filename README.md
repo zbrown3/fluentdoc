@@ -6,6 +6,20 @@ It is designed for linguists, writers, worldbuilders, and creators who want a st
 
 ---
 
+## 🚫 AI-Free by Design
+
+FluentDoc is, and will remain, **AI-free as a product**.
+
+Constructing a language is a deeply human act — one of creativity, intention, and craft. FluentDoc exists to give creators powerful tools to express that process, not to automate or assist it with AI. There are no AI suggestions, no auto-generated vocabulary, no grammar inference, and no "smart" completion features. Every word, rule, and structure in a language built with FluentDoc comes from its creator.
+
+**AI in development is permitted. AI as a feature is not.**
+
+Contributors may use AI tools to write code, improve infrastructure, or assist with documentation. These are acceptable uses that make the platform better. However, **no AI-driven functionality may be introduced as a user-facing feature** — regardless of how it is framed or how optional it appears. This line is firm and non-negotiable.
+
+If you are considering contributing an AI-powered feature, do not open a pull request. The answer will be no.
+
+---
+
 ## ✨ Vision
 
 FluentDoc aims to become the standard tool for language creation.
